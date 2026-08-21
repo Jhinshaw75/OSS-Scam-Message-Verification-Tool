@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -588,21 +588,29 @@
         function runRiskEvaluation(content) {
             const lower = content.toLowerCase();
             
-            // Heuristic Marker Scoring
+            // Heuristic Marker Scoring incorporating top senior fraud vectors (Government Imposter, Tech Support, Financial Phishing, Romance/Emergency, Sweepstakes)
             let riskScore = 0;
             let triggers = [];
 
             const highRiskKeywords = [
-                'urgent', 'immediate action', 'suspended', 'compromised', 'locked', 
-                'verify your account', 'unauthorized access', 'bitcoin', 'gift card', 
-                'wire transfer', 'social security number', 'irs', 'arrest warrant',
-                'zelle', 'venmo', 'cashapp', 'click here', 'login immediately'
+                // Government Imposter & Arrest Scams (IRS, SSA, Medicare, Legal)
+                'social security', 'irs', 'medicare', 'arrest warrant', 'legal action', 'federal crime', 'suspended ssn',
+                // Tech Support Lockouts & Pop-ups
+                'virus detected', 'remote access', 'frozen screen', 'firewall', 'microsoft support', 'apple support', 'device locked',
+                // Financial & Banking Phishing
+                'urgent', 'immediate action', 'suspended account', 'compromised', 'verify your account', 'unauthorized access', 'login immediately',
+                // Payment Methods & High-Risk Transfers
+                'bitcoin', 'gift card', 'wire transfer', 'zelle', 'venmo', 'cashapp', 'crypto', 'cash deposit',
+                // Grandparent & Emergency Scams
+                'grandchild', 'bail money', 'emergency accident', 'hospital bills', 'do not tell anyone',
+                // Sweepstakes & Lottery
+                'prize winnings', 'lottery winner', 'processing fee', 'taxes on prize', 'claim your prize'
             ];
 
             highRiskKeywords.forEach(keyword => {
                 if (lower.includes(keyword)) {
                     riskScore += 2;
-                    triggers.push(`Contains high-pressure or sensitive phrase: "${keyword}"`);
+                    triggers.push(`Contains high-risk fraud vector trigger: "${keyword}"`);
                 }
             });
 
@@ -612,9 +620,9 @@
                 triggers.push('Includes clickable hyperlink addresses or external web links.');
             }
 
-            if (content.includes('!') && (lower.includes('now') || lower.includes('hurry') || lower.includes('act'))) {
+            if (content.includes('!') && (lower.includes('now') || lower.includes('hurry') || lower.includes('act') || lower.includes('immediate'))) {
                 riskScore += 1;
-                triggers.push('Employs manufactured urgency or fear-inducing triggers.');
+                triggers.push('Employs manufactured urgency or fear-inducing psychological manipulation.');
             }
 
             // Determine Risk Tier
@@ -622,12 +630,12 @@
                 // High Risk
                 resultHeaderBg.style.background = 'var(--risk-high)';
                 resultTitle.textContent = 'HIGH RISK: Potential Deceptive Scam Detected';
-                resultDesc.textContent = 'This message exhibits multiple high-probability indicators commonly associated with financial fraud, phishing attempts, or imposter scams.';
+                resultDesc.textContent = 'This message exhibits multiple high-probability indicators associated with top reported senior fraud vectors, such as government impersonation, tech support lockouts, or financial phishing.';
             } else if (riskScore >= 2) {
                 // Medium Risk
                 resultHeaderBg.style.background = 'var(--risk-med)';
                 resultTitle.textContent = 'MODERATE RISK: Exercise Caution & Verify';
-                resultDesc.textContent = 'The message contains elements or urgent requests that warrant careful verification before taking any action.';
+                resultDesc.textContent = 'The message contains suspicious elements or requests that warrant careful independent verification before taking any action.';
             } else {
                 // Low Risk
                 resultHeaderBg.style.background = 'var(--risk-low)';
