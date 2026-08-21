@@ -297,11 +297,36 @@
             font-size: 13px;
             color: #2c3e50;
             border-radius: 0 6px 6px 0;
+            margin-bottom: 15px;
+        }
+
+        .resource-directory {
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .resource-directory h3 {
+            font-size: 14px;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+
+        .resource-directory ul {
+            padding-left: 18px;
+        }
+
+        .resource-directory li {
+            margin-bottom: 8px;
+            color: #444;
         }
 
         .reset-btn {
             background: #6b7280;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .reset-btn:hover {
@@ -324,7 +349,7 @@
     <div class="container">
         <header>
             <h1>Operation Senior Shield</h1>
-            <p>State of Florida Department of Elder Affairs • Scam & Message Verification Tool</p>
+            <p>STATE OF FLORIDA DEPARTMENT OF ELDER AFFAIRS • SCAM & MESSAGE VERIFICATION TOOL</p>
         </header>
 
         <div class="content-body">
@@ -381,15 +406,38 @@
                     </div>
                     <div class="result-body">
                         <p id="result-desc">Analysis description will appear here.</p>
+                        
                         <div id="indicators-wrapper">
                             <p style="font-weight: bold; font-size: 13px; margin-bottom: 4px;">Detected Risk Markers:</p>
                             <ul class="indicators-list" id="indicators-list">
                                 <!-- Populated dynamically -->
                             </ul>
                         </div>
+
                         <div class="safety-tips" id="safety-tips">
                             <strong>Recommended Action:</strong> Always verify independently through official channels. Never click unverified links or share sensitive credentials.
                         </div>
+
+                        <!-- Instant Carrier Action Box -->
+                        <div style="background: #eef5fc; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
+                            <strong>📱 Instant Carrier Action (Forward to 7726):</strong> You can forward any suspicious or spam text message directly to <strong>7726</strong> (which spells <strong>SPAM</strong> on phone keypads). This free service alerts major cellular carriers (AT&T, Verizon, T-Mobile) to investigate and block the sender across the mobile network.
+                        </div>
+
+                        <!-- Verified Resource Directory -->
+                        <div class="resource-directory">
+                            <h3>Verified Florida & Federal Resource Directory</h3>
+                            <p style="margin-bottom: 8px; color: #555; font-size: 12px;">Connect directly with official state and federal protection agencies:</p>
+                            <ul>
+                                <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://elderaffairs.org" target="_blank">Operation Senior Shield Website</a>.</li>
+                                <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
+                                <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-963-5337</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
+                                <li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>
+                                <li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-962-2873</strong> or report online via the <a href="https://www.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>
+                                <li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>
+                            </ul>
+                            <p style="margin-top: 10px; font-size: 11px; color: #666;"><strong>Official Compliance Note:</strong> Free resources like the Florida DOEA Elder Helpline and federal reporting portals never charge fees to investigate fraud.</p>
+                        </div>
+
                         <button class="btn reset-btn" id="reset-btn">Analyze Another Message</button>
                     </div>
                 </div>
