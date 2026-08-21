@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -349,7 +349,7 @@
     <div class="container">
         <header>
             <h1>Operation Senior Shield</h1>
-            <p>STATE OF FLORIDA DEPARTMENT OF ELDER AFFAIRS • SCAM & MESSAGE VERIFICATION TOOL</p>
+            <p>State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
         </header>
 
         <div class="content-body">
@@ -371,10 +371,11 @@
                 </div>
 
                 <div class="terms-box">
+                    <p style="margin-bottom: 10px; font-weight: bold;">Please review the terms before proceeding:</p>
                     <ol>
-                        <li><strong>Educational & Auxiliary Utility:</strong> This utility is provided solely for informational, defensive security awareness, and message evaluation training under Operation Senior Shield.</li>
-                        <li><strong>Zero Data Retention:</strong> No personal data, identifiable text inputs, or communication content are stored, logged, or transmitted to external databases. All analysis is executed locally inside your current browser session.</li>
-                        <li><strong>No Official Guarantee:</strong> Automated pattern recognition flags potential deceptive markers or psychological manipulation tactics, but it cannot guarantee absolute detection of all evolving malicious threats.</li>
+                        <li>This utility is designed strictly for educational triage, message pattern evaluation, and public awareness navigation under Operation Senior Shield.</li>
+                        <li><strong>Zero Data Retention:</strong> No personal data, identifiable text inputs, or communication content are stored, logged, or transmitted to external databases. All analysis is executed dynamically and purged upon session closure.</li>
+                        <li>This tool serves as an educational self-defense screening mechanism and does not constitute a formal law enforcement investigative filing or official state agency reporting intake.</li>
                     </ol>
                 </div>
                 <button class="btn" id="agree-btn">I Agree & Open Verification Tool</button>
@@ -390,13 +391,14 @@
 
                 <!-- Text Input Panel -->
                 <div class="input-panel active" id="panel-text">
-                    <textarea id="message-input" placeholder="Paste the suspicious email, text message, or notice here..."></textarea>
+                    <textarea id="message-input" placeholder="Paste the exact message here or upload a screenshot above..."></textarea>
                 </div>
 
                 <!-- Image Upload Panel -->
                 <div class="input-panel" id="panel-img">
                     <div class="upload-zone" id="drop-zone">
-                        <div class="upload-text">Drag & drop a screenshot here, or <span>browse files</span></div>
+                        <div class="upload-text">📸 Have a screenshot of a text or email? Upload it here to read automatically:</div>
+                        <button type="button" class="btn" style="margin-top: 10px; padding: 10px; font-size: 14px;">Select Screenshot / Image</button>
                         <input type="file" id="file-input" accept="image/*">
                     </div>
                     <div id="preview-container">
@@ -404,7 +406,7 @@
                     </div>
                 </div>
 
-                <button class="btn" id="analyze-btn">Analyze Message for Fraud Risk</button>
+                <button class="btn" id="analyze-btn">Analyze Message</button>
 
                 <!-- Processing Loader -->
                 <div id="loader">
