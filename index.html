@@ -272,7 +272,7 @@
     <!-- MAIN VERIFICATION TOOL -->
     <div id="tool-screen">
         <div class="input-group no-print">
-            <label>Select Input Method:</label>
+            <label style="margin-bottom: 8px;">Select Input Method:</label>
             <div class="input-tabs">
                 <button type="button" class="tab-btn active" id="tab-text-btn" onclick="switchTab('text')">Paste Text</button>
                 <button type="button" class="tab-btn" id="tab-img-btn" onclick="switchTab('image')">Upload Screenshot</button>
@@ -285,9 +285,9 @@
 
             <!-- Image Upload Panel -->
             <div class="input-panel" id="panel-img">
-                <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                <div class="upload-zone" onclick="document.getElementById('file-input').click()">
                     <p style="margin: 0 0 8px 0; font-size: 14px; color: #555;">📸 Have a screenshot of a text or email? Upload it here to read automatically:</p>
-                    <span style="color: var(--secondary); font-weight: bold; font-size: 14px;">Select Screenshot / Image</span>
+                    <button type="button" class="btn" style="padding: 10px; font-size: 14px; width: auto; display: inline-block;">Select Screenshot / Image</button>
                     <input type="file" id="file-input" accept="image/*" onchange="processSelectedFile(this)">
                 </div>
                 <div id="preview-container">
@@ -324,9 +324,9 @@
                 <ul>
                     <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>
                     <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
-                    <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-963-5337</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
+                    <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
                     <li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>
-                    <li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-962-2873</strong> or report online via the <a href="https://reportabuse.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>
+                    <li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-96-ABUSE (1-800-962-2873)</strong> or report online via the <a href="https://reportabuse.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>
                     <li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>
                 </ul>
                 <div class="compliance-note">
@@ -426,7 +426,6 @@
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
 
-        // Comprehensive threat indicators covering IC3 / FTC / Florida elder fraud vectors (Crypto/Pig Butchering, AI Voice Cloning, Government/Imposter, Delivery Smishing, Tech Support)
         const scamKeywords = [
             'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'bitcoin', 'wallet', 'kiosk', 'investment', 
             'grandpa', 'grandma', 'arrest', 'warrant', 'bail', 'voice clone', 'emergency', 'microsoft', 'apple', 'support', 'toll', 'fee', 
