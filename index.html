@@ -2,673 +2,320 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Operation Senior Shield - Scam & Message Verification Tool</title>
-    <!-- Tesseract.js for robust in-browser OCR (Screenshot text extraction) -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
         :root {
-            --primary: #0a2540;
-            --secondary: #20639b;
-            --accent: #f6d55c;
-            --background: #f4f7f6;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --border: #d1d5db;
-            --risk-low: #2e7d32;
-            --risk-med: #f57c00;
-            --risk-high: #c62828;
+            --primary: #002b49;
+            --secondary: #0056b3;
+            --accent: #d9534f;
+            --success: #28a745;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #333333;
+            --border: #ced4da;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
         body {
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.6;
+            font-family: Arial, sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            margin: 0;
             padding: 20px;
+            line-height: 1.6;
         }
-
         .container {
-            max-width: 750px;
+            max-width: 800px;
             margin: 0 auto;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-            border-top: 6px solid var(--primary);
-        }
-
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 25px 20px;
-            text-align: center;
-        }
-
-        header h1 {
-            font-size: 22px;
-            margin-bottom: 5px;
-            letter-spacing: 0.5px;
-        }
-
-        header p {
-            font-size: 13px;
-            opacity: 0.85;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .content-body {
-            padding: 25px;
-        }
-
-        /* Terms & Agreement View */
-        #terms-container h2 {
-            font-size: 18px;
-            color: var(--primary);
-            margin-bottom: 12px;
-        }
-
-        .terms-box {
-            background: #fafbfc;
-            border: 1px solid var(--border);
+            background: #ffffff;
+            padding: 30px;
             border-radius: 8px;
-            padding: 15px;
-            max-height: 220px;
-            overflow-y: auto;
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
-        .terms-box ol {
-            padding-left: 20px;
-        }
-
-        .terms-box li {
-            margin-bottom: 10px;
-        }
-
-        .btn {
-            display: block;
-            width: 100%;
-            background: var(--secondary);
-            color: white;
-            border: none;
-            padding: 14px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+        .header {
             text-align: center;
-            text-decoration: none;
+            border-bottom: 3px solid var(--primary);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
         }
-
-        .btn:hover {
-            background: #174a75;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Main App View */
-        #app-container {
-            display: none;
-        }
-
-        .section-title {
-            font-size: 16px;
-            font-weight: bold;
+        .header h1 {
             color: var(--primary);
-            margin-bottom: 8px;
+            margin: 0 0 10px 0;
+            font-size: 24px;
         }
-
-        .input-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            background: #eef2f5;
-            border: 1px solid var(--border);
-            border-radius: 6px;
+        .header p {
+            color: #666;
+            margin: 0;
             font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            color: #555;
-            transition: all 0.2s;
         }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-
-        .input-panel {
-            display: none;
-            margin-bottom: 20px;
-        }
-
-        .input-panel.active {
+        /* Terms Screen */
+        #terms-screen {
             display: block;
         }
-
+        .terms-box {
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 6px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        /* Tool Screen */
+        #tool-screen {
+            display: none;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
         textarea {
             width: 100%;
             height: 130px;
             padding: 12px;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 4px;
+            font-size: 16px;
+            box-sizing: border-box;
             resize: vertical;
         }
-
-        textarea:focus {
-            outline: none;
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 3px rgba(32, 99, 155, 0.15);
-        }
-
-        .upload-zone {
-            border: 2px dashed var(--border);
-            border-radius: 8px;
-            padding: 25px;
-            text-align: center;
-            background: #fafbfc;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-
-        .upload-zone:hover {
-            border-color: var(--secondary);
-        }
-
-        .upload-zone input {
-            display: none;
-        }
-
-        .upload-text {
-            font-size: 14px;
-            color: #666;
-        }
-
-        .upload-text span {
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        #preview-container {
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-
-        #image-preview {
-            max-width: 100%;
-            max-height: 180px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-
-        /* Processing Loader */
-        #loader {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            width: 36px;
-            height: 36px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--secondary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 10px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Results Box */
-        #result-container {
-            display: none;
-            margin-top: 25px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            overflow: hidden;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .result-header {
-            padding: 14px 18px;
-            font-weight: bold;
-            font-size: 16px;
+        .btn {
+            background-color: var(--secondary);
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
         }
-
-        .result-body {
-            background: #ffffff;
-            padding: 18px;
-            font-size: 14px;
+        .btn:hover {
+            background-color: var(--primary);
         }
-
-        .result-body p {
-            margin-bottom: 12px;
-        }
-
-        .indicators-list {
-            list-style: disc;
-            padding-left: 20px;
-            margin-bottom: 15px;
-        }
-
-        .indicators-list li {
-            margin-bottom: 6px;
-            color: #444;
-        }
-
-        .safety-tips {
-            background: #f0f4f8;
-            border-left: 4px solid var(--secondary);
-            padding: 12px;
-            font-size: 13px;
-            color: #2c3e50;
-            border-radius: 0 6px 6px 0;
-            margin-bottom: 15px;
-        }
-
-        .resource-directory {
-            background: #fafbfc;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
-            font-size: 13px;
-        }
-
-        .resource-directory h3 {
-            font-size: 14px;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .resource-directory ul {
-            padding-left: 18px;
-        }
-
-        .resource-directory li {
-            margin-bottom: 8px;
-            color: #444;
-        }
-
-        .reset-btn {
-            background: #6b7280;
-            margin-top: 20px;
-        }
-
-        .reset-btn:hover {
-            background: #4b5563;
-        }
-
-        /* Footer Info */
-        .app-footer {
-            text-align: center;
-            font-size: 11px;
-            color: #888;
+        /* Results Section */
+        #results-container {
             margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid #eee;
+            display: none;
+            padding: 20px;
+            border-radius: 6px;
+        }
+        .safe-result {
+            background-color: #d4edda !important;
+            border: 1px solid #c3e6cb !important;
+            color: #155724 !important;
+        }
+        .danger-result {
+            background-color: #f8d7da !important;
+            border: 1px solid #f5c6cb !important;
+            color: #721c24 !important;
+        }
+        .action-steps {
+            margin-top: 15px;
+            padding-left: 20px;
+        }
+        .action-steps li {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        .carrier-box {
+            margin-top: 20px;
+            background: #eef5fc;
+            border-left: 4px solid var(--secondary);
+            padding: 12px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+        }
+        .resources-box {
+            margin-top: 20px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            padding: 15px;
+            border-radius: 4px;
+            color: #333333;
+        }
+        .resources-box h4 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+        .resources-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .resources-box li {
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .compliance-note {
+            margin-top: 15px;
+            font-size: 12px;
+            color: #555;
+        }
+        .print-btn {
+            background-color: #6c757d;
+            margin-top: 15px;
+        }
+        .print-btn:hover {
+            background-color: #5a6268;
+        }
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            .no-print { display: none !important; }
+            #results-container { border: 2px solid #333; display: block !important; }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <h1>Operation Senior Shield</h1>
-            <p>State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
-        </header>
-
-        <div class="content-body">
-
-            <!-- VIEW 1: TERMS & AGREEMENT -->
-            <div id="terms-container">
-                <h2>Client Agreement & Terms of Use</h2>
-
-                <!-- ADDED DEVICE INSTALL INSTRUCTIONS DROP-DOWN -->
-                <div style="margin-bottom: 15px;">
-                    <details style="background: #f8fafc; border: 1px solid var(--border); padding: 12px 15px; border-radius: 8px; cursor: pointer;">
-                        <summary style="font-weight: bold; color: var(--primary); font-size: 14px;">📱 How to Save This Tool to Your Device (Click to expand)</summary>
-                        <div style="margin-top: 10px; font-size: 13px; color: #333; line-height: 1.5;">
-                            <p style="margin-bottom: 8px;"><strong>For Android (Google Chrome):</strong> Tap the three dots (⋮) in the top-right corner of Chrome, and select <em>"Install and create shortcut"</em> or <em>"Add to Home screen"</em>.</p>
-                            <p style="margin-bottom: 8px;"><strong>For iPhone / iPad (Safari):</strong> Tap the Share button (the square with an arrow pointing up at the bottom), scroll down, and tap <em>"Add to Home Screen"</em>.</p>
-                            <p><strong>For Computers (Windows / Mac):</strong> Click the install icon in the address bar or bookmark the page for instant access.</p>
-                        </div>
-                    </details>
-                </div>
-
-                <div class="terms-box">
-                    <p style="margin-bottom: 10px; font-weight: bold;">Please review the terms before proceeding:</p>
-                    <ol>
-                        <li>This utility is designed strictly for educational triage, message pattern evaluation, and public awareness navigation under Operation Senior Shield.</li>
-                        <li><strong>Zero Data Retention:</strong> No personal data, identifiable text inputs, or communication content are stored, logged, or transmitted to external databases. All analysis is executed dynamically and purged upon session closure.</li>
-                        <li>This tool serves as an educational self-defense screening mechanism and does not constitute a formal law enforcement investigative filing or official state agency reporting intake.</li>
-                    </ol>
-                </div>
-                <button class="btn" id="agree-btn">I Agree & Open Verification Tool</button>
-            </div>
-
-            <!-- VIEW 2: MAIN VERIFICATION INTERFACE -->
-            <div id="app-container">
-                <div class="section-title">Select Input Method</div>
-                <div class="input-tabs">
-                    <button class="tab-btn active" id="tab-text-btn">Paste Text</button>
-                    <button class="tab-btn" id="tab-img-btn">Upload Screenshot</button>
-                </div>
-
-                <!-- Text Input Panel -->
-                <div class="input-panel active" id="panel-text">
-                    <textarea id="message-input" placeholder="Paste the exact message here or upload a screenshot above..."></textarea>
-                </div>
-
-                <!-- Image Upload Panel -->
-                <div class="input-panel" id="panel-img">
-                    <div class="upload-zone" id="drop-zone">
-                        <div class="upload-text">📸 Have a screenshot of a text or email? Upload it here to read automatically:</div>
-                        <button type="button" class="btn" style="margin-top: 10px; padding: 10px; font-size: 14px;">Select Screenshot / Image</button>
-                        <input type="file" id="file-input" accept="image/*">
-                    </div>
-                    <div id="preview-container">
-                        <img id="image-preview" alt="Uploaded Screenshot Preview">
-                    </div>
-                </div>
-
-                <button class="btn" id="analyze-btn">Analyze Message</button>
-
-                <!-- Processing Loader -->
-                <div id="loader">
-                    <div class="spinner"></div>
-                    <p id="loader-text" style="font-size: 13px; color: #555;">Analyzing message text for fraudulent indicators...</p>
-                </div>
-
-                <!-- Results Section -->
-                <div id="result-container">
-                    <div class="result-header" id="result-header-bg">
-                        <span id="result-title">RISK ASSESSMENT</span>
-                    </div>
-                    <div class="result-body">
-                        <p id="result-desc">Analysis description will appear here.</p>
-                        
-                        <div id="indicators-wrapper">
-                            <p style="font-weight: bold; font-size: 13px; margin-bottom: 4px;">Detected Risk Markers:</p>
-                            <ul class="indicators-list" id="indicators-list">
-                                <!-- Populated dynamically -->
-                            </ul>
-                        </div>
-
-                        <div class="safety-tips" id="safety-tips">
-                            <strong>Recommended Action:</strong> Always verify independently through official channels. Never click unverified links or share sensitive credentials.
-                        </div>
-
-                        <!-- Instant Carrier Action Box -->
-                        <div style="background: #eef5fc; border: 1px solid var(--border); padding: 12px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;">
-                            <strong>📱 Instant Carrier Action (Forward to 7726):</strong> You can forward any suspicious or spam text message directly to <strong>7726</strong> (which spells <strong>SPAM</strong> on phone keypads). This free service alerts major cellular carriers (AT&T, Verizon, T-Mobile) to investigate and block the sender across the mobile network.
-                        </div>
-
-                        <!-- Verified Resource Directory -->
-                        <div class="resource-directory">
-                            <h3>Verified Florida & Federal Resource Directory</h3>
-                            <p style="margin-bottom: 8px; color: #555; font-size: 12px;">Connect directly with official state and federal protection agencies:</p>
-                            <ul>
-                                <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://elderaffairs.org" target="_blank">Operation Senior Shield Website</a>.</li>
-                                <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
-                                <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-963-5337</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
-                                <li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>
-                                <li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-962-2873</strong> or report online via the <a href="https://www.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>
-                                <li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>
-                            </ul>
-                            <p style="margin-top: 10px; font-size: 11px; color: #666;"><strong>Official Compliance Note:</strong> Free resources like the Florida DOEA Elder Helpline and federal reporting portals never charge fees to investigate fraud.</p>
-                        </div>
-
-                        <button class="btn reset-btn" id="reset-btn">Analyze Another Message</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="app-footer">
-                Operation Senior Shield &bull; Protecting Older Adults from Mass-Market Fraud & Scams
-            </div>
-
-        </div>
+<div class="container">
+    <div class="header">
+        <h1>Operation Senior Shield</h1>
+        <p>State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
     </div>
 
-    <script>
-        // DOM Elements
-        const termsContainer = document.getElementById('terms-container');
-        const appContainer = document.getElementById('app-container');
-        const agreeBtn = document.getElementById('agree-btn');
+    <!-- TERMS & CONDITIONS GATE -->
+    <div id="terms-screen" class="no-print">
+        <h3>Client Agreement & Terms of Use</h3>
         
-        const tabTextBtn = document.getElementById('tab-text-btn');
-        const tabImgBtn = document.getElementById('tab-img-btn');
-        const panelText = document.getElementById('panel-text');
-        const panelImg = document.getElementById('panel-img');
-        
-        const fileInput = document.getElementById('file-input');
-        const dropZone = document.getElementById('drop-zone');
-        const previewContainer = document.getElementById('preview-container');
-        const imagePreview = document.getElementById('image-preview');
-        
-        const messageInput = document.getElementById('message-input');
-        const analyzeBtn = document.getElementById('analyze-btn');
-        const loader = document.getElementById('loader');
-        const loaderText = document.getElementById('loader-text');
-        
-        const resultContainer = document.getElementById('result-container');
-        const resultHeaderBg = document.getElementById('result-header-bg');
-        const resultTitle = document.getElementById('result-title');
-        const resultDesc = document.getElementById('result-desc');
-        const indicatorsWrapper = document.getElementById('indicators-wrapper');
-        const indicatorsList = document.getElementById('indicators-list');
-        const safetyTips = document.getElementById('safety-tips');
-        const resetBtn = document.getElementById('reset-btn');
+        <!-- DEVICE INSTALL INSTRUCTIONS DROP-DOWN -->
+        <div style="margin-bottom: 15px;">
+            <details style="background: #f1f5f9; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; cursor: pointer;">
+                <summary style="font-weight: bold; color: var(--primary); font-size: 14px;">📱 How to Save This Tool to Your Device (Click to expand)</summary>
+                <div style="margin-top: 10px; font-size: 13px; color: #333; line-height: 1.5;">
+                    <p style="margin-bottom: 8px;"><strong>For Android (Google Chrome):</strong> Tap the three dots (⋮) in the top-right corner of Chrome, and select <em>"Install and create shortcut"</em> or <em>"Add to Home screen"</em>.</p>
+                    <p style="margin-bottom: 8px;"><strong>For iPhone / iPad (Safari):</strong> Tap the Share button (the square with an arrow pointing up at the bottom), scroll down, and tap <em>"Add to Home Screen"</em>.</p>
+                    <p><strong>For Computers (Windows / Mac):</strong> Click the install icon in the address bar or bookmark the page for instant access.</p>
+                </div>
+            </details>
+        </div>
 
-        let activeInputMode = 'text'; // 'text' or 'image'
-        let extractedImageText = '';
+        <div class="terms-box">
+            <p><strong>Please review the terms before proceeding:</strong></p>
+            <p>1. This utility is designed strictly for educational triage, message pattern evaluation, and public awareness navigation under Operation Senior Shield.</p>
+            <p>2. <strong>Zero Data Retention:</strong> No personal data, identifiable text inputs, or communication content are stored, logged, or transmitted to external databases. All analysis is executed dynamically and purged upon session closure.</p>
+            <p>3. This tool serves as an educational self-defense screening mechanism and does not constitute a formal law enforcement investigative filing or official state agency reporting intake.</p>
+        </div>
+        <button class="btn" onclick="acceptTerms()">I Agree & Open Verification Tool</button>
+    </div>
 
-        // Switch to Main App upon agreeing to terms
-        agreeBtn.addEventListener('click', () => {
-            termsContainer.style.display = 'none';
-            appContainer.style.display = 'block';
-        });
+    <!-- MAIN VERIFICATION TOOL -->
+    <div id="tool-screen">
+        <div class="input-group no-print">
+            <label for="message-input">Paste Suspicious Communication (Text Message, Email, or Voicemail Transcript):</label>
+            <textarea id="message-input" placeholder="Paste the exact message here..."></textarea>
+        </div>
+        <button class="btn no-print" onclick="analyzeMessage()">Analyze Message</button>
 
-        // Tab Switching Logic
-        tabTextBtn.addEventListener('click', () => {
-            tabTextBtn.classList.add('active');
-            tabImgBtn.classList.remove('active');
-            panelText.classList.add('active');
-            panelImg.classList.remove('active');
-            activeInputMode = 'text';
-        });
-
-        tabImgBtn.addEventListener('click', () => {
-            tabImgBtn.classList.add('active');
-            tabTextBtn.classList.remove('active');
-            panelImg.classList.add('active');
-            panelText.classList.remove('active');
-            activeInputMode = 'image';
-        });
-
-        // File Upload Handling
-        dropZone.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', (e) => {
-            if (e.target.files && e.target.files[0]) {
-                processSelectedFile(e.target.files[0]);
-            }
-        });
-
-        function processSelectedFile(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                imagePreview.src = e.target.result;
-                previewContainer.style.display = 'block';
-            }
-            reader.readAsDataURL(file);
-
-            // Run Tesseract OCR on the uploaded screenshot
-            loader.style.display = 'block';
-            loaderText.textContent = 'Extracting text from screenshot (OCR processing)...';
-            analyzeBtn.style.display = 'none';
-
-            Tesseract.recognize(
-                file,
-                'eng',
-                { logger: m => {} }
-            ).then(({ data: { text } }) => {
-                extractedImageText = text;
-                loader.style.display = 'none';
-                analyzeBtn.style.display = 'block';
-            }).catch(err => {
-                console.error(err);
-                alert('Could not extract text from image. Please try pasting text manually or use a clearer screenshot.');
-                loader.style.display = 'none';
-                analyzeBtn.style.display = 'block';
-            });
-        }
-
-        // Analysis Execution Logic
-        analyzeBtn.addEventListener('click', () => {
-            let textToAnalyze = '';
-            if (activeInputMode === 'text') {
-                textToAnalyze = messageInput.value.trim();
-            } else {
-                textToAnalyze = extractedImageText.trim();
-            }
-
-            if (!textToAnalyze) {
-                alert(activeInputMode === 'text' ? 'Please paste message text first.' : 'Please upload a screenshot containing readable message text.');
-                return;
-            }
-
-            loader.style.display = 'block';
-            analyzeBtn.style.display = 'none';
-            resultContainer.style.display = 'none';
-            loaderText.textContent = 'Evaluating linguistic patterns and risk markers...';
-
-            setTimeout(() => {
-                runRiskEvaluation(textToAnalyze);
-                loader.style.display = 'none';
-                analyzeBtn.style.display = 'block';
-                resultContainer.style.display = 'block';
-            }, 750);
-        });
-
-        function runRiskEvaluation(content) {
-            const lower = content.toLowerCase();
+        <!-- RESULTS SECTION -->
+        <div id="results-container">
+            <h2 id="result-title" style="margin-top:0;"></h2>
+            <p id="result-description"></p>
             
-            // Heuristic Marker Scoring incorporating top senior fraud vectors (Government Imposter, Tech Support, Financial Phishing, Romance/Emergency, Sweepstakes)
-            let riskScore = 0;
-            let triggers = [];
+            <div id="steps-wrapper" style="display:none;">
+                <strong>Recommended Action Steps:</strong>
+                <ol class="action-steps" id="steps-list"></ol>
+            </div>
 
-            const highRiskKeywords = [
-                // Government Imposter & Arrest Scams (IRS, SSA, Medicare, Legal)
-                'social security', 'irs', 'medicare', 'arrest warrant', 'legal action', 'federal crime', 'suspended ssn',
-                // Tech Support Lockouts & Pop-ups
-                'virus detected', 'remote access', 'frozen screen', 'firewall', 'microsoft support', 'apple support', 'device locked',
-                // Financial & Banking Phishing
-                'urgent', 'immediate action', 'suspended account', 'compromised', 'verify your account', 'unauthorized access', 'login immediately',
-                // Payment Methods & High-Risk Transfers
-                'bitcoin', 'gift card', 'wire transfer', 'zelle', 'venmo', 'cashapp', 'crypto', 'cash deposit',
-                // Grandparent & Emergency Scams
-                'grandchild', 'bail money', 'emergency accident', 'hospital bills', 'do not tell anyone',
-                // Sweepstakes & Lottery
-                'prize winnings', 'lottery winner', 'processing fee', 'taxes on prize', 'claim your prize'
-            ];
+            <div class="carrier-box">
+                📱 <strong>Instant Carrier Action (Forward to 7726):</strong> You can forward any suspicious or spam text message directly to <strong>7726</strong> (which spells <strong>SPAM</strong> on phone keypads). This free service alerts major cellular carriers (AT&T, Verizon, T-Mobile) to investigate and block the sender across the mobile network.
+            </div>
 
-            highRiskKeywords.forEach(keyword => {
-                if (lower.includes(keyword)) {
-                    riskScore += 2;
-                    triggers.push(`Contains high-risk fraud vector trigger: "${keyword}"`);
-                }
-            });
+            <div class="resources-box">
+                <h4>Verified Florida & Federal Resource Directory</h4>
+                <p style="margin-top:0; font-size:13px; color:#555;">Connect directly with official state and federal protection agencies:</p>
+                <ul>
+                    <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://elderaffairs.org" target="_blank">Operation Senior Shield Website</a>.</li>
+                    <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
+                    <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-963-5337</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
+                    <li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>
+                    <li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-962-2873</strong> or report online via the <a href="https://reportabuse.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>
+                    <li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>
+                </ul>
+                <div class="compliance-note">
+                    <strong>Official Compliance Note:</strong> Free resources like the Florida DOEA Elder Helpline and federal reporting portals never charge fees to investigate fraud.
+                </div>
+            </div>
 
-            // Check for urgency punctuation or links
-            if (content.includes('http://') || content.includes('https://') || content.includes('www.')) {
-                riskScore += 1;
-                triggers.push('Includes clickable hyperlink addresses or external web links.');
-            }
+            <button class="btn print-btn no-print" onclick="window.print()">Print Resource Reference Card</button>
+        </div>
+    </div>
+</div>
 
-            if (content.includes('!') && (lower.includes('now') || lower.includes('hurry') || lower.includes('act') || lower.includes('immediate'))) {
-                riskScore += 1;
-                triggers.push('Employs manufactured urgency or fear-inducing psychological manipulation.');
-            }
+<script>
+    function acceptTerms() {
+        document.getElementById('terms-screen').style.display = 'none';
+        document.getElementById('tool-screen').style.display = 'block';
+    }
 
-            // Determine Risk Tier
-            if (riskScore >= 4) {
-                // High Risk
-                resultHeaderBg.style.background = 'var(--risk-high)';
-                resultTitle.textContent = 'HIGH RISK: Potential Deceptive Scam Detected';
-                resultDesc.textContent = 'This message exhibits multiple high-probability indicators associated with top reported senior fraud vectors, such as government impersonation, tech support lockouts, or financial phishing.';
-            } else if (riskScore >= 2) {
-                // Medium Risk
-                resultHeaderBg.style.background = 'var(--risk-med)';
-                resultTitle.textContent = 'MODERATE RISK: Exercise Caution & Verify';
-                resultDesc.textContent = 'The message contains suspicious elements or requests that warrant careful independent verification before taking any action.';
-            } else {
-                // Low Risk
-                resultHeaderBg.style.background = 'var(--risk-low)';
-                resultTitle.textContent = 'LOW RISK: Appears Normal';
-                resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if unexpected personal or financial details are requested.';
-            }
+    function analyzeMessage() {
+        const text = document.getElementById('message-input'].value.trim().toLowerCase();
+        const resultsContainer = document.getElementById('results-container');
+        const resultTitle = document.getElementById('result-title');
+        const resultDesc = document.getElementById('result-description');
+        const stepsWrapper = document.getElementById('steps-wrapper');
+        const stepsList = document.getElementById('steps-list');
 
-            // Populate Trigger List
-            indicatorsList.innerHTML = '';
-            if (triggers.length > 0) {
-                indicatorsWrapper.style.display = 'block';
-                triggers.forEach(trig => {
-                    const li = document.createElement('li');
-                    li.textContent = trig;
-                    indicatorsList.appendChild(li);
-                });
-            } else {
-                const li = document.createElement('li');
-                li.textContent = 'No explicit high-pressure threat keywords or suspicious link structures isolated.';
-                indicatorsList.appendChild(li);
-            }
+        if (!text) {
+            alert('Please paste a message into the text box first.');
+            return;
         }
 
-        // Reset Handler
-        resetBtn.addEventListener('click', () => {
-            messageInput.value = '';
-            fileInput.value = '';
-            imagePreview.src = '';
-            previewContainer.style.display = 'none';
-            extractedImageText = '';
-            resultContainer.style.display = 'none';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        resultsContainer.style.display = 'block';
+        stepsList.innerHTML = '';
+
+        // Top reported senior fraud vectors (Government Imposter, Tech Support, Financial Phishing, Emergency/Grandparent, Crypto/Gift Card, Sweepstakes)
+        const scamKeywords = [
+            'social security', 'ssn', 'irs', 'medicare', 'arrest warrant', 'legal action', 'federal crime', 'suspended',
+            'virus detected', 'frozen screen', 'microsoft support', 'apple support', 'remote access', 'firewall',
+            'bank', 'alert', 'fraud', 'unauthorized access', 'verify your account', 'login immediately',
+            'gift card', 'bitcoin', 'crypto', 'wire transfer', 'zelle', 'venmo', 'cashapp', 'cash deposit',
+            'grandchild', 'bail money', 'emergency accident', 'hospital bills', 'do not tell anyone',
+            'prize winnings', 'lottery winner', 'processing fee', 'taxes on prize', 'toll', 'fee', 'overdue'
+        ];
+
+        let matchCount = 0;
+        scamKeywords.forEach(keyword => {
+            if (text.includes(keyword)) matchCount++;
         });
-    </script>
+
+        const safeKeywords = ['lunch', 'dinner', 'family', 'hello', 'how are you', 'see you', 'call me later', 'store', 'free to come'];
+        let safeMatch = 0;
+        safeKeywords.forEach(keyword => {
+            if (text.includes(keyword)) safeMatch++;
+        });
+
+        if (matchCount >= 2 && safeMatch === 0) {
+            resultsContainer.className = 'danger-result';
+            resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
+            resultDesc.textContent = 'This message displays characteristics consistent with top reported senior fraud vectors (such as government or agency impersonation, tech support lockouts, financial phishing, or emergency schemes). Do not click any links or call numbers provided in the text.';
+            
+            stepsWrapper.style.display = 'block';
+            const steps = [
+                "Do not reply to the message or click any embedded web links.",
+                "Do not call any phone numbers listed in the suspicious message.",
+                "If it claims to be from your bank, utility, or a government agency, look up their official customer service number independently and call them directly.",
+                "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
+            ];
+            steps.forEach(step => {
+                let li = document.createElement('li');
+                li.textContent = step;
+                stepsList.appendChild(li);
+            });
+        } else {
+            resultsContainer.className = 'safe-result';
+            resultTitle.textContent = 'LOW RISK: Appears to be Normal Communication';
+            resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if personal account data or financial details are requested.';
+            stepsWrapper.style.display = 'none';
+        }
+    }
+</script>
+
 </body>
 </html>
