@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Operation Senior Shield - Scam & Message Verification Tool</title>
+    <!-- Tesseract.js for robust in-browser OCR (Screenshot text extraction) -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
         :root {
             --primary: #002b49;
@@ -65,14 +67,34 @@
         #tool-screen {
             display: none;
         }
-        .input-group {
+        .input-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            background: #eef2f5;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #555;
+            transition: all 0.2s;
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .input-panel {
+            display: none;
             margin-bottom: 20px;
         }
-        label {
+        .input-panel.active {
             display: block;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: var(--primary);
         }
         textarea {
             width: 100%;
@@ -83,6 +105,48 @@
             font-size: 16px;
             box-sizing: border-box;
             resize: vertical;
+        }
+        .upload-zone {
+            border: 2px dashed var(--border);
+            border-radius: 6px;
+            padding: 25px;
+            text-align: center;
+            background: #fafbfc;
+            cursor: pointer;
+        }
+        .upload-zone input {
+            display: none;
+        }
+        #preview-container {
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        #image-preview {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+        #loader {
+            display: none;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--secondary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 8px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .btn {
             background-color: var(--secondary);
@@ -208,10 +272,37 @@
     <!-- MAIN VERIFICATION TOOL -->
     <div id="tool-screen">
         <div class="input-group no-print">
-            <label for="message-input">Paste Suspicious Communication (Text Message, Email, or Voicemail Transcript):</label>
-            <textarea id="message-input" placeholder="Paste the exact message here..."></textarea>
+            <label>Select Input Method:</label>
+            <div class="input-tabs">
+                <button type="button" class="tab-btn active" id="tab-text-btn" onclick="switchTab('text')">Paste Text</button>
+                <button type="button" class="tab-btn" id="tab-img-btn" onclick="switchTab('image')">Upload Screenshot</button>
+            </div>
+
+            <!-- Text Input Panel -->
+            <div class="input-panel active" id="panel-text">
+                <textarea id="message-input" placeholder="Paste the suspicious email, text message, or notice here..."></textarea>
+            </div>
+
+            <!-- Image Upload Panel -->
+            <div class="input-panel" id="panel-img">
+                <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+                    <p style="margin: 0 0 8px 0; font-size: 14px; color: #555;">📸 Have a screenshot of a text or email? Upload it here to read automatically:</p>
+                    <span style="color: var(--secondary); font-weight: bold; font-size: 14px;">Select Screenshot / Image</span>
+                    <input type="file" id="file-input" accept="image/*" onchange="processSelectedFile(this)">
+                </div>
+                <div id="preview-container">
+                    <img id="image-preview" alt="Uploaded Screenshot Preview">
+                </div>
+            </div>
         </div>
-        <button class="btn no-print" onclick="analyzeMessage()">Analyze Message</button>
+
+        <button class="btn no-print" id="analyze-btn" onclick="analyzeMessage()">Analyze Message</button>
+
+        <!-- PROCESSING LOADER -->
+        <div id="loader">
+            <div class="spinner"></div>
+            <p id="loader-text" style="margin: 0;">Evaluating message text...</p>
+        </div>
 
         <!-- RESULTS SECTION -->
         <div id="results-container">
@@ -243,19 +334,84 @@
                 </div>
             </div>
 
-            <button class="btn print-btn no-print" onclick="window.print()">Print Resource Reference Card</button>
+            <button class="btn print-btn no-print" onclick="window.print()">Print Reference Card</button>
         </div>
     </div>
 </div>
 
 <script>
+    let activeInputMode = 'text';
+    let extractedImageText = '';
+
     function acceptTerms() {
         document.getElementById('terms-screen').style.display = 'none';
         document.getElementById('tool-screen').style.display = 'block';
     }
 
+    function switchTab(mode) {
+        activeInputMode = mode;
+        const textBtn = document.getElementById('tab-text-btn');
+        const imgBtn = document.getElementById('tab-img-btn');
+        const panelText = document.getElementById('panel-text');
+        const panelImg = document.getElementById('panel-img');
+
+        if (mode === 'text') {
+            textBtn.classList.add('active');
+            imgBtn.classList.remove('active');
+            panelText.classList.add('active');
+            panelImg.classList.remove('active');
+        } else {
+            imgBtn.classList.add('active');
+            textBtn.classList.remove('active');
+            panelImg.classList.add('active');
+            panelText.classList.remove('active');
+        }
+    }
+
+    function processSelectedFile(input) {
+        if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('image-preview').src = e.target.result;
+                document.getElementById('preview-container').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+
+            // Execute Tesseract OCR
+            const loader = document.getElementById('loader');
+            const loaderText = document.getElementById('loader-text');
+            const analyzeBtn = document.getElementById('analyze-btn');
+
+            loader.style.display = 'block';
+            loaderText.textContent = 'Extracting text from screenshot (OCR processing)...';
+            analyzeBtn.style.display = 'none';
+
+            Tesseract.recognize(
+                file,
+                'eng',
+                { logger: m => {} }
+            ).then(({ data: { text } }) => {
+                extractedImageText = text;
+                loader.style.display = 'none';
+                analyzeBtn.style.display = 'block';
+            }).catch(err => {
+                console.error(err);
+                alert('Could not extract text from image. Please try pasting text manually.');
+                loader.style.display = 'none';
+                analyzeBtn.style.display = 'block';
+            });
+        }
+    }
+
     function analyzeMessage() {
-        const text = document.getElementById('message-input').value.trim().toLowerCase();
+        let text = '';
+        if (activeInputMode === 'text') {
+            text = document.getElementById('message-input').value.trim().toLowerCase();
+        } else {
+            text = extractedImageText.trim().toLowerCase();
+        }
+
         const resultsContainer = document.getElementById('results-container');
         const resultTitle = document.getElementById('result-title');
         const resultDesc = document.getElementById('result-description');
@@ -263,20 +419,21 @@
         const stepsList = document.getElementById('steps-list');
 
         if (!text) {
-            alert('Please paste a message into the text box first.');
+            alert(activeInputMode === 'text' ? 'Please paste a message into the text box first.' : 'Please upload a screenshot containing readable text.');
             return;
         }
 
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
 
-        // Comprehensive keyword checklist incorporating real Florida senior threat intelligence (package smishing, fake traffic tickets, VA/benefit updates, charity scams, repair pressure, emergency family calls)
+        // Comprehensive threat indicators covering IC3 / FTC / Florida elder fraud vectors (Crypto/Pig Butchering, AI Voice Cloning, Government/Imposter, Delivery Smishing, Tech Support)
         const scamKeywords = [
-            'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'investment', 
-            'grandpa', 'grandma', 'arrest', 'warrant', 'microsoft', 'apple', 'support', 'toll', 'fee', 
-            'overdue', 'click', 'verify', 'ssn', 'social security', 'debit', 'card', 'package', 
+            'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'bitcoin', 'wallet', 'kiosk', 'investment', 
+            'grandpa', 'grandma', 'arrest', 'warrant', 'bail', 'voice clone', 'emergency', 'microsoft', 'apple', 'support', 'toll', 'fee', 
+            'overdue', 'click', 'verify', 'ssn', 'social security', 'irs', 'medicare', 'debit', 'card', 'package', 
             'delivery', 'address', 'bit.ly', 'tinyurl', 'sunpass', 'traffic violation', 'ticket', 
-            'va benefits', 'military charity', 'donation', 'air conditioner', 'repair', 'warranty', 'zelle', 'venmo', 'cashapp'
+            'va benefits', 'military charity', 'donation', 'air conditioner', 'repair', 'warranty', 
+            'zelle', 'venmo', 'cashapp', 'customs', 'shipment', 'tracking', 'hold', 'redelivery'
         ];
 
         let matchCount = 0;
@@ -290,18 +447,17 @@
             if (text.includes(keyword)) safeMatch++;
         });
 
-        // Trigger high-risk classification if tracking/short links or multiple threat indicators are present
-        const hasSmishingLink = text.includes('bit.ly') || text.includes('tinyurl') || text.includes('http://') || text.includes('https://');
-        const isSuspiciousContext = text.includes('package') || text.includes('delivery') || text.includes('toll') || text.includes('ticket') || text.includes('suspended') || text.includes('arrest') || text.includes('va') || text.includes('charity');
+        const hasLinkOrUrl = text.includes('http://') || text.includes('https://') || text.includes('bit.ly') || text.includes('tinyurl') || text.includes('www.');
+        const hasServiceHook = text.includes('package') || text.includes('delivery') || text.includes('shipment') || text.includes('toll') || text.includes('ticket') || text.includes('account') || text.includes('suspend') || text.includes('update') || text.includes('crypto') || text.includes('arrest') || text.includes('ssn') || text.includes('irs');
 
-        if ((matchCount >= 2 && safeMatch === 0) || (hasSmishingLink && isSuspishingContextCheck(isSuspiciousContext)) || (isSuspiciousContext && matchCount >= 1)) {
+        if ((hasLinkOrUrl && hasServiceHook) || matchCount >= 2 || (hasServiceHook && text.length < 250 && (text.includes('click') || text.includes('update') || text.includes('verify') || text.includes('call') || text.includes('send')))) {
             resultsContainer.className = 'danger-result';
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
-            resultDesc.textContent = 'This message displays characteristics consistent with common digital fraud patterns targeting seniors (such as fake package delivery notices, toll/traffic ticket alerts, government/VA benefit impersonation, or emergency social engineering). Do not click any links or call numbers provided in the text.';
+            resultDesc.textContent = 'This message displays characteristics consistent with top reported senior fraud vectors (such as fake package delivery smishing, crypto investment fraud, government/agency impersonation, or emergency social engineering). Do not click any links or call numbers provided in the text.';
             
             stepsWrapper.style.display = 'block';
             const steps = [
-                "Do not reply toores the message or click any embedded web links.",
+                "Do not reply to the message or click any embedded web links.",
                 "Do not call any phone numbers listed in the suspicious message.",
                 "If it claims to be from USPS, UPS, FedEx, SunPass, your bank, or a government agency, look up their official customer service number independently and call them directly.",
                 "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
@@ -314,13 +470,9 @@
         } else {
             resultsContainer.className = 'safe-result';
             resultTitle.textContent = 'LOW RISK: Appears to be Normal Communication';
-            resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if personal account data or financial details are requested.';
+            resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if unexpected personal or financial details are requested.';
             stepsWrapper.style.display = 'none';
         }
-    }
-
-    function isSuspishingContextCheck(val) {
-        return val;
     }
 </script>
 
