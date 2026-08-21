@@ -231,7 +231,7 @@
                 <h4>Verified Florida & Federal Resource Directory</h4>
                 <p style="margin-top:0; font-size:13px; color:#555;">Connect directly with official state and federal protection agencies:</p>
                 <ul>
-                    <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://elderaffairs.org" target="_blank">Operation Senior Shield Website</a>.</li>
+                    <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>
                     <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
                     <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-963-5337</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
                     <li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>
@@ -255,7 +255,7 @@
     }
 
     function analyzeMessage() {
-        const text = document.getElementById('message-input'].value.trim().toLowerCase();
+        const text = document.getElementById('message-input').value.trim().toLowerCase();
         const resultsContainer = document.getElementById('results-container');
         const resultTitle = document.getElementById('result-title');
         const resultDesc = document.getElementById('result-description');
@@ -270,14 +270,13 @@
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
 
-        // Top reported senior fraud vectors (Government Imposter, Tech Support, Financial Phishing, Emergency/Grandparent, Crypto/Gift Card, Sweepstakes)
+        // Comprehensive keyword checklist incorporating real Florida senior threat intelligence (package smishing, fake traffic tickets, VA/benefit updates, charity scams, repair pressure, emergency family calls)
         const scamKeywords = [
-            'social security', 'ssn', 'irs', 'medicare', 'arrest warrant', 'legal action', 'federal crime', 'suspended',
-            'virus detected', 'frozen screen', 'microsoft support', 'apple support', 'remote access', 'firewall',
-            'bank', 'alert', 'fraud', 'unauthorized access', 'verify your account', 'login immediately',
-            'gift card', 'bitcoin', 'crypto', 'wire transfer', 'zelle', 'venmo', 'cashapp', 'cash deposit',
-            'grandchild', 'bail money', 'emergency accident', 'hospital bills', 'do not tell anyone',
-            'prize winnings', 'lottery winner', 'processing fee', 'taxes on prize', 'toll', 'fee', 'overdue'
+            'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'investment', 
+            'grandpa', 'grandma', 'arrest', 'warrant', 'microsoft', 'apple', 'support', 'toll', 'fee', 
+            'overdue', 'click', 'verify', 'ssn', 'social security', 'debit', 'card', 'package', 
+            'delivery', 'address', 'bit.ly', 'tinyurl', 'sunpass', 'traffic violation', 'ticket', 
+            'va benefits', 'military charity', 'donation', 'air conditioner', 'repair', 'warranty', 'zelle', 'venmo', 'cashapp'
         ];
 
         let matchCount = 0;
@@ -291,16 +290,20 @@
             if (text.includes(keyword)) safeMatch++;
         });
 
-        if (matchCount >= 2 && safeMatch === 0) {
+        // Trigger high-risk classification if tracking/short links or multiple threat indicators are present
+        const hasSmishingLink = text.includes('bit.ly') || text.includes('tinyurl') || text.includes('http://') || text.includes('https://');
+        const isSuspiciousContext = text.includes('package') || text.includes('delivery') || text.includes('toll') || text.includes('ticket') || text.includes('suspended') || text.includes('arrest') || text.includes('va') || text.includes('charity');
+
+        if ((matchCount >= 2 && safeMatch === 0) || (hasSmishingLink && isSuspishingContextCheck(isSuspiciousContext)) || (isSuspiciousContext && matchCount >= 1)) {
             resultsContainer.className = 'danger-result';
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
-            resultDesc.textContent = 'This message displays characteristics consistent with top reported senior fraud vectors (such as government or agency impersonation, tech support lockouts, financial phishing, or emergency schemes). Do not click any links or call numbers provided in the text.';
+            resultDesc.textContent = 'This message displays characteristics consistent with common digital fraud patterns targeting seniors (such as fake package delivery notices, toll/traffic ticket alerts, government/VA benefit impersonation, or emergency social engineering). Do not click any links or call numbers provided in the text.';
             
             stepsWrapper.style.display = 'block';
             const steps = [
-                "Do not reply to the message or click any embedded web links.",
+                "Do not reply toores the message or click any embedded web links.",
                 "Do not call any phone numbers listed in the suspicious message.",
-                "If it claims to be from your bank, utility, or a government agency, look up their official customer service number independently and call them directly.",
+                "If it claims to be from USPS, UPS, FedEx, SunPass, your bank, or a government agency, look up their official customer service number independently and call them directly.",
                 "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
             ];
             steps.forEach(step => {
@@ -314,6 +317,10 @@
             resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if personal account data or financial details are requested.';
             stepsWrapper.style.display = 'none';
         }
+    }
+
+    function isSuspishingContextCheck(val) {
+        return val;
     }
 </script>
 
