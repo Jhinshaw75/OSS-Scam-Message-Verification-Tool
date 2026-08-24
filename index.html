@@ -531,13 +531,14 @@
             threatType = 'general';
         }
 
-        // Full Master Resource List items (including FraudFreeFlorida)
+        // Full Master Resource List items (including FDLE Cybercrime Office)
         const resOss = '<li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>';
         const resDoa = '<li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>';
         const resHelpline = '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>';
         const resAg = '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>. (Investigates statewide deceptive trade practices and consumer fraud).</li>';
         const resAbuse = '<li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-96-ABUSE (1-800-962-2873)</strong> or report online via the <a href="https://reportabuse.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>';
-        const resFff = '<li><strong>Fraud Free Florida (Florida Dept. of Financial Services):</strong> Report insurance, investment, and financial fraud or check out tips at <a href="https://www.myfloridacfo.com/fraudfreeflorida/" target="_blank">FraudFreeFlorida.com</a> (Offers the Florida Fraud Fighter Reward Program up to $25,000 for tips leading to arrest and conviction).</li>';
+        const resFff = '<li><strong>Fraud Free Florida (Florida Dept. of Financial Services):</strong> Report insurance, investment, and financial fraud or check out tips at <a href="https://www.myfloridacfo.com/fraudfreeflorida/" target="_blank">FraudFreeFlorida.com</a>.</li>';
+        const resFdle = '<li><strong>FDLE Cybercrime Office:</strong> Report online computer crimes, cyber-enabled fraud, and identity theft at the <a href="https://www.fdle.state.fl.us/fco/report-a-cybercrime-2026" target="_blank">FDLE Cybercrime Reporting Portal</a>.</li>';
         const resFtc = '<li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>. (National database tracking identity theft and cross-border fraud syndicates).</li>';
 
         if (threatType !== null) {
@@ -559,7 +560,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Exploitation & Elder Protection';
                 resourcesIntro.textContent = 'Prioritized agency contacts for physical exploitation, followed by complete state and federal resources:';
-                orderedResources = [resAbuse, resHelpline, resAg, resFff, resOss, resDoa, resFtc];
+                orderedResources = [resAbuse, resHelpline, resAg, resFff, resFdle, resOss, resDoa, resFtc];
             } else if (threatType === 'legal') {
                 resultDesc.textContent = 'This message exhibits characteristics of government, tax, or legal imposter intimidation (such as fake warrants, court orders, or tax agency threats).';
                 specificSteps = [
@@ -571,7 +572,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Government & Tax Imposter Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for government imposter fraud, followed by complete state and federal resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'delivery') {
                 resultDesc.textContent = 'This message displays signs of delivery smishing or toll/parking penalty fraud designed to steal personal data or credit card details through malicious links.';
                 specificSteps = [
@@ -583,7 +584,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Smishing & Digital Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for digital smishing fraud, followed by complete state and federal resources:';
-                orderedResources = [resFtc, resHelpline, resAg, resFff, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resHelpline, resAg, resFff, resFdle, resOss, resDoa, resAbuse];
             } else if (threatType === 'repair') {
                 resultDesc.textContent = 'This message displays indicators consistent with unlicensed contractor or home repair fraud targeting property owners.';
                 specificSteps = [
@@ -595,7 +596,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Home Repair & Contractor Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for home repair fraud, followed by complete state and federal resources:';
-                orderedResources = [resAg, resHelpline, resFff, resFtc, resOss, resDoa, resAbuse];
+                orderedResources = [resAg, resHelpline, resFff, resFdle, resFtc, resOss, resDoa, resAbuse];
             } else if (threatType === 'recovery') {
                 resultDesc.textContent = 'This message displays traits of an asset recovery or secondary revictimization scam targeting previous fraud victims with false promises of fund retrieval.';
                 specificSteps = [
@@ -606,7 +607,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Asset Recovery Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for asset recovery scams, followed by complete state and federal resources:';
-                orderedResources = [resAg, resFff, resFtc, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resAg, resFff, resFdle, resFtc, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'job') {
                 resultDesc.textContent = 'This message matches fraudulent academic internship, fellowship, or employment recruitment phishing schemes using public webmail addresses to harvest personal data.';
                 specificSteps = [
@@ -618,7 +619,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Employment & Phishing Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for job recruitment and identity theft fraud, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'account') {
                 resultDesc.textContent = 'This message displays characteristics of credential harvesting, fake IT account quotas, or payroll/benefits phishing designed to steal login credentials.';
                 specificSteps = [
@@ -629,7 +630,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Credential Harvesting & IT Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for account compromise and credential theft, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
@@ -640,7 +641,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Advanced Phishing & Credential Theft';
                 resourcesIntro.textContent = 'Prioritized agency contacts for advanced technical phishing, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'institutional') {
                 resultDesc.textContent = 'This message matches institutional security archive examples involving direct deposit/payroll redirection schemes, campus ID scans, or malicious calendar/cloud-share spam.';
                 specificSteps = [
@@ -651,7 +652,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Institutional & Payroll Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for institutional security and payroll compromise, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'airesearch') {
                 resultDesc.textContent = 'This message matches AI-generated LLM research inquiries or productivity app spam (such as fake publication data harvesting or malicious calendar/cloud invites).';
                 specificSteps = [
@@ -662,7 +663,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
                 resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'signinsalary') {
                 resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or HR employee salary/wage adjustments designed to trigger urgent credential theft.';
                 specificSteps = [
@@ -673,7 +674,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Sign-In Security & HR Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for sign-in security and HR phishing, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'compromise') {
                 resultDesc.textContent = 'This message matches fake security warnings claiming your account has been hacked, compromised, or subjected to a breach to force immediate credential entry.';
                 specificSteps = [
@@ -684,7 +685,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Account Compromise & Security Alerts';
                 resourcesIntro.textContent = 'Prioritized agency contacts for account breach warnings, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'execpayment') {
                 resultDesc.textContent = 'This message matches executive peer payment and reimbursement redirection scams requesting urgent digital wallet transfers, expense handling, or gift card purchases.';
                 specificSteps = [
@@ -695,7 +696,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'brandimpersonation') {
                 resultDesc.textContent = 'This message matches cloned brand and service impersonation scams (such as fake Netflix, subscription billing, or travel booking alerts) designed to steal payment details.';
                 specificSteps = [
@@ -706,7 +707,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloned Brand & Service Impersonation';
                 resourcesIntro.textContent = 'Prioritized agency contacts for subscription and brand impersonation fraud, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'voicemailcallback') {
                 resultDesc.textContent = 'This message matches voicemail-themed attachment lures (such as malicious SVG or HTML files) or callback phishing tactics featuring unverified support phone numbers.';
                 specificSteps = [
@@ -717,7 +718,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Voicemail & Callback Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for voicemail and callback telephone scams, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'headermismatch') {
                 resultDesc.textContent = 'This message exhibits email header authentication failures (SPF/DKIM/DMARC mismatches) or discrepancies between the displayed From: sender and the Reply-To: address.';
                 specificSteps = [
@@ -728,7 +729,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Email Header & Reply-To Spoofing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for email header spoofing and BEC, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'cloudstorage') {
                 resultDesc.textContent = 'This message matches cloud storage and shared document collaboration phishing lures (such as fake SharePoint, OneDrive, Google Drive, or file deletion notices) designed to harvest credentials or deliver malware.';
                 specificSteps = [
@@ -739,7 +740,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloud Storage & Shared Document Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for cloud storage and document sharing fraud, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
                 specificSteps = [
@@ -751,7 +752,7 @@
                 ];
                 resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
                 resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
-                orderedResources = [resOss, resDoa, resHelpline, resAg, resAbuse, resFff, resFtc];
+                orderedResources = [resOss, resDoa, resHelpline, resAg, resAbuse, resFff, resFdle, resFtc];
             }
 
             stepsWrapper.style.display = 'block';
@@ -773,7 +774,7 @@
 
             resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
             resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
-            resourcesList.innerHTML = resOss + resDoa + resHelpline + resAg + resAbuse + resFff + resFtc;
+            resourcesList.innerHTML = resOss + resDoa + resHelpline + resAg + resAbuse + resFff + resFdle + resFtc;
         }
     }
 </script>
