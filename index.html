@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with UVA account compromise notification vector)
+        // Contextual Categorized Threat Detection (Expanded with UH executive reimbursement / peer payment vector)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -472,9 +472,10 @@
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
         const isForeignIpOrSalaryLure = text.includes('unusual sign-in activity') || text.includes('sign-in from foreign ip') || text.includes('sign-in attempt from') || text.includes('employee salary adjustment') || text.includes('wage increase notification') || text.includes('compensation review');
-        
-        // Specific New Enhancement from UVA Archive: Fake Account Compromise / Hacked Account Notifications
         const isAccountCompromiseAlert = text.includes('account has been compromised') || text.includes('account has been hacked') || text.includes('unauthorized access detected') || text.includes('security breach detected') || text.includes('account compromise alert');
+        
+        // Specific New Enhancement from UH Archive: Executive Peer Payment & Reimbursement Scams
+        const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -514,6 +515,8 @@
             threatType = 'signinsalary';
         } else if (isAccountCompromiseAlert) {
             threatType = 'compromise';
+        } else if (isExecutiveReimbursementScam) {
+            threatType = 'execpayment';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -670,6 +673,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Account Compromise & Security Alerts';
                 resourcesIntro.textContent = 'Prioritized agency contacts for account breach warnings, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'execpayment') {
+                resultDesc.textContent = 'This message matches executive peer payment and reimbursement redirection scams requesting urgent digital wallet transfers, expense handling, or gift card purchases.';
+                specificSteps = [
+                    "Do not send money, wire funds, or purchase gift cards based on urgent requests from supervisors or executives via email.",
+                    "Verify any unusual financial or reimbursement requests by calling or messaging the colleague directly through official verified internal contact numbers.",
+                    "If funds were already transferred via Zelle, PayPal, or wire, contact your bank immediately to report potential fraud.",
+                    "Report executive business email compromise (BEC) and peer payment fraud to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
+                resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
