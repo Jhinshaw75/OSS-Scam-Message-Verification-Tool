@@ -478,7 +478,7 @@
         const isHsmvScam = text.includes('highway safety and motor vehicles') || text.includes('vehicle registration renewal') || text.includes('emissions processing fee') || text.includes('driving privileges') || text.includes('administrative suspension penalties');
         const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to') || text.includes('digital gift vouchers') || text.includes('digital wallet') || text.includes('milestone tokens') || text.includes('corporate ledger');
         const isDisasterReliefScam = text.includes('hurricane recovery') || text.includes('emergency relief directorate') || text.includes('disaster assistance stipend') || text.includes('storm impacts') || text.includes('community relief grants');
-        const isRawUrlPhishing = (text.includes('http://') || text.includes('https://')) && (text.includes('auth') || text.includes('login') || text.includes('token') || text.includes('refresh') || text.includes('secure') || text.includes('portal') || text.includes('update') || text.includes('verify'));
+        const isRawUrlPhishing = (text.includes('http://') || text.includes('https://')) && (text.includes('auth') || text.includes('login') || text.includes('token') || text.includes('refresh') || text.includes('secure') || text.includes('portal') || text.includes('update') || text.includes('verify') || text.includes('join'));
         const isAudioCallbackScam = text.includes('audio notice') || text.includes('voice authorization') || text.includes('security hotline') || text.includes('dial our') || (text.includes('bank transfer') && (text.includes('dial') || text.includes('call'))) || (text.includes('hotline') && (text.includes('security') || text.includes('support')));
         
         // Token Array Matching / Fuzzy Evasion Fallback: Catches hyphenated or tokenized multi-keyword phrases (e.g., suspension + notice + security + update)
@@ -492,6 +492,9 @@
 
         // Invoice & Remittance Redirection Scam Filter (Vendor Compromise / VEC)
         const isInvoiceRedirectionScam = text.includes('remittance update') || text.includes('infrastructure migration') || text.includes('pending invoices') || text.includes('escrow routing account') || text.includes('routing account') || text.includes('update your payment ledger') || (text.includes('remittance') && text.includes('update')) || (text.includes('invoice') && (text.includes('redirect') || text.includes('routing')));
+
+        // Virtual Conference & Executive Deepfake Sync Imposter Filter
+        const isVirtualConferenceScam = text.includes('virtual leadership sync') || text.includes('encrypted video conference') || text.includes('state grant appropriations') || text.includes('legislative committee session') || text.includes('video conference link') || (text.includes('video conference') && text.includes('link')) || (text.includes('leadership sync') || text.includes('grant appropriations'));
 
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
@@ -555,6 +558,8 @@
             threatType = 'corporatejargon';
         } else if (isInvoiceRedirectionScam) {
             threatType = 'invoiceredirection';
+        } else if (isVirtualConferenceScam) {
+            threatType = 'virtualconference';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -809,6 +814,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Invoice Redirection & Vendor Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for vendor email compromise and invoice fraud, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'virtualconference') {
+                resultDesc.textContent = 'This message matches fake virtual conference, deepfake video meeting, and executive sync lures designed to harvest credentials or manipulate staff via unverified meeting links.';
+                specificSteps = [
+                    "Do not click links or join unverified video conference rooms, virtual leadership syncs, or external meeting portals claiming to be from supervisors or executives.",
+                    "Verify requests for virtual meetings or post-meeting syncs by messaging your colleague or executive directly through official internal communication channels.",
+                    "If credentials or multi-factor authentication tokens were entered on an unverified meeting login page, change your password immediately and notify IT security.",
+                    "Report virtual conference phishing and executive impersonation attempts to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Virtual Conference & Executive Imposter Phishing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for virtual meeting fraud and executive impersonation, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
