@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -349,9 +349,9 @@
             </div>
 
             <div class="resources-box">
-                <h4 id="resources-heading">Verified Florida & Federal Resource Directory</h4>
-                <p id="resources-intro" style="margin-top:0; font-size:13px; color:#555;">Connect directly with official state and federal protection agencies:</p>
-                <ul id="resources-list">
+                <h4>Verified Florida & Federal Resource Directory</h4>
+                <p style="margin-top:0; font-size:13px; color:#555;">Connect directly with official state and federal protection agencies:</p>
+                <ul>
                     <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>
                     <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
                     <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
@@ -452,9 +452,6 @@
         const resultDesc = document.getElementById('result-description');
         const stepsWrapper = document.getElementById('steps-wrapper');
         const stepsList = document.getElementById('steps-list');
-        const resourcesHeading = document.getElementById('resources-heading');
-        const resourcesIntro = document.getElementById('resources-intro');
-        const resourcesList = document.getElementById('resources-list');
 
         if (!text) {
             alert(activeInputMode === 'text' ? 'Please paste a message into the text box first.' : 'Please upload a screenshot containing readable text.');
@@ -463,7 +460,6 @@
 
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
-        resourcesList.innerHTML = '';
 
         // Dynamic Categorized Threat Detection
         let threatType = null;
@@ -509,7 +505,6 @@
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
             
             let specificSteps = [];
-            let tailoredResources = [];
 
             if (threatType === 'courier') {
                 resultDesc.textContent = 'This message matches high-risk physical courier and precious metal liquidation schemes where scammers manipulate victims into handing over cash or gold bars.';
@@ -519,13 +514,6 @@
                     "Call the Florida DOEA Elder Helpline at 1-800-96-ELDER (1-800-963-5337) for direct guidance and assistance.",
                     "Forward message details to 7726 (SPAM) to report and block the carrier threat."
                 ];
-                resourcesHeading.textContent = 'Priority Response Directory: Exploitation & Elder Protection';
-                resourcesIntro.textContent = 'If money or valuables were already handed over, contact these agencies immediately:';
-                tailoredResources = [
-                    '<li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-96-ABUSE (1-800-962-2873)</strong> or report online via the <a href="https://reportabuse.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>',
-                    '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>',
-                    '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>'
-                ];
             } else if (threatType === 'legal') {
                 resultDesc.textContent = 'This message exhibits characteristics of government, tax, or legal imposter intimidation (such as fake warrants, court orders, or tax agency threats).';
                 specificSteps = [
@@ -533,13 +521,6 @@
                     "If you already sent money or shared personal information, file a victim complaint directly at ReportFraud.ftc.gov.",
                     "If you suffered financial loss, contact the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM (1-866-966-7226).",
                     "Forward text message spam directly to 7726 (SPAM)."
-                ];
-                resourcesHeading.textContent = 'Priority Response Directory: Government & Tax Imposter Fraud';
-                resourcesIntro.textContent = 'If you already fell victim and lost funds, report directly through these portals:';
-                tailoredResources = [
-                    '<li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>',
-                    '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>',
-                    '<li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>'
                 ];
             } else if (threatType === 'delivery') {
                 resultDesc.textContent = 'This message displays signs of delivery smishing or toll/parking penalty fraud designed to steal personal data or credit card details through malicious links.';
@@ -549,13 +530,6 @@
                     "If financial loss occurred, file a report at ReportFraud.ftc.gov.",
                     "Forward text message spam directly to 7726 (SPAM)."
                 ];
-                resourcesHeading.textContent = 'Priority Response Directory: Smishing & Digital Fraud';
-                resourcesIntro.textContent = 'If information or money was compromised, use these reporting tools:';
-                tailoredResources = [
-                    '<li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>',
-                    '<li><strong>Operation Senior Shield Portal:</strong> Access security resources at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>',
-                    '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>'
-                ];
             } else if (threatType === 'repair') {
                 resultDesc.textContent = 'This message displays indicators consistent with unlicensed contractor or home repair fraud targeting property owners.';
                 specificSteps = [
@@ -563,13 +537,6 @@
                     "If you hired an unlicensed contractor or experienced property fraud, contact the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM (1-866-966-7226).",
                     "Call the Florida DOEA Elder Helpline at 1-800-96-ELDER (1-800-963-5337) for consumer guidance.",
                     "Forward text message spam directly to 7726 (SPAM)."
-                ];
-                resourcesHeading.textContent = 'Priority Response Directory: Home Repair & Contractor Fraud';
-                resourcesIntro.textContent = 'If you suffered a financial loss from home repair fraud, connect with state consumer protection:';
-                tailoredResources = [
-                    '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>',
-                    '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>',
-                    '<li><strong>Federal Trade Commission Reporting:</strong> Submit online complaints at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>'
                 ];
             } else if (threatType === 'recovery') {
                 resultDesc.textContent = 'This message displays traits of an asset recovery or secondary revictimization scam targeting previous fraud victims with false promises of fund retrieval.';
@@ -579,13 +546,6 @@
                     "File a complaint online at ReportFraud.ftc.gov.",
                     "Forward message details to 7726 (SPAM)."
                 ];
-                resourcesHeading.textContent = 'Priority Response Directory: Asset Recovery Scams';
-                resourcesIntro.textContent = 'If you paid money to a fake recovery agent, report directly to enforcement:';
-                tailoredResources = [
-                    '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>',
-                    '<li><strong>Federal Trade Commission Reporting:</strong> Submit online complaints at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>',
-                    '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>'
-                ];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
                 specificSteps = [
@@ -593,15 +553,6 @@
                     "If you suffered a financial loss, contact the Florida DOEA Elder Helpline at 1-800-96-ELDER (1-800-963-5337) for guidance.",
                     "File a report at ReportFraud.ftc.gov if money was sent.",
                     "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
-                ];
-                resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
-                resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
-                tailoredResources = [
-                    '<li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>',
-                    '<li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>',
-                    '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>',
-                    '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>',
-                    '<li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>'
                 ];
             }
 
@@ -611,26 +562,11 @@
                 li.textContent = step;
                 stepsList.appendChild(li);
             });
-
-            tailoredResources.forEach(resHtml => {
-                resourcesList.innerHTML += resHtml;
-            });
-
         } else {
             resultsContainer.className = 'safe-result';
             resultTitle.textContent = 'LOW RISK: Appears to be Normal Communication';
             resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if unexpected personal or financial details are requested.';
             stepsWrapper.style.display = 'none';
-
-            resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
-            resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
-            resourcesList.innerHTML = `
-                <li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>
-                <li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>
-                <li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>
-                <li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>.</li>
-                <li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>.</li>
-            `;
         }
     }
 </script>
