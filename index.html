@@ -473,12 +473,12 @@
         const isHoaCommunityScam = text.includes('hoa notice') || text.includes('architectural compliance') || text.includes('gate card deactivation') || text.includes('resident portal') || text.includes('neighborhood assessment') || text.includes('community association');
         const isPdfAttachmentScam = text.includes('attached file:') || text.includes('statement_') || text.includes('.pdf') || text.includes('adobe acrobat document') || text.includes('secure adobe') || text.includes('updated digital statement');
         const isHsmvScam = text.includes('highway safety and motor vehicles') || text.includes('vehicle registration renewal') || text.includes('emissions processing fee') || text.includes('driving privileges') || text.includes('administrative suspension penalties');
+        const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to') || text.includes('digital gift vouchers') || text.includes('digital wallet') || text.includes('milestone tokens') || text.includes('corporate ledger');
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
         const isForeignIpOrSalaryLure = text.includes('unusual sign-in activity') || text.includes('sign-in from foreign ip') || text.includes('sign-in attempt from') || text.includes('employee salary adjustment') || text.includes('wage increase notification') || text.includes('compensation review');
         const isAccountCompromiseAlert = text.includes('account has been compromised') || text.includes('account has been hacked') || text.includes('unauthorized access detected') || text.includes('security breach detected') || text.includes('account compromise alert');
-        const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to');
         const isBrandImpersonation = text.includes('membership suspended') || text.includes('subscription billing failed') || text.includes('update your payment method') || text.includes('booking reservation issue') || text.includes('netflix billing') || text.includes('stream account suspended') || text.includes('payment declined on your account');
         const isVoicemailOrCallbackPhishing = text.includes('new voicemail') || text.includes('voicemail received') || text.includes('listen to message') || text.includes('audio attachment') || text.includes('.svg') || text.includes('call us at') || text.includes('call support at') || text.includes('customer service number') || text.includes('toll free support');
         const isHeaderMismatch = text.includes('reply-to:') || text.includes('spf fail') || text.includes('dkim fail') || text.includes('dmarc fail') || text.includes('header mismatch') || (text.includes('from:') && text.includes('reply-to:')) || text.includes('authentication-results');
@@ -522,6 +522,8 @@
             threatType = 'pdfattachment';
         } else if (isHsmvScam) {
             threatType = 'hsmv';
+        } else if (isExecutiveReimbursementScam) {
+            threatType = 'execpayment';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -532,8 +534,6 @@
             threatType = 'signinsalary';
         } else if (isAccountCompromiseAlert) {
             threatType = 'compromise';
-        } else if (isExecutiveReimbursementScam) {
-            threatType = 'execpayment';
         } else if (isBrandImpersonation) {
             threatType = 'brandimpersonation';
         } else if (isVoicemailOrCallbackPhishing) {
@@ -702,6 +702,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: FLHSMV & State Agency Imposter Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for state agency and DMV imposter fraud, followed by complete resources:';
                 orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
+            } else if (threatType === 'execpayment') {
+                resultDesc.textContent = 'This message matches executive peer payment, gift voucher, and reimbursement redirection scams requesting urgent digital wallet transfers, expense handling, or voucher purchases.';
+                specificSteps = [
+                    "Do not send money, wire funds, purchase gift cards, or buy digital vouchers based on urgent requests from supervisors or executives via email.",
+                    "Verify any unusual financial or reimbursement requests by calling or messaging the colleague directly through official verified internal contact numbers.",
+                    "If funds were already transferred via Zelle, PayPal, wire, or digital voucher codes, contact your bank immediately to report potential fraud.",
+                    "Report fake boss requests, peer payment scams, and imposter money demands to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
+                resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
@@ -756,17 +767,6 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Account Compromise & Security Alerts';
                 resourcesIntro.textContent = 'Prioritized agency contacts for account breach warnings, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'execpayment') {
-                resultDesc.textContent = 'This message matches executive peer payment and reimbursement redirection scams requesting urgent digital wallet transfers, expense handling, or gift card purchases.';
-                specificSteps = [
-                    "Do not send money, wire funds, or purchase gift cards based on urgent requests from supervisors or executives via email.",
-                    "Verify any unusual financial or reimbursement requests by calling or messaging the colleague directly through official verified internal contact numbers.",
-                    "If funds were already transferred via Zelle, PayPal, or wire, contact your bank immediately to report potential fraud.",
-                    "Report fake boss requests, peer payment scams, and imposter money demands to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'brandimpersonation') {
                 resultDesc.textContent = 'This message matches cloned brand and service impersonation scams (such as fake Netflix, subscription billing, or travel booking alerts) designed to steal payment details.';
