@@ -338,6 +338,19 @@
                 <ol class="action-steps" id="steps-list"></ol>
             </div>
 
+            <!-- DROP-DOWN GUIDANCE FOR USERS WHO CLICKED LINKS / DOWNLOADED FILES -->
+            <div id="compromise-dropdown-wrapper" class="no-print" style="margin-top: 15px; display:none;">
+                <details style="background: #fff3cd; border: 1px solid #ffeeba; padding: 12px 15px; border-radius: 6px; cursor: pointer; color: #856404;">
+                    <summary style="font-weight: bold; font-size: 14px;">⚠️ Clicked a Link or Downloaded a File? Click Here for Immediate Steps</summary>
+                    <div style="margin-top: 10px; font-size: 13px; line-height: 1.5;">
+                        <p style="margin-bottom: 8px;"><strong>1. If you entered a password or PIN:</strong> Immediately change your password on that account using a trusted official app or website. If you used that same password elsewhere, change those passwords too.</p>
+                        <p style="margin-bottom: 8px;"><strong>2. If you downloaded a file or attachment:</strong> Disconnect your device from the internet (turn off Wi-Fi or unplug) immediately to prevent malware from communicating outward.</p>
+                        <p style="margin-bottom: 8px;"><strong>3. If you shared bank or credit card details:</strong> Call your bank or credit card company immediately using the phone number printed on the back of your card to freeze accounts or dispute charges.</p>
+                        <p style="margin: 0;"><strong>4. Need assistance?</strong> Call the Florida DOEA Elder Helpline at <strong>1-800-96-ELDER (1-800-963-5337âmara)</strong> for personal guidance.</p>
+                    </div>
+                </details>
+            </div>
+
             <div class="carrier-box">
                 📱 <strong>Instant Carrier Action (Forward to 7726):</strong> You can forward any suspicious or spam text message directly to <strong>7726</strong> (which spells <strong>SPAM</strong> on phone keypads). This free service alerts major cellular carriers (AT&T, Verizon, T-Mobile) to investigate and block the sender across the mobile network.
             </div>
@@ -445,6 +458,7 @@
         const resultDesc = document.getElementById('result-description');
         const stepsWrapper = document.getElementById('steps-wrapper');
         const stepsList = document.getElementById('steps-list');
+        const compromiseDropdown = document.getElementById('compromise-dropdown-wrapper');
         const resourcesHeading = document.getElementById('resources-heading');
         const resourcesIntro = document.getElementById('resources-intro');
         const resourcesList = document.getElementById('resources-list');
@@ -481,19 +495,14 @@
         const isRawUrlPhishing = (text.includes('http://') || text.includes('https://')) && (text.includes('auth') || text.includes('login') || text.includes('token') || text.includes('refresh') || text.includes('secure') || text.includes('portal') || text.includes('update') || text.includes('verify') || text.includes('join'));
         const isAudioCallbackScam = text.includes('audio notice') || text.includes('voice authorization') || text.includes('security hotline') || text.includes('dial our') || (text.includes('bank transfer') && (text.includes('dial') || text.includes('call'))) || (text.includes('hotline') && (text.includes('security') || text.includes('support')));
         
-        // Token Array Matching / Fuzzy Evasion Fallback: Catches hyphenated or tokenized multi-keyword phrases (e.g., suspension + notice + security + update)
+        // Token Array Matching / Fuzzy Evasion Fallback
         const hasTokenSuspension = text.includes('suspension') || text.includes('suspend') || text.includes('deactivation');
         const hasTokenSecurity = text.includes('security') || text.includes('profile') || text.includes('account');
         const hasTokenAction = text.includes('immediate') || text.includes('update') || text.includes('verify') || text.includes('action');
         const isTokenEvasionScam = (hasTokenSuspension && hasTokenSecurity) || (hasTokenSecurity && hasTokenAction && text.includes('notice'));
 
-        // Corporate Jargon & Ledger Imposter Filter (BEC / Executive Jargon Lures)
         const isCorporateJargonScam = text.includes('asset distribution') || text.includes('ledger adjustment') || text.includes('cloud terminal') || text.includes('financial tokens') || text.includes('balance before close of business') || (text.includes('ledger') && (text.includes('adjust') || text.includes('balance'))) || (text.includes('asset') && text.includes('distribution'));
-
-        // Invoice & Remittance Redirection Scam Filter (Vendor Compromise / VEC)
         const isInvoiceRedirectionScam = text.includes('remittance update') || text.includes('infrastructure migration') || text.includes('pending invoices') || text.includes('escrow routing account') || text.includes('routing account') || text.includes('update your payment ledger') || (text.includes('remittance') && text.includes('update')) || (text.includes('invoice') && (text.includes('redirect') || text.includes('routing')));
-
-        // Virtual Conference & Executive Deepfake Sync Imposter Filter
         const isVirtualConferenceScam = text.includes('virtual leadership sync') || text.includes('encrypted video conference') || text.includes('state grant appropriations') || text.includes('legislative committee session') || text.includes('video conference link') || (text.includes('video conference') && text.includes('link')) || (text.includes('leadership sync') || text.includes('grant appropriations'));
 
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
@@ -596,6 +605,7 @@
         if (threatType !== null) {
             resultsContainer.className = 'danger-result';
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
+            compromiseDropdown.style.display = 'block';
             
             let specificSteps = [];
             let orderedResources = [];
@@ -667,7 +677,7 @@
                     "If you already submitted personal details, student IDs, or deposited checks, monitor your credit and secure your accounts immediately.",
                     "File an identity theft and phishing complaint online with the Federal Trade Commission at ReportFraud.ftc.gov.",
                     "Report recruitment fraud to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM.",
-                    "Contact official institutional career services directly through verified university domains to verify job postings."
+                    "Contact official organizational career services directly through verified official domains to verify job postings."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Employment & Phishing Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for job recruitment and identity theft fraud, followed by complete resources:';
@@ -676,19 +686,19 @@
                 resultDesc.textContent = 'This message displays characteristics of credential harvesting, fake IT account quotas, or payroll/benefits phishing designed to steal login credentials.';
                 specificSteps = [
                     "Do not click any embedded links or enter your credentials on external login pages.",
-                    "Always verify that login portals use official institutional domains (e.g., exactly matching verified university or agency weblogin URLs).",
-                    "If you already entered your password, change it immediately across all accounts and notify your organization's IT security team.",
+                    "Always verify that login portals use official trusted domains.",
+                    "If you already entered your password, change it immediately on the official service website and secure your account.",
                     "Report online credential theft to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Credential Harvesting & IT Phishing';
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Credential Harvesting & Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for account compromise and credential theft, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'compliance') {
                 resultDesc.textContent = 'This message matches administrative or compliance audit phishing lures designed to mimic organizational reviews and harvest personnel credentials through unverified external links.';
                 specificSteps = [
                     "Do not click embedded verification links or log into external portals referenced in compliance or audit notices.",
-                    "Verify requests for personnel reviews, audits, or document confirmations by contacting your department HR or IT security office independently.",
-                    "If you entered your password or credentials on an external site, change your password immediately across all accounts.",
+                    "Verify requests for personnel reviews, audits, or document confirmations by contacting your organization independently through official published phone numbers.",
+                    "If you entered your password or credentials on an external site, change your password immediately on your official account.",
                     "Report credential harvesting and organizational phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Compliance & Audit Phishing';
@@ -721,7 +731,7 @@
                 specificSteps = [
                     "Do not open unsolicited PDF attachments or document previews claiming to be account statements or financial summaries from unknown senders.",
                     "Verify statement and billing details independently by logging directly into your official trusted vendor or bank app/website.",
-                    "If you downloaded an attachment or entered your login credentials after opening a statement notification, change your password immediately and notify your IT security team.",
+                    "If you downloaded an attachment or entered your login credentials after opening a statement notification, change your password immediately on your official account.",
                     "Report document attachment phishing and malware distribution campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: PDF Attachment & Document Lures';
@@ -742,7 +752,7 @@
                 resultDesc.textContent = 'This message matches executive peer payment, gift voucher, and reimbursement redirection scams requesting urgent digital wallet transfers, expense handling, or voucher purchases.';
                 specificSteps = [
                     "Do not send money, wire funds, purchase gift cards, or buy digital vouchers based on urgent requests from supervisors or executives via email.",
-                    "Verify any unusual financial or reimbursement requests by calling or messaging the colleague directly through official verified internal contact numbers.",
+                    "Verify any unusual financial or reimbursement requests by calling or messaging the colleague directly through official verified contact numbers.",
                     "If funds were already transferred via Zelle, PayPal, wire, or digital voucher codes, contact your bank immediately to report potential fraud.",
                     "Report fake boss requests, peer payment scams, and imposter money demands to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
@@ -765,7 +775,7 @@
                 specificSteps = [
                     "Do not click raw web links or login URLs provided in unsolicited messages.",
                     "Always navigate directly to official platforms by typing known secure web addresses into your browser.",
-                    "If credentials or tokens were entered on an unverified link, change your account passwords immediately.",
+                    "If credentials or tokens were entered on an unverified link, change your account passwords immediately on the official website.",
                     "Report credential harvesting and suspicious phishing links to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: URL Phishing & Credential Harvesting';
@@ -787,7 +797,7 @@
                 specificSteps = [
                     "Do not respond to or act upon messages featuring broken or hyphenated wording regarding account security or suspension warnings.",
                     "Verify your account status independently by navigating directly to your trusted service provider or platform app.",
-                    "If you clicked a link or provided information based on obfuscated warnings, secure your credentials immediately.",
+                    "If you clicked a link or provided information based on obfuscated warnings, secure your credentials immediately on official platforms.",
                     "Report obfuscated phishing messages and credential harvesting attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Obfuscated Phishing & Evasion Scams';
@@ -797,15 +807,15 @@
                 resultDesc.textContent = 'This message matches sophisticated Business Email Compromise (BEC) and corporate jargon imposter scams mimicking internal executive directives or financial token adjustments.';
                 specificSteps = [
                     "Do not approve ledger adjustments, transfer financial tokens, or execute administrative financial requests received via unexpected messages.",
-                    "Verify unusual executive or managerial directives by contacting your colleague or supervisor directly through official internal phone extensions or messaging platforms.",
-                    "If corporate credentials or unauthorized financial actions were executed, notify your organization's IT security and finance department immediately.",
+                    "Verify unusual executive or managerial directives by contacting your colleague or supervisor directly through official trusted phone extensions or messaging platforms.",
+                    "If corporate credentials or unauthorized financial actions were executed, contact your organization's management or administrative office immediately.",
                     "Report Business Email Compromise (BEC) and executive imposter scams to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Business Email Compromise (BEC) & Corporate Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for corporate and executive fraud, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'invoiceredirection') {
-                resultDesc.textContent = 'This message matches vendor invoice redirection and remittance update fraud (Business Email Compromise) attempting to divert municipal or corporate payments into fraudulent escrow accounts.';
+                resultDesc.textContent = 'This message matches vendor invoice redirection and remittance update fraud attempting to divert municipal or corporate payments into fraudulent escrow accounts.';
                 specificSteps = [
                     "Do not alter payment routing, change bank accounts, or transfer funds based on unexpected remittance update notices or escrow account instructions.",
                     "Verify any vendor or municipal billing changes by calling the supplier independently using a trusted, pre-established phone number from your official vendor records (never use numbers listed in the suspicious email).",
@@ -819,8 +829,8 @@
                 resultDesc.textContent = 'This message matches fake virtual conference, deepfake video meeting, and executive sync lures designed to harvest credentials or manipulate staff via unverified meeting links.';
                 specificSteps = [
                     "Do not click links or join unverified video conference rooms, virtual leadership syncs, or external meeting portals claiming to be from supervisors or executives.",
-                    "Verify requests for virtual meetings or post-meeting syncs by messaging your colleague or executive directly through official internal communication channels.",
-                    "If credentials or multi-factor authentication tokens were entered on an unverified meeting login page, change your password immediately and notify IT security.",
+                    "Verify requests for virtual meetings or post-meeting syncs by messaging your colleague or executive directly through official established communication channels.",
+                    "If credentials or multi-factor authentication tokens were entered on an unverified meeting login page, change your password immediately on your official account.",
                     "Report virtual conference phishing and executive impersonation attempts to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Virtual Conference & Executive Imposter Phishing';
@@ -831,8 +841,8 @@
                 specificSteps = [
                     "Do not scan embedded QR codes or click links disguised as shared document portals or e-signature requests.",
                     "Verify requests for document signatures or shared files by navigating directly to your official vendor portal independently.",
-                    "If credentials or multi-factor tokens were shared, notify your organization's IT security team immediately to revoke access.",
-                    "Report advanced phishing and corporate credential compromise to the Federal Trade Commission at ReportFraud.ftc.gov."
+                    "If credentials or multi-factor tokens were shared, secure your official accounts immediately.",
+                    "Report advanced phishing and credential compromise to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Advanced Phishing & Credential Theft';
                 resourcesIntro.textContent = 'Prioritized agency contacts for advanced technical phishing, followed by complete resources:';
@@ -841,8 +851,8 @@
                 resultDesc.textContent = 'This message matches institutional security archive examples involving direct deposit/payroll redirection schemes, campus ID scans, or malicious calendar/cloud-share spam.';
                 specificSteps = [
                     "Do not modify direct deposit settings or submit payroll changes based on email links or unverified messages.",
-                    "Do not send campus ID card scans, sensitive identification documents, or Duo multi-factor verification codes in response to inquiries.",
-                    "Verify payroll, HR, or IT requests by navigating independently to your official institutional portal (e.g., UCPath or HR systems).",
+                    "Do not send campus ID card scans, sensitive identification documents, or multi-factor verification codes in response to inquiries.",
+                    "Verify payroll or administrative requests by navigating independently to your official institutional portal.",
                     "Report credential and payroll harvesting attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Institutional & Payroll Fraud';
@@ -854,28 +864,28 @@
                     "Do not respond to unsolicited research assistance or Wikipedia writing inquiries that request personal intellectual data or metrics.",
                     "Decline and report unsolicited calendar meeting invitations or cloud-share notifications originating from unknown or external senders.",
                     "Verify academic collaborations and requests through official institutional channels before sharing data.",
-                    "Report data harvesting and productivity app spam to your organization's IT security team."
+                    "Report data harvesting and productivity app spam to appropriate organizational authorities."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
                 resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'signinsalary') {
-                resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or HR employee salary/wage adjustments designed to trigger urgent credential theft.';
+                resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or employee salary/wage adjustments designed to trigger urgent credential theft.';
                 specificSteps = [
                     "Do not click verification links in unexpected security alerts claiming logins from foreign IP addresses or countries.",
-                    "Navigate independently to your organization's official sign-in portal or HR benefits system to verify account activity.",
-                    "If you entered login credentials or two-factor codes, change your institutional password immediately and contact your IT Help Desk.",
-                    "Report deceptive employee compensation or foreign sign-in phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
+                    "Navigate independently to your official sign-in portal or benefits system to verify account activity.",
+                    "If you entered login credentials or two-factor codes, change your password immediately on your official account.",
+                    "Report deceptive compensation or foreign sign-in phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Sign-In Security & HR Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for sign-in security and HR phishing, followed by complete resources:';
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Sign-In Security & Phishing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for sign-in security and phishing, followed by complete resources:';
                 orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'compromise') {
                 resultDesc.textContent = 'This message matches fake security warnings claiming your account has been hacked, compromised, or subjected to a breach to force immediate credential entry.';
                 specificSteps = [
                     "Do not click links or call numbers provided in alerts claiming your account has been hacked or breached.",
-                    "Open your browser independently, navigate directly to your account or institutional portal, and check your security dashboard safely.",
-                    "If you clicked a link and entered your password, change your credentials immediately and alert your IT security department.",
+                    "Open your browser independently, navigate directly to your account portal, and check your security dashboard safely.",
+                    "If you clicked a link and entered your password, change your credentials immediately on the official platform.",
                     "Report credential harvesting and fake security breach notifications to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Account Compromise & Security Alerts';
@@ -897,29 +907,29 @@
                 specificSteps = [
                     "Do not open unsolicited PDF attachments, audio files, SVG graphics, or HTML documents claiming to be missed voicemails or billing alerts.",
                     "Do not call phone numbers provided in unsolicited warning emails or billing alerts; always use official contact numbers from trusted statements.",
-                    "If you called a rogue support number and provided remote access, banking details, or passwords, contact your bank and IT security team immediately.",
+                    "If you called a rogue support number and provided remote access, banking details, or passwords, contact your bank immediately.",
                     "Report voicemail attachment luring and callback phishing campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Voicemail & Callback Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for voicemail and callback telephone scams, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'headermismatch') {
-                resultDesc.textContent = 'This message exhibits email header authentication failures (SPF/DKIM/DMARC mismatches) or discrepancies between the displayed From: sender and the Reply-To: address.';
+                resultDesc.textContent = 'This message exhibits email header authentication failures or discrepancies between the displayed From: sender and the Reply-To: address.';
                 specificSteps = [
                     "Do not reply to emails where the Reply-To address differs from the official organizational sender or domain.",
-                    "Check email authentication results (SPF, DKIM, DMARC failures) when inspecting raw email headers (.eml files) for spoofing indicators.",
-                    "If sensitive information or credentials were submitted in response to a spoofed header email, notify your IT security team immediately.",
-                    "Report email authentication spoofing and business email compromise attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
+                    "Check email authentication results when inspecting raw email headers for spoofing indicators.",
+                    "If sensitive information or credentials were submitted in response to a spoofed header email, secure your accounts immediately.",
+                    "Report email authentication spoofing and phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Email Header & Reply-To Spoofing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for email header spoofing and BEC, followed by complete resources:';
+                resourcesIntro.textContent = 'Prioritized agency contacts for email header spoofing, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'cloudstorage') {
                 resultDesc.textContent = 'This message matches cloud storage and shared document collaboration phishing lures (such as fake SharePoint, OneDrive, Google Drive, or file deletion notices) designed to harvest credentials or deliver malware.';
                 specificSteps = [
                     "Do not click links or preview shared documents in unexpected emails warning of file deletion or cloud storage expiration.",
-                    "Navigate directly to your official cloud storage portal (e.g., SharePoint, OneDrive, or Google Drive) by typing the trusted web address into your browser.",
-                    "If you downloaded an attachment or entered your login credentials on a shared document page, change your password immediately and notify your IT security team.",
+                    "Navigate directly to your official cloud storage portal by typing the trusted web address into your browser.",
+                    "If you downloaded an attachment or entered your login credentials on a shared document page, change your password immediately on your official account.",
                     "Report cloud-based phishing and document collaboration scams to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloud Storage & Shared Document Phishing';
@@ -955,6 +965,7 @@
             resultTitle.textContent = 'LOW RISK: Appears to be Normal Communication';
             resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if unexpected personal or financial details are requested.';
             stepsWrapper.style.display = 'none';
+            compromiseDropdown.style.display = 'none';
 
             resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
             resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
