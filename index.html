@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection
+        // Contextual Categorized Threat Detection (Expanded with institutional/academic phishing vectors)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -466,7 +466,10 @@
         const isDeliverySmishing = text.includes('package delivery') || text.includes('track your shipment') || text.includes('toll fee') || text.includes('sunpass alert') || text.includes('pcn fine') || text.includes('redelivery hold');
         const isHomeRepair = text.includes('unlicensed contractor') || text.includes('roof inspection scam') || text.includes('storm damage repair') || text.includes('cash upfront repair') || text.includes('roof damage') || text.includes('storm damage') || text.includes('cash repair') || (text.includes('repair') && text.includes('contract'));
         const isRecovery = text.includes('recover funds') || text.includes('get your money back') || text.includes('recovery agent') || text.includes('asset recovery') || text.includes('fund retrieval');
-        const isJobScam = (text.includes('internship') || text.includes('research position') || text.includes('career services') || text.includes('remote position') || text.includes('paid weekly')) && (text.includes('@gmail.com') || text.includes('@yahoo.com') || text.includes('per week') || text.includes('apply using'));
+        
+        // Comprehensive Academic/Job Phishing & Account Harvesting (Matched to institutional campaign logs)
+        const isJobOrAcademicScam = text.includes('research internship') || text.includes('academic research fellowship') || text.includes('research assistance inquiry') || text.includes('research assistant needed') || text.includes('new internship opportunity') || text.includes('part-time work-study') || text.includes('remote position') || text.includes('paid weekly') || text.includes('office of career services') || (text.includes('internship') && (text.includes('@gmail.com') || text.includes('@yahoo.com') || text.includes('per week')));
+        const isAccountQuotaScam = text.includes('exceeded its mail quota') || text.includes('account will be inactive') || text.includes('verify your account') || text.includes('axess') || text.includes('online pay statement available') || text.includes('employee pay raise') || text.includes('grant information') || text.includes('403b account');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -492,8 +495,10 @@
             threatType = 'repair';
         } else if (isRecovery) {
             threatType = 'recovery';
-        } else if (isJobScam) {
+        } else if (isJobOrAcademicScam) {
             threatType = 'job';
+        } else if (isAccountQuotaScam) {
+            threatType = 'account';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -574,16 +579,27 @@
                 resourcesIntro.textContent = 'Prioritized agency contacts for asset recovery scams, followed by complete state and federal resources:';
                 orderedResources = [resAg, resFtc, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'job') {
-                resultDesc.textContent = 'This message matches fraudulent academic or employment recruitment phishing schemes using public webmail addresses and unsolicited job offers to harvest personal data.';
+                resultDesc.textContent = 'This message matches fraudulent academic internship, fellowship, or employment recruitment phishing schemes using public webmail addresses to harvest personal data.';
                 specificSteps = [
                     "Do not reply, submit personal information, or email any external webmail addresses listed in the recruitment notice.",
-                    "If you already submitted personal details or student IDs, monitor your credit and secure your personal accounts against identity theft.",
+                    "If you already submitted personal details, student IDs, or deposited checks, monitor your credit and secure your accounts immediately.",
                     "File an identity theft and phishing complaint online with the Federal Trade Commission at ReportFraud.ftc.gov.",
                     "Report recruitment fraud to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM.",
-                    "Contact the university's official career services department directly through their verified institutional domain to verify job postings."
+                    "Contact official institutional career services directly through verified university domains to verify job postings."
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Employment & Phishing Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for job recruitment and identity theft fraud, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'account') {
+                resultDesc.textContent = 'This message displays characteristics of credential harvesting, fake IT account quotas, or payroll/benefits phishing designed to steal login credentials.';
+                specificSteps = [
+                    "Do not click any embedded links or enter your credentials on external login pages.",
+                    "Always verify that login portals use official institutional domains (e.g., exactly matching verified university or agency weblogin URLs).",
+                    "If you already entered your password, change it immediately across all accounts and notify your organization's IT security team.",
+                    "Report online credential theft to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Credential Harvesting & IT Phishing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for account compromise and credential theft, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
