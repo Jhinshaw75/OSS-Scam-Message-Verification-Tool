@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -407,7 +407,7 @@
     function analyzeMessage() {
         let text = '';
         if (activeInputMode === 'text') {
-            text = document.getElementById('message-input').value.trim().toLowerCase();
+            text = document.getElementById('message-input'].value.trim().toLowerCase();
         } else {
             text = extractedImageText.trim().toLowerCase();
         }
@@ -426,13 +426,25 @@
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
 
+        // Comprehensive multi-jurisdictional threat matrix (FDLE, CFEU, FTC, IC3, UK Action Fraud, International Compounds)
         const scamKeywords = [
             'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'bitcoin', 'wallet', 'kiosk', 'investment', 
             'grandpa', 'grandma', 'arrest', 'warrant', 'bail', 'voice clone', 'emergency', 'microsoft', 'apple', 'support', 'toll', 'fee', 
             'overdue', 'click', 'verify', 'ssn', 'social security', 'irs', 'medicare', 'debit', 'card', 'package', 
             'delivery', 'address', 'bit.ly', 'tinyurl', 'sunpass', 'traffic violation', 'ticket', 
             'va benefits', 'military charity', 'donation', 'air conditioner', 'repair', 'warranty', 
-            'zelle', 'venmo', 'cashapp', 'customs', 'shipment', 'tracking', 'hold', 'redelivery'
+            'zelle', 'venmo', 'cashapp', 'customs', 'shipment', 'tracking', 'hold', 'redelivery',
+            // Legal / Process Server / Debt Collection Threats
+            'claim against you', 'assets', 'filing the claim', 'order against your assets', 'county', 'office immediately',
+            'final attempt', 'current matter', 'lawsuit', 'legal action', 'court', 'summons', 'attorney general',
+            // FDLE & CFEU Prosecuted Cyber/Senior Fraud Vectors (Cash & Gold Bar Courier Schemes, Vault, Safe Account)
+            'gold bar', 'precious metals', 'cash courier', 'liquidate', 'safe account', 'protected account', 'courier pickup', 'silver',
+            // International & UK Vectors
+            'hmrc', 'pcn', 'parking fine', 'tax rebate', 'kyc update', 'account blocked', 'unusual activity', 'task scam', 'digital arrest',
+            // Home Repair & Contractor Fraud (Storm/Door-to-door scams)
+            'contractor', 'roof repair', 'storm damage', 'home improvement', 'cash upfront', 'unlicensed', 'roof inspection', 'gutter work',
+            // Asset Recovery & Secondary Revictimization Scams
+            'recover funds', 'get your money back', 'recovery agent', 'asset recovery', 'fund retrieval', 'cyber investigator'
         ];
 
         let matchCount = 0;
@@ -446,19 +458,21 @@
             if (text.includes(keyword)) safeMatch++;
         });
 
+        // Behavioral & structural pressure flags
         const hasLinkOrUrl = text.includes('http://') || text.includes('https://') || text.includes('bit.ly') || text.includes('tinyurl') || text.includes('www.');
-        const hasServiceHook = text.includes('package') || text.includes('delivery') || text.includes('shipment') || text.includes('toll') || text.includes('ticket') || text.includes('account') || text.includes('suspend') || text.includes('update') || text.includes('crypto') || text.includes('arrest') || text.includes('ssn') || text.includes('irs');
+        const hasFearPressure = text.includes('final attempt') || text.includes('immediate') || text.includes('urgent') || text.includes('avoid') || text.includes('action against') || text.includes('blocked') || text.includes('suspended');
+        const hasServiceHook = text.includes('package') || text.includes('delivery') || text.includes('shipment') || text.includes('toll') || text.includes('ticket') || text.includes('account') || text.includes('suspend') || text.includes('update') || text.includes('crypto') || text.includes('arrest') || text.includes('ssn') || text.includes('irs') || text.includes('claim') || text.includes('assets') || text.includes('county') || text.includes('gold') || text.includes('courier') || text.includes('safe account') || text.includes('contractor') || text.includes('roof') || text.includes('recover') || text.includes('retrieval') || text.includes('hmrc') || text.includes('pcn');
 
-        if ((hasLinkOrUrl && hasServiceHook) || matchCount >= 2 || (hasServiceHook && text.length < 250 && (text.includes('click') || text.includes('update') || text.includes('verify') || text.includes('call') || text.includes('send')))) {
+        if ((hasLinkOrUrl && hasServiceHook) || matchCount >= 1 || (hasFearPressure && hasServiceHook)) {
             resultsContainer.className = 'danger-result';
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
-            resultDesc.textContent = 'This message displays characteristics consistent with top reported senior fraud vectors (such as fake package delivery smishing, crypto investment fraud, government/agency impersonation, or emergency social engineering). Do not click any links or call numbers provided in the text.';
+            resultDesc.textContent = 'This message displays characteristics consistent with top reported state, federal, and international fraud vectors (such as asset recovery secondary scams, home repair fraud, gold bar courier schemes, legal/tax intimidation, banking/crypto fraud, or government impersonation). Do not click any links or call numbers provided in the text.';
             
             stepsWrapper.style.display = 'block';
             const steps = [
-                "Do not reply to the message or click any embedded web links.",
+                "Do not reply to the message, pay upfront fees, hand over cash/precious metals, or click embedded links.",
                 "Do not call any phone numbers listed in the suspicious message.",
-                "If it claims to be from USPS, UPS, FedEx, SunPass, your bank, or a government agency, look up their official customer service number independently and call them directly.",
+                "If it claims to be from law enforcement, a court, a tax agency, a bank, or a contractor, verify their identity independently through official public portals before proceeding.",
                 "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
             ];
             steps.forEach(step => {
