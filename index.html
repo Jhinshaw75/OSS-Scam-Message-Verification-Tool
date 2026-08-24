@@ -237,17 +237,31 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; padding: 0; max-width: 100%; }
-            .no-print { display: none !important; }
-            #results-container { border: 2px solid #333; display: block !important; }
+            .no-print, .header, #results-container h2, #results-container p, #steps-wrapper, .carrier-box { display: none !important; }
+            .resources-box { border: none !important; padding: 0 !important; margin: 0 !important; display: block !important; }
+            #results-container { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; background: white !important; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>Operation Senior Shield</h1>
-        <p>State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
+    <div class="header" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
+            <a href="https://elderaffairs.org" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: bold; font-size: 14px;">
+                🏛️ Florida Department of Elder Affairs (DOEA)
+            </a>
+            <span style="color: #ccc;">|</span>
+            <a href="https://opseniorshieldfl.com" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: bold; font-size: 14px;">
+                🛡️ Operation Senior Shield (OSS)
+            </a>
+        </div>
+        <div>
+            <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" style="background-color: var(--secondary); color: white; padding: 6px 14px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold; display: inline-block;">
+                📝 Sign Up for OSS Alerts & Updates
+            </a>
+        </div>
+        <p style="margin: 5px 0 0 0; font-size: 14px; color: #666;">State of Florida &bull; Scam & Message Verification Tool</p>
     </div>
 
     <!-- TERMS & CONDITIONS GATE -->
