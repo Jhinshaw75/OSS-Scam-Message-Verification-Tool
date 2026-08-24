@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with CWRU sign-in and wage/salary vectors)
+        // Contextual Categorized Threat Detection (Expanded with UVA account compromise notification vector)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -471,9 +471,10 @@
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
-        
-        // Specific New Enhancements from CWRU Archive: Foreign IP Login Alerts & Internal Wage/Salary Lures
         const isForeignIpOrSalaryLure = text.includes('unusual sign-in activity') || text.includes('sign-in from foreign ip') || text.includes('sign-in attempt from') || text.includes('employee salary adjustment') || text.includes('wage increase notification') || text.includes('compensation review');
+        
+        // Specific New Enhancement from UVA Archive: Fake Account Compromise / Hacked Account Notifications
+        const isAccountCompromiseAlert = text.includes('account has been compromised') || text.includes('account has been hacked') || text.includes('unauthorized access detected') || text.includes('security breach detected') || text.includes('account compromise alert');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -511,6 +512,8 @@
             threatType = 'airesearch';
         } else if (isForeignIpOrSalaryLure) {
             threatType = 'signinsalary';
+        } else if (isAccountCompromiseAlert) {
+            threatType = 'compromise';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -656,6 +659,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Sign-In Security & HR Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for sign-in security and HR phishing, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'compromise') {
+                resultDesc.textContent = 'This message matches fake security warnings claiming your account has been hacked, compromised, or subjected to a breach to force immediate credential entry.';
+                specificSteps = [
+                    "Do not click links or call numbers provided in alerts claiming your account has been hacked or breached.",
+                    "Open your browser independently, navigate directly to your account or institutional portal, and check your security dashboard safely.",
+                    "If you clicked a link and entered your password, change your credentials immediately and alert your IT security department.",
+                    "Report credential harvesting and fake security breach notifications to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Account Compromise & Security Alerts';
+                resourcesIntro.textContent = 'Prioritized agency contacts for account breach warnings, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
