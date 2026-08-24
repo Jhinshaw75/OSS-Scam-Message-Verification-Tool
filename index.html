@@ -257,12 +257,14 @@
 
 <div class="container">
     <div class="header" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
-            <a href="https://elderaffairs.org" target="_blank" title="Florida Department of Elder Affairs">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAA5CAYAAAB0Jt0BAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAhdEVYdFRpdGxlAFBlcnNvbmFsaXplZCBGcmFtZSBhbmQgTG9nbwAAIABJREFUeF7tnQd0XMWZxt2t..." alt="Elder Affairs Florida Logo" style="height: 45px; object-fit: contain;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 25px; flex-wrap: wrap;">
+            <a href="https://elderaffairs.org" target="_blank" title="Florida Department of Elder Affairs" style="display: flex; align-items: center; gap: 8px; text-decoration: none; background: #fff; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span style="font-size: 20px;">🏛️</span>
+                <span style="font-weight: bold; color: var(--primary); font-size: 15px;">Elder Affairs Florida</span>
             </a>
-            <a href="https://opseniorshieldfl.com" target="_blank" title="Operation Senior Shield">
-                <img src="data:image/svg+xml;base64,..." alt="Operation Senior Shield Logo" style="height: 55px; object-fit: contain;">
+            <a href="https://opseniorshieldfl.com" target="_blank" title="Operation Senior Shield" style="display: flex; align-items: center; gap: 8px; text-decoration: none; background: #fff; padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <span style="font-size: 20px;">🛡️</span>
+                <span style="font-weight: bold; color: var(--primary); font-size: 15px;">Operation Senior Shield</span>
             </a>
         </div>
         <p style="margin: 0; font-size: 14px; color: #666;">State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
@@ -459,44 +461,103 @@
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
 
-        // Comprehensive threat matrix
-        const scamKeywords = [
+        // Dynamic Categorized Threat Detection
+        let threatType = null;
+
+        const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
+        const isLegalGov = text.includes('arrest') || text.includes('warrant') || text.includes('court') || text.includes('summons') || text.includes('lawsuit') || text.includes('irs') || text.includes('ssn') || text.includes('social security') || text.includes('hmrc') || text.includes('attorney general');
+        const isDeliverySmishing = text.includes('package') || text.includes('delivery') || text.includes('shipment') || text.includes('toll') || text.includes('sunpass') || text.includes('pcn') || text.includes('parking') || text.includes('tracking') || text.includes('redelivery');
+        const isHomeRepair = text.includes('contractor') || text.includes('roof') || text.includes('storm damage') || text.includes('home improvement') || text.includes('unlicensed');
+        const isRecovery = text.includes('recover funds') || text.includes('get your money back') || text.includes('recovery agent') || text.includes('asset recovery') || text.includes('fund retrieval');
+
+        const generalScamKeywords = [
             'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'bitcoin', 'wallet', 'kiosk', 'investment', 
-            'grandpa', 'grandma', 'arrest', 'warrant', 'bail', 'voice clone', 'emergency', 'microsoft', 'apple', 'support', 'toll', 'fee', 
-            'overdue', 'click', 'verify', 'ssn', 'social security', 'irs', 'medicare', 'debit', 'card', 'package', 
-            'delivery', 'address', 'bit.ly', 'tinyurl', 'sunpass', 'traffic violation', 'ticket', 
-            'va benefits', 'military charity', 'donation', 'air conditioner', 'repair', 'warranty', 
-            'zelle', 'venmo', 'cashapp', 'customs', 'shipment', 'tracking', 'hold', 'redelivery',
-            'claim against you', 'assets', 'filing the claim', 'order against your assets', 'county', 'office immediately',
-            'final attempt', 'current matter', 'lawsuit', 'legal action', 'court', 'summons', 'attorney general',
-            'gold bar', 'precious metals', 'cash courier', 'liquidate', 'safe account', 'protected account', 'courier pickup', 'silver',
-            'hmrc', 'pcn', 'parking fine', 'tax rebate', 'kyc update', 'account blocked', 'unusual activity', 'task scam', 'digital arrest',
-            'contractor', 'roof repair', 'storm damage', 'home improvement', 'cash upfront', 'unlicensed', 'roof inspection', 'gutter work',
-            'recover funds', 'get your money back', 'recovery agent', 'asset recovery', 'fund retrieval', 'cyber investigator'
+            'grandpa', 'grandma', 'bail', 'voice clone', 'emergency', 'microsoft', 'apple', 'support', 'fee', 
+            'overdue', 'click', 'verify', 'debit', 'card', 'zelle', 'venmo', 'cashapp', 'customs', 'hold',
+            'claim against you', 'assets', 'county', 'office immediately', 'final attempt', 'current matter',
+            'kyc update', 'account blocked', 'unusual activity', 'task scam', 'digital arrest'
         ];
 
         let matchCount = 0;
-        scamKeywords.forEach(keyword => {
+        generalScamKeywords.forEach(keyword => {
             if (text.includes(keyword)) matchCount++;
         });
 
         const hasLinkOrUrl = text.includes('http://') || text.includes('https://') || text.includes('bit.ly') || text.includes('tinyurl') || text.includes('www.');
         const hasFearPressure = text.includes('final attempt') || text.includes('immediate') || text.includes('urgent') || text.includes('avoid') || text.includes('action against') || text.includes('blocked') || text.includes('suspended');
-        const hasServiceHook = text.includes('package') || text.includes('delivery') || text.includes('shipment') || text.includes('toll') || text.includes('ticket') || text.includes('account') || text.includes('suspend') || text.includes('update') || text.includes('crypto') || text.includes('arrest') || text.includes('ssn') || text.includes('irs') || text.includes('claim') || text.includes('assets') || text.includes('county') || text.includes('gold') || text.includes('courier') || text.includes('safe account') || text.includes('contractor') || text.includes('roof') || text.includes('recover') || text.includes('retrieval') || text.includes('hmrc') || text.includes('pcn');
 
-        if ((hasLinkOrUrl && hasServiceHook) || matchCount >= 1 || (hasFearPressure && hasServiceHook)) {
+        if (isCourierGold) {
+            threatType = 'courier';
+        } else if (isLegalGov) {
+            threatType = 'legal';
+        } else if (isDeliverySmishing || hasLinkOrUrl) {
+            threatType = 'delivery';
+        } else if (isHomeRepair) {
+            threatType = 'repair';
+        } else if (isRecovery) {
+            threatType = 'recovery';
+        } else if (matchCount >= 1 || hasFearPressure) {
+            threatType = 'general';
+        }
+
+        if (threatType !== null) {
             resultsContainer.className = 'danger-result';
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
-            resultDesc.textContent = 'This message displays characteristics consistent with top reported state, federal, and international fraud vectors (such as asset recovery secondary scams, home repair fraud, gold bar courier schemes, legal/tax intimidation, banking/crypto fraud, or government impersonation). Do not click any links or call numbers provided in the text.';
             
+            let specificSteps = [];
+
+            if (threatType === 'courier') {
+                resultDesc.textContent = 'This message matches high-risk physical courier and precious metal liquidation schemes where scammers manipulate victims into handing over cash or gold bars.';
+                specificSteps = [
+                    "Do not withdraw cash, purchase gold bars, or hand over valuables to any courier or stranger.",
+                    "Law enforcement and government agencies will never send a courier to collect your savings or precious metals.",
+                    "Verify directly with your financial institution or local law enforcement before taking any action.",
+                    "Forward message details to 7726 (SPAM) and report to the Florida DOEA or AG Senior Protection Team."
+                ];
+            } else if (threatType === 'legal') {
+                resultDesc.textContent = 'This message exhibits characteristics of government, tax, or legal imposter intimidation (such as fake warrants, court orders, or tax agency threats).';
+                specificSteps = [
+                    "Do not call phone numbers or follow instructions provided in threatening messages.",
+                    "Government and court agencies do not demand immediate payment over the phone via gift cards, crypto, or wire transfers.",
+                    "Look up official agency contact numbers independently to verify if any legitimate inquiry exists.",
+                    "Forward text message spam directly to 7726 (SPAM)."
+                ];
+            } else if (threatType === 'delivery') {
+                resultDesc.textContent = 'This message displays signs of delivery smishing or toll/parking penalty fraud designed to steal personal data or credit card details through malicious links.';
+                specificSteps = [
+                    "Do not click any embedded links or web addresses in the message.",
+                    "Do not log into banking or shipping portals via text message links.",
+                    "Check official tracking apps or websites directly by typing the verified URL into your browser.",
+                    "Forward text message spam directly to 7726 (SPAM)."
+                ];
+            } else if (threatType === 'repair') {
+                resultDesc.textContent = 'This message displays indicators consistent with unlicensed contractor or home repair fraud targeting property owners.';
+                specificSteps = [
+                    "Do not sign unverified contracts or hand over large cash deposits upfront.",
+                    "Verify contractor licenses independently through state licensing portals (Sunbiz / DBPR) before proceeding.",
+                    "Get multiple written estimates from established, local businesses.",
+                    "Report unverified door-to-door solicitations to local authorities."
+                ];
+            } else if (threatType === 'recovery') {
+                resultDesc.textContent = 'This message displays traits of an asset recovery or secondary revictimization scam targeting previous fraud victims with false promises of fund retrieval.';
+                specificSteps = [
+                    "Do not pay upfront fees or commissions to anyone claiming they can recover previously lost funds.",
+                    "Legitimate law enforcement and state agencies never charge fees to investigate or recover fraud losses.",
+                    "Report recovery offers directly to the Federal Trade Commission or Florida Attorney General.",
+                    "Forward message details to 7726 (SPAM)."
+                ];
+            } else {
+                resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
+                specificSteps = [
+                    "Do not reply to the message or click any embedded web links.",
+                    "Do not call any phone numbers listed in the suspicious message.",
+                    "Verify requests independently through official customer service channels.",
+                    "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
+                ];
+            }
+
             stepsWrapper.style.display = 'block';
-            const steps = [
-                "Do not reply to the message, pay upfront fees, hand over cash/precious metals, or click embedded links.",
-                "Do not call any phone numbers listed in the suspicious message.",
-                "If it claims to be from law enforcement, a court, a tax agency, a bank, or a contractor, verify their identity independently through official public portals before proceeding.",
-                "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
-            ];
-            steps.forEach(step => {
+            specificSteps.forEach(step => {
                 let li = document.createElement('li');
                 li.textContent = step;
                 stepsList.appendChild(li);
