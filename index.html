@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with advanced Quishing & collaboration tool vectors)
+        // Contextual Categorized Threat Detection (Expanded with university security archive threat vectors)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -468,9 +468,10 @@
         const isRecovery = text.includes('recover funds') || text.includes('get your money back') || text.includes('recovery agent') || text.includes('asset recovery') || text.includes('fund retrieval');
         const isJobOrAcademicScam = text.includes('research internship') || text.includes('academic research fellowship') || text.includes('research assistance inquiry') || text.includes('research assistant needed') || text.includes('new internship opportunity') || text.includes('part-time work-study') || text.includes('remote position') || text.includes('paid weekly') || text.includes('office of career services') || (text.includes('internship') && (text.includes('@gmail.com') || text.includes('@yahoo.com') || text.includes('per week')));
         const isAccountQuotaScam = text.includes('exceeded its mail quota') || text.includes('account will be inactive') || text.includes('verify your account') || text.includes('axess') || text.includes('online pay statement available') || text.includes('employee pay raise') || text.includes('grant information') || text.includes('403b account');
-        
-        // Advanced Enterprise / Adaptive Security Threat Vectors (Quishing, Thread Hijacking, Collaboration Apps)
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
+        
+        // Institutional Archive Threat Vectors (Payroll/Direct Deposit, Campus ID Scans, Calendar/Cloud Share Spam)
+        const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file') || text.includes('wikipedia page writing');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -502,6 +503,8 @@
             threatType = 'account';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
+        } else if (isInstitutionalArchiveVector) {
+            threatType = 'institutional';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -614,6 +617,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Advanced Phishing & Credential Theft';
                 resourcesIntro.textContent = 'Prioritized agency contacts for advanced technical phishing, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'institutional') {
+                resultDesc.textContent = 'This message matches institutional security archive examples involving direct deposit/payroll redirection schemes, campus ID scans, or malicious calendar/cloud-share spam.';
+                specificSteps = [
+                    "Do not modify direct deposit settings or submit payroll changes based on email links or unverified messages.",
+                    "Do not send campus ID card scans, sensitive identification documents, or Duo multi-factor verification codes in response to inquiries.",
+                    "Verify payroll, HR, or IT requests by navigating independently to your official institutional portal (e.g., UCPath or HR systems).",
+                    "Report credential and payroll harvesting attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Institutional & Payroll Fraud';
+                resourcesIntro.textContent = 'Prioritized agency contacts for institutional security and payroll compromise, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
