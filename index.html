@@ -474,6 +474,7 @@
         const isPdfAttachmentScam = text.includes('attached file:') || text.includes('statement_') || text.includes('.pdf') || text.includes('adobe acrobat document') || text.includes('secure adobe') || text.includes('updated digital statement');
         const isHsmvScam = text.includes('highway safety and motor vehicles') || text.includes('vehicle registration renewal') || text.includes('emissions processing fee') || text.includes('driving privileges') || text.includes('administrative suspension penalties');
         const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to') || text.includes('digital gift vouchers') || text.includes('digital wallet') || text.includes('milestone tokens') || text.includes('corporate ledger');
+        const isDisasterReliefScam = text.includes('hurricane recovery') || text.includes('emergency relief directorate') || text.includes('disaster assistance stipend') || text.includes('storm impacts') || text.includes('community relief grants');
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -524,6 +525,8 @@
             threatType = 'hsmv';
         } else if (isExecutiveReimbursementScam) {
             threatType = 'execpayment';
+        } else if (isDisasterReliefScam) {
+            threatType = 'disaster';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -713,6 +716,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'disaster') {
+                resultDesc.textContent = 'This message matches fake disaster relief, hurricane recovery stipend, or emergency grant scams designed to exploit community crises and harvest personal data through lookalike URLs.';
+                specificSteps = [
+                    "Do not click links or submit personal information on websites claiming to offer disaster relief stipends or emergency grants via text or unverified emails.",
+                    "Verify official state emergency assistance and disaster recovery programs directly through verified government channels such as FloridaDisaster.org or the Florida Division of Emergency Management.",
+                    "If you submitted sensitive personal details or Social Security numbers on a fraudulent disaster relief portal, monitor your credit immediately and report identity theft.",
+                    "Report disaster relief fraud and government imposter scams to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Disaster Relief & Emergency Imposter Scams';
+                resourcesIntro.textContent = 'Prioritized agency contacts for disaster relief fraud, followed by complete state and federal resources:';
+                orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
