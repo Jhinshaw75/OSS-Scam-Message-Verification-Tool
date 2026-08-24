@@ -32,6 +32,8 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 1;
         }
         .header {
             text-align: center;
@@ -52,6 +54,8 @@
         /* Terms Screen */
         #terms-screen {
             display: block;
+            position: relative;
+            z-index: 10;
         }
         .terms-box {
             background: #f1f5f9;
@@ -158,6 +162,8 @@
             border-radius: 4px;
             cursor: pointer;
             width: 100%;
+            position: relative;
+            z-index: 20;
         }
         .btn:hover {
             background-color: var(--primary);
@@ -266,7 +272,7 @@
             <p>2. <strong>Zero Data Retention:</strong> No personal data, identifiable text inputs, or communication content are stored, logged, or transmitted to external databases. All analysis is executed dynamically and purged upon session closure.</p>
             <p>3. This tool serves as an educational self-defense screening mechanism and does not constitute a formal law enforcement investigative filing or official state agency reporting intake.</p>
         </div>
-        <button class="btn" onclick="acceptTerms()">I Agree & Open Verification Tool</button>
+        <button type="button" class="btn" onclick="acceptTerms(); return false;">I Agree & Open Verification Tool</button>
     </div>
 
     <!-- MAIN VERIFICATION TOOL -->
@@ -296,7 +302,7 @@
             </div>
         </div>
 
-        <button class="btn no-print" id="analyze-btn" onclick="analyzeMessage()">Analyze Message</button>
+        <button type="button" class="btn no-print" id="analyze-btn" onclick="analyzeMessage()">Analyze Message</button>
 
         <!-- PROCESSING LOADER -->
         <div id="loader">
@@ -334,7 +340,7 @@
                 </div>
             </div>
 
-            <button class="btn print-btn no-print" onclick="window.print()">Print Reference Card</button>
+            <button type="button" class="btn print-btn no-print" onclick="window.print()">Print Reference Card</button>
         </div>
     </div>
 </div>
@@ -344,8 +350,12 @@
     let extractedImageText = '';
 
     function acceptTerms() {
-        document.getElementById('terms-screen').style.display = 'none';
-        document.getElementById('tool-screen').style.display = 'block';
+        const termsScreen = document.getElementById('terms-screen');
+        const toolScreen = document.getElementById('tool-screen');
+        if (termsScreen && toolScreen) {
+            termsScreen.style.display = 'none';
+            toolScreen.style.display = 'block';
+        }
     }
 
     function switchTab(mode) {
@@ -407,7 +417,8 @@
     function analyzeMessage() {
         let text = '';
         if (activeInputMode === 'text') {
-            text = document.getElementById('message-input'].value.trim().toLowerCase();
+            const inputElem = document.getElementById('message-input');
+            text = inputElem ? inputElem.value.trim().toLowerCase() : '';
         } else {
             text = extractedImageText.trim().toLowerCase();
         }
@@ -426,7 +437,7 @@
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
 
-        // Comprehensive multi-jurisdictional threat matrix (FDLE, CFEU, FTC, IC3, UK Action Fraud, International Compounds)
+        // Comprehensive threat matrix
         const scamKeywords = [
             'bank', 'alert', 'fraud', 'suspended', 'urgent', 'gift card', 'crypto', 'bitcoin', 'wallet', 'kiosk', 'investment', 
             'grandpa', 'grandma', 'arrest', 'warrant', 'bail', 'voice clone', 'emergency', 'microsoft', 'apple', 'support', 'toll', 'fee', 
@@ -434,16 +445,11 @@
             'delivery', 'address', 'bit.ly', 'tinyurl', 'sunpass', 'traffic violation', 'ticket', 
             'va benefits', 'military charity', 'donation', 'air conditioner', 'repair', 'warranty', 
             'zelle', 'venmo', 'cashapp', 'customs', 'shipment', 'tracking', 'hold', 'redelivery',
-            // Legal / Process Server / Debt Collection Threats
             'claim against you', 'assets', 'filing the claim', 'order against your assets', 'county', 'office immediately',
             'final attempt', 'current matter', 'lawsuit', 'legal action', 'court', 'summons', 'attorney general',
-            // FDLE & CFEU Prosecuted Cyber/Senior Fraud Vectors (Cash & Gold Bar Courier Schemes, Vault, Safe Account)
             'gold bar', 'precious metals', 'cash courier', 'liquidate', 'safe account', 'protected account', 'courier pickup', 'silver',
-            // International & UK Vectors
             'hmrc', 'pcn', 'parking fine', 'tax rebate', 'kyc update', 'account blocked', 'unusual activity', 'task scam', 'digital arrest',
-            // Home Repair & Contractor Fraud (Storm/Door-to-door scams)
             'contractor', 'roof repair', 'storm damage', 'home improvement', 'cash upfront', 'unlicensed', 'roof inspection', 'gutter work',
-            // Asset Recovery & Secondary Revictimization Scams
             'recover funds', 'get your money back', 'recovery agent', 'asset recovery', 'fund retrieval', 'cyber investigator'
         ];
 
@@ -452,13 +458,6 @@
             if (text.includes(keyword)) matchCount++;
         });
 
-        const safeKeywords = ['lunch', 'dinner', 'family', 'hello', 'how are you', 'see you', 'call me later', 'store', 'free to come'];
-        let safeMatch = 0;
-        safeKeywords.forEach(keyword => {
-            if (text.includes(keyword)) safeMatch++;
-        });
-
-        // Behavioral & structural pressure flags
         const hasLinkOrUrl = text.includes('http://') || text.includes('https://') || text.includes('bit.ly') || text.includes('tinyurl') || text.includes('www.');
         const hasFearPressure = text.includes('final attempt') || text.includes('immediate') || text.includes('urgent') || text.includes('avoid') || text.includes('action against') || text.includes('blocked') || text.includes('suspended');
         const hasServiceHook = text.includes('package') || text.includes('delivery') || text.includes('shipment') || text.includes('toll') || text.includes('ticket') || text.includes('account') || text.includes('suspend') || text.includes('update') || text.includes('crypto') || text.includes('arrest') || text.includes('ssn') || text.includes('irs') || text.includes('claim') || text.includes('assets') || text.includes('county') || text.includes('gold') || text.includes('courier') || text.includes('safe account') || text.includes('contractor') || text.includes('roof') || text.includes('recover') || text.includes('retrieval') || text.includes('hmrc') || text.includes('pcn');
