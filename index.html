@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with AI research inquiries and calendar spam)
+        // Contextual Categorized Threat Detection (Expanded with CWRU sign-in and wage/salary vectors)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -470,9 +470,10 @@
         const isAccountQuotaScam = text.includes('exceeded its mail quota') || text.includes('account will be inactive') || text.includes('verify your account') || text.includes('axess') || text.includes('online pay statement available') || text.includes('employee pay raise') || text.includes('grant information') || text.includes('403b account');
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
-        
-        // Specific New Enhancements: AI-Generated LLM Research Inquiries & Productivity App Spam
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
+        
+        // Specific New Enhancements from CWRU Archive: Foreign IP Login Alerts & Internal Wage/Salary Lures
+        const isForeignIpOrSalaryLure = text.includes('unusual sign-in activity') || text.includes('sign-in from foreign ip') || text.includes('sign-in attempt from') || text.includes('employee salary adjustment') || text.includes('wage increase notification') || text.includes('compensation review');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -508,6 +509,8 @@
             threatType = 'institutional';
         } else if (isAiResearchOrProductivitySpam) {
             threatType = 'airesearch';
+        } else if (isForeignIpOrSalaryLure) {
+            threatType = 'signinsalary';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -642,6 +645,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
                 resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'signinsalary') {
+                resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or HR employee salary/wage adjustments designed to trigger urgent credential theft.';
+                specificSteps = [
+                    "Do not click verification links in unexpected security alerts claiming logins from foreign IP addresses or countries.",
+                    "Navigate independently to your organization's official sign-in portal or HR benefits system to verify account activity.",
+                    "If you entered login credentials or two-factor codes, change your institutional password immediately and contact your IT Help Desk.",
+                    "Report deceptive employee compensation or foreign sign-in phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Sign-In Security & HR Phishing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for sign-in security and HR phishing, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
