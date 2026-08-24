@@ -471,6 +471,7 @@
         const isComplianceAuditScam = text.includes('compliance audit') || text.includes('annual audit') || text.includes('personnel documents') || text.includes('active status') || text.includes('verify-secure') || text.includes('compliance review');
         const isUtilityShutoffScam = text.includes('power disconnection') || text.includes('past-due balance') || text.includes('electric & water') || text.includes('service disconnect') || text.includes('service account') || text.includes('municipal electric');
         const isHoaCommunityScam = text.includes('hoa notice') || text.includes('architectural compliance') || text.includes('gate card deactivation') || text.includes('resident portal') || text.includes('neighborhood assessment') || text.includes('community association');
+        const isPdfAttachmentScam = text.includes('attached file:') || text.includes('statement_') || text.includes('.pdf') || text.includes('adobe acrobat document') || text.includes('secure adobe') || text.includes('updated digital statement');
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -516,6 +517,8 @@
             threatType = 'utility';
         } else if (isHoaCommunityScam) {
             threatType = 'hoa';
+        } else if (isPdfAttachmentScam) {
+            threatType = 'pdfattachment';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -629,7 +632,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Employment & Phishing Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for job recruitment and identity theft fraud, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'account') {
                 resultDesc.textContent = 'This message displays characteristics of credential harvesting, fake IT account quotas, or payroll/benefits phishing designed to steal login credentials.';
                 specificSteps = [
@@ -674,6 +677,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: HOA & Residential Community Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for residential community fraud, followed by complete state and federal resources:';
                 orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
+            } else if (threatType === 'pdfattachment') {
+                resultDesc.textContent = 'This message matches malicious PDF statement attachments or document preview lures designed to deliver malware or drive users to unverified credential-harvesting pages.';
+                specificSteps = [
+                    "Do not open unsolicited PDF attachments or document previews claiming to be account statements or financial summaries from unknown senders.",
+                    "Verify statement and billing details independently by logging directly into your official trusted vendor or bank app/website.",
+                    "If you downloaded an attachment or entered your login credentials after opening a statement notification, change your password immediately and notify your IT security team.",
+                    "Report document attachment phishing and malware distribution campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: PDF Attachment & Document Lures';
+                resourcesIntro.textContent = 'Prioritized agency contacts for document attachment phishing, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
@@ -684,7 +698,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Advanced Phishing & Credential Theft';
                 resourcesIntro.textContent = 'Prioritized agency contacts for advanced technical phishing, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'institutional') {
                 resultDesc.textContent = 'This message matches institutional security archive examples involving direct deposit/payroll redirection schemes, campus ID scans, or malicious calendar/cloud-share spam.';
                 specificSteps = [
@@ -706,7 +720,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
                 resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'signinsalary') {
                 resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or HR employee salary/wage adjustments designed to trigger urgent credential theft.';
                 specificSteps = [
@@ -739,7 +753,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'brandimpersonation') {
                 resultDesc.textContent = 'This message matches cloned brand and service impersonation scams (such as fake Netflix, subscription billing, or travel booking alerts) designed to steal payment details.';
                 specificSteps = [
@@ -761,7 +775,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Voicemail & Callback Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for voicemail and callback telephone scams, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'headermismatch') {
                 resultDesc.textContent = 'This message exhibits email header authentication failures (SPF/DKIM/DMARC mismatches) or discrepancies between the displayed From: sender and the Reply-To: address.';
                 specificSteps = [
