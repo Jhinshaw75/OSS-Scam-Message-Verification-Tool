@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with Email Header & Reply-To Mismatch Vector)
+        // Contextual Categorized Threat Detection (Expanded with Cofense Cloud Storage / Shared Document Phishing Vector)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -476,9 +476,10 @@
         const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to');
         const isBrandImpersonation = text.includes('membership suspended') || text.includes('subscription billing failed') || text.includes('update your payment method') || text.includes('booking reservation issue') || text.includes('netflix billing') || text.includes('stream account suspended') || text.includes('payment declined on your account');
         const isVoicemailOrCallbackPhishing = text.includes('new voicemail') || text.includes('voicemail received') || text.includes('listen to message') || text.includes('audio attachment') || text.includes('.svg') || text.includes('call us at') || text.includes('call support at') || text.includes('customer service number') || text.includes('toll free support');
-        
-        // Specific New Enhancement: Email Header & Reply-To Mismatch Detection (SPF/DKIM/DMARC flags & From/Reply-To discrepancies)
         const isHeaderMismatch = text.includes('reply-to:') || text.includes('spf fail') || text.includes('dkim fail') || text.includes('dmarc fail') || text.includes('header mismatch') || (text.includes('from:') && text.includes('reply-to:')) || text.includes('authentication-results');
+        
+        // Specific New Enhancement from Cofense Archive: Cloud Storage & Shared Document Phishing (SharePoint, OneDrive, File Deletion Reminders)
+        const isCloudStoragePhishing = text.includes('file deletion reminder') || text.includes('shared a file with you') || text.includes('shared a document') || text.includes('onedrive notification') || text.includes('sharepoint document') || text.includes('google drive shared') || text.includes('files.fm') || text.includes('document preview available');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -526,6 +527,8 @@
             threatType = 'voicemailcallback';
         } else if (isHeaderMismatch) {
             threatType = 'headermismatch';
+        } else if (isCloudStoragePhishing) {
+            threatType = 'cloudstorage';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -726,6 +729,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Email Header & Reply-To Spoofing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for email header spoofing and BEC, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'cloudstorage') {
+                resultDesc.textContent = 'This message matches cloud storage and shared document collaboration phishing lures (such as fake SharePoint, OneDrive, Google Drive, or file deletion notices) designed to harvest credentials or deliver malware.';
+                specificSteps = [
+                    "Do not click links or preview shared documents in unexpected emails warning of file deletion or cloud storage expiration.",
+                    "Navigate directly to your official cloud storage portal (e.g., SharePoint, OneDrive, or Google Drive) by typing the trusted web address into your browser.",
+                    "If you downloaded an attachment or entered your login credentials on a shared document page, change your password immediately and notify your IT security team.",
+                    "Report cloud-based phishing and document collaboration scams to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloud Storage & Shared Document Phishing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for cloud storage and document sharing fraud, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
