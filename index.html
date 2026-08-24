@@ -480,6 +480,13 @@
         const isDisasterReliefScam = text.includes('hurricane recovery') || text.includes('emergency relief directorate') || text.includes('disaster assistance stipend') || text.includes('storm impacts') || text.includes('community relief grants');
         const isRawUrlPhishing = (text.includes('http://') || text.includes('https://')) && (text.includes('auth') || text.includes('login') || text.includes('token') || text.includes('refresh') || text.includes('secure') || text.includes('portal') || text.includes('update') || text.includes('verify'));
         const isAudioCallbackScam = text.includes('audio notice') || text.includes('voice authorization') || text.includes('security hotline') || text.includes('dial our') || (text.includes('bank transfer') && (text.includes('dial') || text.includes('call'))) || (text.includes('hotline') && (text.includes('security') || text.includes('support')));
+        
+        // Token Array Matching / Fuzzy Evasion Fallback: Catches hyphenated or tokenized multi-keyword phrases (e.g., suspension + notice + security + update)
+        const hasTokenSuspension = text.includes('suspension') || text.includes('suspend') || text.includes('deactivation');
+        const hasTokenSecurity = text.includes('security') || text.includes('profile') || text.includes('account');
+        const hasTokenAction = text.includes('immediate') || text.includes('update') || text.includes('verify') || text.includes('action');
+        const isTokenEvasionScam = (hasTokenSuspension && hasTokenSecurity) || (hasTokenSecurity && hasTokenAction && text.includes('notice'));
+
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -536,6 +543,8 @@
             threatType = 'rawurl';
         } else if (isAudioCallbackScam) {
             threatType = 'audiocallback';
+        } else if (isTokenEvasionScam) {
+            threatType = 'tokenevasion';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -758,6 +767,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Audio & Hotline Callback Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for telephone callback fraud, followed by complete resources:';
                 orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'tokenevasion') {
+                resultDesc.textContent = 'This message exhibits deliberate character obfuscation and tokenized keyword evasion (such as hyphenated words) designed to disguise suspension and account security threats.';
+                specificSteps = [
+                    "Do not respond to or act upon messages featuring broken or hyphenated wording regarding account security or suspension warnings.",
+                    "Verify your account status independently by navigating directly to your trusted service provider or platform app.",
+                    "If you clicked a link or provided information based on obfuscated warnings, secure your credentials immediately.",
+                    "Report obfuscated phishing messages and credential harvesting attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Obfuscated Phishing & Evasion Scams';
+                resourcesIntro.textContent = 'Prioritized agency contacts for evasion and phishing tactics, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
