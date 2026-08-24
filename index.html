@@ -432,12 +432,12 @@
     }
 
     function analyzeMessage() {
-        let text = '';
+        let rawText = '';
         if (activeInputMode === 'text') {
             const inputElem = document.getElementById('message-input');
-            text = inputElem ? inputElem.value.trim().toLowerCase() : '';
+            rawText = inputElem ? inputElem.value.trim().toLowerCase() : '';
         } else {
-            text = extractedImageText.trim().toLowerCase();
+            rawText = extractedImageText.trim().toLowerCase();
         }
 
         const resultsContainer = document.getElementById('results-container');
@@ -449,10 +449,13 @@
         const resourcesIntro = document.getElementById('resources-intro');
         const resourcesList = document.getElementById('resources-list');
 
-        if (!text) {
+        if (!rawText) {
             alert(activeInputMode === 'text' ? 'Please paste a message into the text box first.' : 'Please upload a screenshot containing readable text.');
             return;
         }
+
+        // Text Normalization: Strip hyphens and excessive spacing to defeat evasion tactics (e.g. "S-u-s-p-e-n-s-i-o-n")
+        const text = rawText.replace(/-/g, ' ').replace(/\s+/g, ' ');
 
         resultsContainer.style.display = 'block';
         stepsList.innerHTML = '';
@@ -475,6 +478,7 @@
         const isHsmvScam = text.includes('highway safety and motor vehicles') || text.includes('vehicle registration renewal') || text.includes('emissions processing fee') || text.includes('driving privileges') || text.includes('administrative suspension penalties');
         const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to') || text.includes('digital gift vouchers') || text.includes('digital wallet') || text.includes('milestone tokens') || text.includes('corporate ledger');
         const isDisasterReliefScam = text.includes('hurricane recovery') || text.includes('emergency relief directorate') || text.includes('disaster assistance stipend') || text.includes('storm impacts') || text.includes('community relief grants');
+        const isRawUrlPhishing = (text.includes('http://') || text.includes('https://')) && (text.includes('auth') || text.includes('login') || text.includes('token') || text.includes('refresh') || text.includes('secure') || text.includes('portal') || text.includes('update') || text.includes('verify'));
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -527,6 +531,8 @@
             threatType = 'execpayment';
         } else if (isDisasterReliefScam) {
             threatType = 'disaster';
+        } else if (isRawUrlPhishing) {
+            threatType = 'rawurl';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -727,6 +733,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Disaster Relief & Emergency Imposter Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for disaster relief fraud, followed by complete state and federal resources:';
                 orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
+            } else if (threatType === 'rawurl') {
+                resultDesc.textContent = 'This message contains unverified authentication or login links disguised as security updates or credential portals.';
+                specificSteps = [
+                    "Do not click raw web links or login URLs provided in unsolicited messages.",
+                    "Always navigate directly to official platforms by typing known secure web addresses into your browser.",
+                    "If credentials or tokens were entered on an unverified link, change your account passwords immediately.",
+                    "Report credential harvesting and suspicious phishing links to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: URL Phishing & Credential Harvesting';
+                resourcesIntro.textContent = 'Prioritized agency contacts for link-based phishing, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
@@ -759,7 +776,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
                 resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'signinsalary') {
                 resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or HR employee salary/wage adjustments designed to trigger urgent credential theft.';
                 specificSteps = [
