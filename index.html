@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -490,6 +490,9 @@
         // Corporate Jargon & Ledger Imposter Filter (BEC / Executive Jargon Lures)
         const isCorporateJargonScam = text.includes('asset distribution') || text.includes('ledger adjustment') || text.includes('cloud terminal') || text.includes('financial tokens') || text.includes('balance before close of business') || (text.includes('ledger') && (text.includes('adjust') || text.includes('balance'))) || (text.includes('asset') && text.includes('distribution'));
 
+        // Invoice & Remittance Redirection Scam Filter (Vendor Compromise / VEC)
+        const isInvoiceRedirectionScam = text.includes('remittance update') || text.includes('infrastructure migration') || text.includes('pending invoices') || text.includes('escrow routing account') || text.includes('routing account') || text.includes('update your payment ledger') || (text.includes('remittance') && text.includes('update')) || (text.includes('invoice') && (text.includes('redirect') || text.includes('routing')));
+
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -550,6 +553,8 @@
             threatType = 'tokenevasion';
         } else if (isCorporateJargonScam) {
             threatType = 'corporatejargon';
+        } else if (isInvoiceRedirectionScam) {
+            threatType = 'invoiceredirection';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -794,6 +799,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Business Email Compromise (BEC) & Corporate Fraud';
                 resourcesIntro.textContent = 'Prioritized agency contacts for corporate and executive fraud, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'invoiceredirection') {
+                resultDesc.textContent = 'This message matches vendor invoice redirection and remittance update fraud (Business Email Compromise) attempting to divert municipal or corporate payments into fraudulent escrow accounts.';
+                specificSteps = [
+                    "Do not alter payment routing, change bank accounts, or transfer funds based on unexpected remittance update notices or escrow account instructions.",
+                    "Verify any vendor or municipal billing changes by calling the supplier independently using a trusted, pre-established phone number from your official vendor records (never use numbers listed in the suspicious email).",
+                    "If payment routing was modified or funds were wired to an unverified account, contact your bank and financial department immediately to initiate a recall.",
+                    "Report vendor email compromise and invoice redirection fraud to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Invoice Redirection & Vendor Fraud';
+                resourcesIntro.textContent = 'Prioritized agency contacts for vendor email compromise and invoice fraud, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
@@ -863,7 +879,7 @@
             } else if (threatType === 'voicemailcallback') {
                 resultDesc.textContent = 'This message matches voicemail-themed attachment lures (such as malicious SVG or HTML files) or callback phishing tactics featuring unverified support phone numbers.';
                 specificSteps = [
-                    "Do not open attached audio files, SVG graphics, or HTML documents claiming to be missed voicemails.",
+                    "Do not open unsolicited PDF attachments, audio files, SVG graphics, or HTML documents claiming to be missed voicemails or billing alerts.",
                     "Do not call phone numbers provided in unsolicited warning emails or billing alerts; always use official contact numbers from trusted statements.",
                     "If you called a rogue support number and provided remote access, banking details, or passwords, contact your bank and IT security team immediately.",
                     "Report voicemail attachment luring and callback phishing campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
@@ -890,7 +906,7 @@
                     "If you downloaded an attachment or entered your login credentials on a shared document page, change your password immediately and notify your IT security team.",
                     "Report cloud-based phishing and document collaboration scams to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
-                resourcesHeading.textContent = 'PriorityResponse & Complete Directory: Cloud Storage & Shared Document Phishing';
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloud Storage & Shared Document Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for cloud storage and document sharing fraud, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else {
@@ -932,4 +948,4 @@
 </script>
 
 </body>
-</html> 
+</html>
