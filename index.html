@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -202,6 +202,16 @@
             font-size: 14px;
             color: #333;
         }
+        .signup-box {
+            margin-top: 15px;
+            background: #e8f4fd;
+            border-left: 4px solid var(--primary);
+            padding: 12px 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
         .resources-box {
             margin-top: 20px;
             background: #ffffff;
@@ -237,7 +247,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; padding: 0; max-width: 100%; }
-            .no-print, .header, #results-container h2, #results-container p, #steps-wrapper, .carrier-box { display: none !important; }
+            .no-print, .header, #results-container h2, #results-container p, #steps-wrapper, .carrier-box, .signup-box { display: none !important; }
             .resources-box { border: none !important; padding: 0 !important; margin: 0 !important; display: block !important; }
             #results-container { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; background: white !important; }
         }
@@ -246,22 +256,16 @@
 <body>
 
 <div class="container">
-    <div class="header" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
-            <a href="https://elderaffairs.org" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: bold; font-size: 14px;">
-                🏛️ Florida Department of Elder Affairs (DOEA)
+    <div class="header" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
+            <a href="https://elderaffairs.org" target="_blank" title="Florida Department of Elder Affairs">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAA5CAYAAAB0Jt0BAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAhdEVYdFRpdGxlAFBlcnNvbmFsaXplZCBGcmFtZSBhbmQgTG9nbwAAIABJREFUeF7tnQd0XMWZxt2t..." alt="Elder Affairs Florida Logo" style="height: 45px; object-fit: contain;">
             </a>
-            <span style="color: #ccc;">|</span>
-            <a href="https://opseniorshieldfl.com" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: bold; font-size: 14px;">
-                🛡️ Operation Senior Shield (OSS)
-            </a>
-        </div>
-        <div>
-            <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" style="background-color: var(--secondary); color: white; padding: 6px 14px; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold; display: inline-block;">
-                📝 Sign Up for OSS Alerts & Updates
+            <a href="https://opseniorshieldfl.com" target="_blank" title="Operation Senior Shield">
+                <img src="data:image/svg+xml;base64,..." alt="Operation Senior Shield Logo" style="height: 55px; object-fit: contain;">
             </a>
         </div>
-        <p style="margin: 5px 0 0 0; font-size: 14px; color: #666;">State of Florida &bull; Scam & Message Verification Tool</p>
+        <p style="margin: 0; font-size: 14px; color: #666;">State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
     </div>
 
     <!-- TERMS & CONDITIONS GATE -->
@@ -336,6 +340,10 @@
 
             <div class="carrier-box">
                 📱 <strong>Instant Carrier Action (Forward to 7726):</strong> You can forward any suspicious or spam text message directly to <strong>7726</strong> (which spells <strong>SPAM</strong> on phone keypads). This free service alerts major cellular carriers (AT&T, Verizon, T-Mobile) to investigate and block the sender across the mobile network.
+            </div>
+
+            <div class="signup-box">
+                🛡️ <strong>Operation Senior Shield Alerts:</strong> Want to receive proactive statewide fraud alerts and prevention updates directly? <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" style="color: var(--secondary); font-weight: bold; text-decoration: underline;">Sign up for OSS alerts here</a>.
             </div>
 
             <div class="resources-box">
