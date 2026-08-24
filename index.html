@@ -472,6 +472,7 @@
         const isUtilityShutoffScam = text.includes('power disconnection') || text.includes('past-due balance') || text.includes('electric & water') || text.includes('service disconnect') || text.includes('service account') || text.includes('municipal electric');
         const isHoaCommunityScam = text.includes('hoa notice') || text.includes('architectural compliance') || text.includes('gate card deactivation') || text.includes('resident portal') || text.includes('neighborhood assessment') || text.includes('community association');
         const isPdfAttachmentScam = text.includes('attached file:') || text.includes('statement_') || text.includes('.pdf') || text.includes('adobe acrobat document') || text.includes('secure adobe') || text.includes('updated digital statement');
+        const isHsmvScam = text.includes('highway safety and motor vehicles') || text.includes('vehicle registration renewal') || text.includes('emissions processing fee') || text.includes('driving privileges') || text.includes('administrative suspension penalties');
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -519,6 +520,8 @@
             threatType = 'hoa';
         } else if (isPdfAttachmentScam) {
             threatType = 'pdfattachment';
+        } else if (isHsmvScam) {
+            threatType = 'hsmv';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -688,6 +691,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: PDF Attachment & Document Lures';
                 resourcesIntro.textContent = 'Prioritized agency contacts for document attachment phishing, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'hsmv') {
+                resultDesc.textContent = 'This message matches fake state agency vehicle registration, driver license renewal, or emissions fee smishing notices designed to steal payment data through lookalike domains.';
+                specificSteps = [
+                    "Do not click links or pay fees through web addresses provided in text messages claiming to be from the Department of Highway Safety and Motor Vehicles (FLHSMV).",
+                    "Verify your vehicle registration or driver license status independently by navigating directly to the official state portal at flhsmv.gov.",
+                    "If you entered credit card details on a fraudulent vehicle renewal site, contact your bank immediately to secure your accounts.",
+                    "Report state agency imposter and registration smishing scams to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: FLHSMV & State Agency Imposter Scams';
+                resourcesIntro.textContent = 'Prioritized agency contacts for state agency and DMV imposter fraud, followed by complete resources:';
+                orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
