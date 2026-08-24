@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with Huntress Voicemail & Callback Phishing Vectors)
+        // Contextual Categorized Threat Detection (Expanded with Email Header & Reply-To Mismatch Vector)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -475,9 +475,10 @@
         const isAccountCompromiseAlert = text.includes('account has been compromised') || text.includes('account has been hacked') || text.includes('unauthorized access detected') || text.includes('security breach detected') || text.includes('account compromise alert');
         const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to');
         const isBrandImpersonation = text.includes('membership suspended') || text.includes('subscription billing failed') || text.includes('update your payment method') || text.includes('booking reservation issue') || text.includes('netflix billing') || text.includes('stream account suspended') || text.includes('payment declined on your account');
-        
-        // Specific New Enhancements from Huntress Archive: Voicemail Attachments & Callback Phone Number Phishing
         const isVoicemailOrCallbackPhishing = text.includes('new voicemail') || text.includes('voicemail received') || text.includes('listen to message') || text.includes('audio attachment') || text.includes('.svg') || text.includes('call us at') || text.includes('call support at') || text.includes('customer service number') || text.includes('toll free support');
+        
+        // Specific New Enhancement: Email Header & Reply-To Mismatch Detection (SPF/DKIM/DMARC flags & From/Reply-To discrepancies)
+        const isHeaderMismatch = text.includes('reply-to:') || text.includes('spf fail') || text.includes('dkim fail') || text.includes('dmarc fail') || text.includes('header mismatch') || (text.includes('from:') && text.includes('reply-to:')) || text.includes('authentication-results');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -523,6 +524,8 @@
             threatType = 'brandimpersonation';
         } else if (isVoicemailOrCallbackPhishing) {
             threatType = 'voicemailcallback';
+        } else if (isHeaderMismatch) {
+            threatType = 'headermismatch';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -712,6 +715,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Voicemail & Callback Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for voicemail and callback telephone scams, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'headermismatch') {
+                resultDesc.textContent = 'This message exhibits email header authentication failures (SPF/DKIM/DMARC mismatches) or discrepancies between the displayed From: sender and the Reply-To: address.';
+                specificSteps = [
+                    "Do not reply to emails where the Reply-To address differs from the official organizational sender or domain.",
+                    "Check email authentication results (SPF, DKIM, DMARC failures) when inspecting raw email headers (.eml files) for spoofing indicators.",
+                    "If sensitive information or credentials were submitted in response to a spoofed header email, notify your IT security team immediately.",
+                    "Report email authentication spoofing and business email compromise attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Email Header & Reply-To Spoofing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for email header spoofing and BEC, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
