@@ -338,7 +338,7 @@
                 <ol class="action-steps" id="steps-list"></ol>
             </div>
 
-            <!-- DROP-DOWN GUIDANCE FOR USERS WHO CLICKED LINKS / DOWNLOADED FILES -->
+            <!-- CONDITIONAL DROP-DOWN GUIDANCE FOR USERS WHO CLICKED LINKS / DOWNLOADED FILES -->
             <div id="compromise-dropdown-wrapper" class="no-print" style="margin-top: 15px; display:none;">
                 <details style="background: #fff3cd; border: 1px solid #ffeeba; padding: 12px 15px; border-radius: 6px; cursor: pointer; color: #856404;">
                     <summary style="font-weight: bold; font-size: 14px;">⚠️ Clicked a Link or Downloaded a File? Click Here for Immediate Steps</summary>
@@ -346,7 +346,7 @@
                         <p style="margin-bottom: 8px;"><strong>1. If you entered a password or PIN:</strong> Immediately change your password on that account using a trusted official app or website. If you used that same password elsewhere, change those passwords too.</p>
                         <p style="margin-bottom: 8px;"><strong>2. If you downloaded a file or attachment:</strong> Disconnect your device from the internet (turn off Wi-Fi or unplug) immediately to prevent malware from communicating outward.</p>
                         <p style="margin-bottom: 8px;"><strong>3. If you shared bank or credit card details:</strong> Call your bank or credit card company immediately using the phone number printed on the back of your card to freeze accounts or dispute charges.</p>
-                        <p style="margin: 0;"><strong>4. Need assistance?</strong> Call the Florida DOEA Elder Helpline at <strong>1-800-96-ELDER (1-800-963-5337âmara)</strong> for personal guidance.</p>
+                        <p style="margin: 0;"><strong>4. Need assistance?</strong> Call the Florida DOEA Elder Helpline at <strong>1-800-96-ELDER (1-800-963-5337)</strong> for personal guidance.</p>
                     </div>
                 </details>
             </div>
@@ -605,7 +605,14 @@
         if (threatType !== null) {
             resultsContainer.className = 'danger-result';
             resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
-            compromiseDropdown.style.display = 'block';
+            
+            // Conditionally show the compromise/download dropdown ONLY for link, file download, or credential entry threats
+            const linkDownloadThreats = ['delivery', 'account', 'compliance', 'pdfattachment', 'rawurl', 'tokenevasion', 'virtualconference', 'advanced', 'institutional', 'cloudstorage', 'brandimpersonation'];
+            if (linkDownloadThreats.includes(threatType)) {
+                compromiseDropdown.style.display = 'block';
+            } else {
+                compromiseDropdown.style.display = 'none';
+            }
             
             let specificSteps = [];
             let orderedResources = [];
