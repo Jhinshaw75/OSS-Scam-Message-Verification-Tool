@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -487,6 +487,9 @@
         const hasTokenAction = text.includes('immediate') || text.includes('update') || text.includes('verify') || text.includes('action');
         const isTokenEvasionScam = (hasTokenSuspension && hasTokenSecurity) || (hasTokenSecurity && hasTokenAction && text.includes('notice'));
 
+        // Corporate Jargon & Ledger Imposter Filter (BEC / Executive Jargon Lures)
+        const isCorporateJargonScam = text.includes('asset distribution') || text.includes('ledger adjustment') || text.includes('cloud terminal') || text.includes('financial tokens') || text.includes('balance before close of business') || (text.includes('ledger') && (text.includes('adjust') || text.includes('balance'))) || (text.includes('asset') && text.includes('distribution'));
+
         const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
         const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
         const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
@@ -545,6 +548,8 @@
             threatType = 'audiocallback';
         } else if (isTokenEvasionScam) {
             threatType = 'tokenevasion';
+        } else if (isCorporateJargonScam) {
+            threatType = 'corporatejargon';
         } else if (isAdvancedVector) {
             threatType = 'advanced';
         } else if (isInstitutionalArchiveVector) {
@@ -778,6 +783,17 @@
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Obfuscated Phishing & Evasion Scams';
                 resourcesIntro.textContent = 'Prioritized agency contacts for evasion and phishing tactics, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'corporatejargon') {
+                resultDesc.textContent = 'This message matches sophisticated Business Email Compromise (BEC) and corporate jargon imposter scams mimicking internal executive directives or financial token adjustments.';
+                specificSteps = [
+                    "Do not approve ledger adjustments, transfer financial tokens, or execute administrative financial requests received via unexpected messages.",
+                    "Verify unusual executive or managerial directives by contacting your colleague or supervisor directly through official internal phone extensions or messaging platforms.",
+                    "If corporate credentials or unauthorized financial actions were executed, notify your organization's IT security and finance department immediately.",
+                    "Report Business Email Compromise (BEC) and executive imposter scams to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Business Email Compromise (BEC) & Corporate Fraud';
+                resourcesIntro.textContent = 'Prioritized agency contacts for corporate and executive fraud, followed by complete resources:';
+                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'advanced') {
                 resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
                 specificSteps = [
@@ -810,7 +826,7 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
                 resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
+                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else if (threatType === 'signinsalary') {
                 resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or HR employee salary/wage adjustments designed to trigger urgent credential theft.';
                 specificSteps = [
@@ -874,7 +890,7 @@
                     "If you downloaded an attachment or entered your login credentials on a shared document page, change your password immediately and notify your IT security team.",
                     "Report cloud-based phishing and document collaboration scams to the Federal Trade Commission at ReportFraud.ftc.gov."
                 ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloud Storage & Shared Document Phishing';
+                resourcesHeading.textContent = 'PriorityResponse & Complete Directory: Cloud Storage & Shared Document Phishing';
                 resourcesIntro.textContent = 'Prioritized agency contacts for cloud storage and document sharing fraud, followed by complete resources:';
                 orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
             } else {
@@ -916,4 +932,4 @@
 </script>
 
 </body>
-</html>
+</html> 
