@@ -464,7 +464,7 @@
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
         const isLegalGov = text.includes('arrest') || text.includes('warrant') || text.includes('court order') || text.includes('summons') || text.includes('lawsuit against') || text.includes('social security suspended') || text.includes('irs audit');
         const isDeliverySmishing = text.includes('package delivery') || text.includes('track your shipment') || text.includes('toll fee') || text.includes('sunpass alert') || text.includes('pcn fine') || text.includes('redelivery hold');
-        const isHomeRepair = text.includes('unlicensed contractor') || text.includes('roof inspection scam') || text.includes('storm damage repair') || text.includes('cash upfront repair');
+        const isHomeRepair = text.includes('unlicensed contractor') || text.includes('roof inspection scam') || text.includes('storm damage repair') || text.includes('cash upfront repair') || text.includes('roof damage') || text.includes('storm damage') || text.includes('cash repair') || (text.includes('repair') && text.includes('contract'));
         const isRecovery = text.includes('recover funds') || text.includes('get your money back') || text.includes('recovery agent') || text.includes('asset recovery') || text.includes('fund retrieval');
 
         const scamIndicators = [
@@ -522,7 +522,6 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Exploitation & Elder Protection';
                 resourcesIntro.textContent = 'Prioritized agency contacts for physical exploitation, followed by complete state and federal resources:';
-                // Prioritize Abuse Hotline and AG first, followed by the rest
                 orderedResources = [resAbuse, resHelpline, resAg, resOss, resDoa, resFtc];
             } else if (threatType === 'legal') {
                 resultDesc.textContent = 'This message exhibits characteristics of government, tax, or legal imposter intimidation (such as fake warrants, court orders, or tax agency threats).';
