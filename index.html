@@ -458,7 +458,7 @@
         stepsList.innerHTML = '';
         resourcesList.innerHTML = '';
 
-        // Contextual Categorized Threat Detection (Expanded with Cloned Brand / Service Impersonation Vector)
+        // Contextual Categorized Threat Detection (Expanded with Huntress Voicemail & Callback Phishing Vectors)
         let threatType = null;
 
         const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
@@ -474,9 +474,10 @@
         const isForeignIpOrSalaryLure = text.includes('unusual sign-in activity') || text.includes('sign-in from foreign ip') || text.includes('sign-in attempt from') || text.includes('employee salary adjustment') || text.includes('wage increase notification') || text.includes('compensation review');
         const isAccountCompromiseAlert = text.includes('account has been compromised') || text.includes('account has been hacked') || text.includes('unauthorized access detected') || text.includes('security breach detected') || text.includes('account compromise alert');
         const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to');
-        
-        // Specific New Enhancement from Phishing Website Case Studies: Cloned Brand & Service Impersonation (Netflix, Booking, Streaming, Subscription Billing)
         const isBrandImpersonation = text.includes('membership suspended') || text.includes('subscription billing failed') || text.includes('update your payment method') || text.includes('booking reservation issue') || text.includes('netflix billing') || text.includes('stream account suspended') || text.includes('payment declined on your account');
+        
+        // Specific New Enhancements from Huntress Archive: Voicemail Attachments & Callback Phone Number Phishing
+        const isVoicemailOrCallbackPhishing = text.includes('new voicemail') || text.includes('voicemail received') || text.includes('listen to message') || text.includes('audio attachment') || text.includes('.svg') || text.includes('call us at') || text.includes('call support at') || text.includes('customer service number') || text.includes('toll free support');
 
         const scamIndicators = [
             'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
@@ -520,6 +521,8 @@
             threatType = 'execpayment';
         } else if (isBrandImpersonation) {
             threatType = 'brandimpersonation';
+        } else if (isVoicemailOrCallbackPhishing) {
+            threatType = 'voicemailcallback';
         } else if (matchCount >= 1 || hasFearPressure) {
             threatType = 'general';
         }
@@ -698,6 +701,17 @@
                 ];
                 resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloned Brand & Service Impersonation';
                 resourcesIntro.textContent = 'Prioritized agency contacts for subscription and brand impersonation fraud, followed by complete resources:';
+                orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
+            } else if (threatType === 'voicemailcallback') {
+                resultDesc.textContent = 'This message matches voicemail-themed attachment lures (such as malicious SVG or HTML files) or callback phishing tactics featuring unverified support phone numbers.';
+                specificSteps = [
+                    "Do not open attached audio files, SVG graphics, or HTML documents claiming to be missed voicemails.",
+                    "Do not call phone numbers provided in unsolicited warning emails or billing alerts; always use official contact numbers from trusted statements.",
+                    "If you called a rogue support number and provided remote access, banking details, or passwords, contact your bank and IT security team immediately.",
+                    "Report voicemail attachment luring and callback phishing campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
+                ];
+                resourcesHeading.textContent = 'Priority Response & Complete Directory: Voicemail & Callback Phishing';
+                resourcesIntro.textContent = 'Prioritized agency contacts for voicemail and callback telephone scams, followed by complete resources:';
                 orderedResources = [resFtc, resAg, resHelpline, resOss, resDoa, resAbuse];
             } else {
                 resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
