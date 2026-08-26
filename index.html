@@ -30,6 +30,68 @@
             line-height: 1.6;
         }
 
+        /* General Counsel Legal Disclaimer Modal Overlay */
+        #legalOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(15, 23, 42, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .legal-modal {
+            background-color: var(--card-bg);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: left;
+        }
+
+        .legal-modal h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+
+        .legal-text-box {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 15px;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .legal-btn {
+            background-color: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+
+        .legal-btn:hover {
+            background-color: #1d4ed8;
+        }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -223,14 +285,13 @@
             margin-top: 40px;
         }
 
-        /* Print-specific styles to hide inputs and buttons when printing */
         @media print {
             body {
                 background-color: white;
                 color: black;
                 padding: 0;
             }
-            .card:not(#resultContainer), header .logo-container, .btn-group, footer {
+            #legalOverlay, .card:not(#resultContainer), header .logo-container, .btn-group, footer {
                 display: none !important;
             }
             #resultContainer {
@@ -246,6 +307,18 @@
     </style>
 </head>
 <body>
+
+    <!-- General Counsel Mandatory Acceptance Overlay -->
+    <div id="legalOverlay">
+        <div class="legal-modal">
+            <h2>Legal Disclaimer & Terms of Use</h2>
+            <div class="legal-text-box">
+                <p><strong>NOTICE:</strong> This tool is provided by the State of Florida as an informational aid to assist senior citizens and community members in identifying potential scam and fraud patterns. It does not constitute formal legal, financial, or law enforcement advice.</p>
+                <p>By clicking "I Agree & Enter", you acknowledge that this analyzer uses automated pattern recognition to highlight potential risks, and you agree to independently verify all communications through official channels before taking financial or legal action.</p>
+            </div>
+            <button class="legal-btn" onclick="acceptLegalTerms()">I Agree & Enter Senior Digital Safeguard</button>
+        </div>
+    </div>
 
 <div class="container">
     <header>
@@ -277,6 +350,17 @@
 </div>
 
 <script>
+    function acceptLegalTerms() {
+        document.getElementById('legalOverlay').style.display = 'none';
+        sessionStorage.setItem('legalAccepted', 'true');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (sessionStorage.getItem('legalAccepted') === 'true') {
+            document.getElementById('legalOverlay').style.display = 'none';
+        }
+    });
+
     function analyzeMessage() {
         const text = document.getElementById("scamInput").value.trim();
         const resultContainer = document.getElementById("resultContainer");
