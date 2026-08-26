@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -131,6 +131,16 @@
             background-color: #cbd5e1;
         }
 
+        button.print-btn {
+            background-color: #0f172a;
+            margin-top: 16px;
+            width: 100%;
+        }
+
+        button.print-btn:hover {
+            background-color: #1e293b;
+        }
+
         #resultContainer {
             display: none;
         }
@@ -211,6 +221,27 @@
             font-size: 0.9rem;
             color: var(--text-muted);
             margin-top: 40px;
+        }
+
+        /* Print-specific styles to hide inputs and buttons when printing */
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+                padding: 0;
+            }
+            .card:not(#resultContainer), header .logo-container, .btn-group, footer {
+                display: none !important;
+            }
+            #resultContainer {
+                display: block !important;
+                border: none;
+                box-shadow: none;
+                padding: 0;
+            }
+            button.print-btn {
+                display: none !important;
+            }
         }
     </style>
 </head>
@@ -297,6 +328,8 @@
                         <li>⚖️ <strong>FTC Reporting Portal:</strong> <a href="https://reportfraud.ftc.gov" target="_blank">reportfraud.ftc.gov</a></li>
                     </ul>
                 </div>
+
+                <button class="print-btn" onclick="window.print()">🖨️ Print Pocket Guide & Emergency Numbers</button>
             `;
         } else {
             outputHTML = `
@@ -308,6 +341,7 @@
                     <h4>Need Guidance?</h4>
                     <p>If you still feel uneasy about this message, you can always contact the Florida Department of Elder Affairs Helpline at <a href="tel:18009635337">1-800-96-ELDER</a>.</p>
                 </div>
+                <button class="print-btn" onclick="window.print()">🖨️ Print Reference Guide</button>
             `;
         }
 
