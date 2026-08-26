@@ -2,982 +2,315 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Operation Senior Shield - Scam & Message Verification Tool</title>
-    <!-- Tesseract.js for robust in-browser OCR (Screenshot text extraction) -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Digital Safeguard | Fraud & Scam Analysis Tool</title>
     <style>
         :root {
-            --primary: #002b49;
-            --secondary: #0056b3;
-            --accent: #d9534f;
-            --success: #28a745;
-            --warning: #ffc107;
-            --light: #f8f9fa;
-            --dark: #333333;
-            --border: #ced4da;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --primary: #0f172a;
+            --primary-hover: #1e293b;
+            --accent-blue: #2563eb;
+            --border-color: #cbd5e1;
+            --danger-bg: #fef2f2;
+            --danger-border: #f87171;
+            --danger-text: #991b1b;
+            --safe-bg: #f0fdf4;
+            --safe-border: #4ade80;
+            --safe-text: #166534;
         }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
             padding: 20px;
             line-height: 1.6;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-            z-index: 1;
         }
-        .header {
+
+        header {
             text-align: center;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
-        .header h1 {
+
+        header h1 {
+            font-size: 2rem;
             color: var(--primary);
-            margin: 0 0 10px 0;
-            font-size: 24px;
+            margin-bottom: 5px;
         }
-        .header p {
-            color: #666;
-            margin: 0;
-            font-size: 14px;
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
         }
-        /* Terms Screen */
-        #terms-screen {
-            display: block;
-            position: relative;
-            z-index: 10;
-        }
-        .terms-box {
-            background: #f1f5f9;
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 6px;
-            max-height: 250px;
-            overflow-y: auto;
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
             margin-bottom: 20px;
-            font-size: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
-        /* Tool Screen */
-        #tool-screen {
-            display: none;
-        }
-        .input-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            background: #eef2f5;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #555;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .input-panel {
-            display: none;
-            margin-bottom: 20px;
-        }
-        .input-panel.active {
+
+        label {
             display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
         }
+
         textarea {
             width: 100%;
-            height: 130px;
+            height: 140px;
             padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-size: 16px;
-            box-sizing: border-box;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
             resize: vertical;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
         }
-        .upload-zone {
-            border: 2px dashed var(--border);
-            border-radius: 6px;
-            padding: 25px;
-            text-align: center;
-            background: #fafbfc;
-            cursor: pointer;
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
         }
-        .upload-zone input {
-            display: none;
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 16px;
         }
-        #preview-container {
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-        #image-preview {
-            max-width: 100%;
-            max-height: 180px;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-        #loader {
-            display: none;
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
-            color: #555;
-        }
-        .spinner {
-            width: 30px;
-            height: 30px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--secondary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 8px auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .btn {
-            background-color: var(--secondary);
+
+        button {
+            background-color: var(--accent-blue);
             color: white;
             border: none;
+            border-radius: 8px;
             padding: 12px 24px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            position: relative;
-            z-index: 20;
+            transition: background-color 0.2s;
+            flex: 1;
         }
-        .btn:hover {
-            background-color: var(--primary);
+
+        button:hover {
+            background-color: #1d4ed8;
         }
-        /* Results Section */
-        #results-container {
-            margin-top: 25px;
+
+        button.secondary {
+            background-color: #e2e8f0;
+            color: var(--text-main);
+            flex: 0.4;
+        }
+
+        button.secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        /* Results Output Styling */
+        #resultContainer {
             display: none;
-            padding: 20px;
+        }
+
+        .halt-box {
+            background-color: var(--danger-bg);
+            border-left: 6px solid var(--danger-border);
+            padding: 16px;
             border-radius: 6px;
+            margin-bottom: 20px;
         }
-        .safe-result {
-            background-color: #d4edda !important;
-            border: 1px solid #c3e6cb !important;
-            color: #155724 !important;
+
+        .halt-box h3 {
+            color: var(--danger-text);
+            margin-top: 0;
+            font-size: 1.25rem;
         }
-        .danger-result {
-            background-color: #f8d7da !important;
-            border: 1px solid #f5c6cb !important;
-            color: #721c24 !important;
+
+        .safe-box {
+            background-color: var(--safe-bg);
+            border-left: 6px solid var(--safe-border);
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
         }
-        .action-steps {
-            margin-top: 15px;
+
+        .safe-box h3 {
+            color: var(--safe-text);
+            margin-top: 0;
+            font-size: 1.25rem;
+        }
+
+        .action-steps ol {
             padding-left: 20px;
+            margin: 10px 0;
         }
+
         .action-steps li {
-            margin-bottom: 8px;
-            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.05rem;
         }
-        .carrier-box {
+
+        .official-resources {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
             margin-top: 20px;
-            background: #eef5fc;
-            border-left: 4px solid var(--secondary);
-            padding: 12px 15px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #333;
         }
-        .signup-box {
-            margin-top: 15px;
-            background: #e8f4fd;
-            border-left: 4px solid var(--primary);
-            padding: 12px 15px;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #333;
-            text-align: center;
-        }
-        .resources-box {
-            margin-top: 20px;
-            background: #ffffff;
-            border: 1px solid var(--border);
-            padding: 15px;
-            border-radius: 4px;
-            color: #333333;
-        }
-        .resources-box h4 {
+
+        .official-resources h4 {
             margin-top: 0;
             color: var(--primary);
         }
-        .resources-box ul {
+
+        .official-resources ul {
+            list-style: none;
+            padding: 0;
             margin: 0;
-            padding-left: 20px;
         }
-        .resources-box li {
+
+        .official-resources li {
             margin-bottom: 8px;
-            font-size: 14px;
         }
-        .compliance-note {
-            margin-top: 15px;
-            font-size: 12px;
-            color: #555;
+
+        .official-resources a {
+            color: var(--accent-blue);
+            text-decoration: none;
+            font-weight: 600;
         }
-        .print-btn {
-            background-color: #6c757d;
-            margin-top: 15px;
+
+        .official-resources a:hover {
+            text-decoration: underline;
         }
-        .print-btn:hover {
-            background-color: #5a6268;
-        }
-        @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; padding: 0; max-width: 100%; }
-            .no-print, .header, #results-container h2, #results-container p, #steps-wrapper, .carrier-box, .signup-box { display: none !important; }
-            .resources-box { border: none !important; padding: 0 !important; margin: 0 !important; display: block !important; }
-            #results-container { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; background: white !important; }
+
+        footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 40px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="header" style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
-            <a href="https://elderaffairs.org" target="_blank" title="Florida Department of Elder Affairs">
-                <img src="doea-logo.png" alt="Elder Affairs Florida Logo" style="height: 48px; object-fit: contain;">
-            </a>
-            <a href="https://opseniorshieldfl.com" target="_blank" title="Operation Senior Shield">
-                <img src="oss-logo.png" alt="Operation Senior Shield Logo" style="height: 60px; object-fit: contain;">
-            </a>
-        </div>
-        <p style="margin: 0; font-size: 14px; color: #666;">State of Florida Department of Elder Affairs &bull; Scam & Message Verification Tool</p>
-    </div>
+    <header>
+        <h1>Senior Digital Safeguard</h1>
+        <p>Instant Scam & Fraud Protection Analyzer</p>
+    </header>
 
-    <!-- TERMS & CONDITIONS GATE -->
-    <div id="terms-screen" class="no-print">
-        <h3>Client Agreement & Terms of Use</h3>
+    <div class="card">
+        <label for="scamInput">Paste suspicious text, email, or message below:</label>
+        <textarea id="scamInput" placeholder="Example: 'URGENT: Your bank account has been locked due to suspicious activity. Click here immediately to verify your info...'"></textarea>
         
-        <!-- DEVICE INSTALL INSTRUCTIONS DROP-DOWN -->
-        <div style="margin-bottom: 15px;">
-            <details style="background: #f1f5f9; border: 1px solid var(--border); padding: 12px 15px; border-radius: 6px; cursor: pointer;">
-                <summary style="font-weight: bold; color: var(--primary); font-size: 14px;">📱 How to Save This Tool to Your Device (Click to expand)</summary>
-                <div style="margin-top: 10px; font-size: 13px; color: #333; line-height: 1.5;">
-                    <p style="margin-bottom: 8px;"><strong>For Android (Google Chrome):</strong> Tap the three dots (⋮) in the top-right corner of Chrome, and select <em>"Install and create shortcut"</em> or <em>"Add to Home screen"</em>.</p>
-                    <p style="margin-bottom: 8px;"><strong>For iPhone / iPad (Safari):</strong> Tap the Share button (the square with an arrow pointing up at the bottom), scroll down, and tap <em>"Add to Home Screen"</em>.</p>
-                    <p><strong>For Computers (Windows / Mac):</strong> Click the install icon in the address bar or bookmark the page for instant access.</p>
-                </div>
-            </details>
-        </div>
-
-        <div class="terms-box">
-            <p><strong>Please review the terms before proceeding:</strong></p>
-            <p>1. This utility is designed strictly for educational triage, message pattern evaluation, and public awareness navigation under Operation Senior Shield.</p>
-            <p>2. <strong>Zero Data Retention:</strong> No personal data, identifiable text inputs, or communication content are stored, logged, or transmitted to external databases. All analysis is executed dynamically and purged upon session closure.</p>
-            <p>3. This tool serves as an educational self-defense screening mechanism and does not constitute a formal law enforcement investigative filing or official state agency reporting intake.</p>
-        </div>
-        <button type="button" class="btn" onclick="acceptTerms(); return false;">I Agree & Open Verification Tool</button>
-    </div>
-
-    <!-- MAIN VERIFICATION TOOL -->
-    <div id="tool-screen">
-        <div class="input-group no-print">
-            <label style="margin-bottom: 8px;">Select Input Method:</label>
-            <div class="input-tabs">
-                <button type="button" class="tab-btn active" id="tab-text-btn" onclick="switchTab('text')">Paste Text</button>
-                <button type="button" class="tab-btn" id="tab-img-btn" onclick="switchTab('image')">Upload Screenshot</button>
-            </div>
-
-            <!-- Text Input Panel -->
-            <div class="input-panel active" id="panel-text">
-                <textarea id="message-input" placeholder="Paste the suspicious email, text message, or notice here..."></textarea>
-            </div>
-
-            <!-- Image Upload Panel -->
-            <div class="input-panel" id="panel-img">
-                <div class="upload-zone" onclick="document.getElementById('file-input').click()">
-                    <p style="margin: 0 0 8px 0; font-size: 14px; color: #555;">📸 Have a screenshot of a text or email? Upload it here to read automatically:</p>
-                    <button type="button" class="btn" style="padding: 10px; font-size: 14px; width: auto; display: inline-block;">Select Screenshot / Image</button>
-                    <input type="file" id="file-input" accept="image/*" onchange="processSelectedFile(this)">
-                </div>
-                <div id="preview-container">
-                    <img id="image-preview" alt="Uploaded Screenshot Preview">
-                </div>
-            </div>
-        </div>
-
-        <button type="button" class="btn no-print" id="analyze-btn" onclick="analyzeMessage()">Analyze Message</button>
-
-        <!-- PROCESSING LOADER -->
-        <div id="loader">
-            <div class="spinner"></div>
-            <p id="loader-text" style="margin: 0;">Evaluating message text...</p>
-        </div>
-
-        <!-- RESULTS SECTION -->
-        <div id="results-container">
-            <h2 id="result-title" style="margin-top:0;"></h2>
-            <p id="result-description"></p>
-            
-            <div id="steps-wrapper" style="display:none;">
-                <strong>Recommended Action Steps:</strong>
-                <ol class="action-steps" id="steps-list"></ol>
-            </div>
-
-            <!-- CONDITIONAL DROP-DOWN GUIDANCE FOR USERS WHO CLICKED LINKS / DOWNLOADED FILES -->
-            <div id="compromise-dropdown-wrapper" class="no-print" style="margin-top: 15px; display:none;">
-                <details style="background: #fff3cd; border: 1px solid #ffeeba; padding: 12px 15px; border-radius: 6px; cursor: pointer; color: #856404;">
-                    <summary style="font-weight: bold; font-size: 14px;">⚠️ Clicked a Link or Downloaded a File? Click Here for Immediate Steps</summary>
-                    <div style="margin-top: 10px; font-size: 13px; line-height: 1.5;">
-                        <p style="margin-bottom: 8px;"><strong>1. If you entered a password or PIN:</strong> Immediately change your password on that account using a trusted official app or website. If you used that same password elsewhere, change those passwords too.</p>
-                        <p style="margin-bottom: 8px;"><strong>2. If you downloaded a file or attachment:</strong> Disconnect your device from the internet (turn off Wi-Fi or unplug) immediately to prevent malware from communicating outward.</p>
-                        <p style="margin-bottom: 8px;"><strong>3. If you shared bank or credit card details:</strong> Call your bank or credit card company immediately using the phone number printed on the back of your card to freeze accounts or dispute charges.</p>
-                        <p style="margin: 0;"><strong>4. Need assistance?</strong> Call the Florida DOEA Elder Helpline at <strong>1-800-96-ELDER (1-800-963-5337)</strong> for personal guidance.</p>
-                    </div>
-                </details>
-            </div>
-
-            <div class="carrier-box">
-                📱 <strong>Instant Carrier Action (Forward to 7726):</strong> You can forward any suspicious or spam text message directly to <strong>7726</strong> (which spells <strong>SPAM</strong> on phone keypads). This free service alerts major cellular carriers (AT&T, Verizon, T-Mobile) to investigate and block the sender across the mobile network.
-            </div>
-
-            <div class="signup-box">
-                🛡️ <strong>Operation Senior Shield Alerts:</strong> Want to receive proactive statewide fraud alerts and prevention updates directly? <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" style="color: var(--secondary); font-weight: bold; text-decoration: underline;">Sign up for OSS alerts here</a>.
-            </div>
-
-            <div class="resources-box">
-                <h4 id="resources-heading">Verified Florida & Federal Resource Directory</h4>
-                <p id="resources-intro" style="margin-top:0; font-size:13px; color:#555;">Connect directly with official state and federal protection agencies:</p>
-                <ul id="resources-list">
-                    <!-- Populated dynamically to prioritize relevant threat resources while retaining complete directory access -->
-                </ul>
-                <div class="compliance-note">
-                    <strong>Official Compliance Note:</strong> Free resources like the Florida DOEA Elder Helpline and federal reporting portals never charge fees to investigate fraud.
-                </div>
-            </div>
-
-            <button type="button" class="btn print-btn no-print" onclick="window.print()">Print Reference Card</button>
+        <div class="btn-group">
+            <button onclick="analyzeMessage()">Analyze Message</button>
+            <button class="secondary" onclick="clearForm()">Clear</button>
         </div>
     </div>
+
+    <div id="resultContainer" class="card">
+        <!-- Dynamic Agentic Output lands here -->
+    </div>
+
+    <footer>
+        <p>Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield Guidelines.</p>
+    </footer>
 </div>
 
 <script>
-    let activeInputMode = 'text';
-    let extractedImageText = '';
-
-    function acceptTerms() {
-        const termsScreen = document.getElementById('terms-screen');
-        const toolScreen = document.getElementById('tool-screen');
-        if (termsScreen && toolScreen) {
-            termsScreen.style.display = 'none';
-            toolScreen.style.display = 'block';
-        }
-    }
-
-    function switchTab(mode) {
-        activeInputMode = mode;
-        const textBtn = document.getElementById('tab-text-btn');
-        const imgBtn = document.getElementById('tab-img-btn');
-        const panelText = document.getElementById('panel-text');
-        const panelImg = document.getElementById('panel-img');
-
-        if (mode === 'text') {
-            textBtn.classList.add('active');
-            imgBtn.classList.remove('active');
-            panelText.classList.add('active');
-            panelImg.classList.remove('active');
-        } else {
-            imgBtn.classList.add('active');
-            textBtn.classList.remove('active');
-            panelImg.classList.add('active');
-            panelText.classList.remove('active');
-        }
-    }
-
-    function processSelectedFile(input) {
-        if (input.files && input.files[0]) {
-            const file = input.files[0];
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('image-preview').src = e.target.result;
-                document.getElementById('preview-container').style.display = 'block';
-            }
-            reader.readAsDataURL(file);
-
-            // Execute Tesseract OCR
-            const loader = document.getElementById('loader');
-            const loaderText = document.getElementById('loader-text');
-            const analyzeBtn = document.getElementById('analyze-btn');
-
-            loader.style.display = 'block';
-            loaderText.textContent = 'Extracting text from screenshot (OCR processing)...';
-            analyzeBtn.style.display = 'none';
-
-            Tesseract.recognize(
-                file,
-                'eng',
-                { logger: m => {} }
-            ).then(({ data: { text } }) => {
-                extractedImageText = text;
-                loader.style.display = 'none';
-                analyzeBtn.style.display = 'block';
-            }).catch(err => {
-                console.error(err);
-                alert('Could not extract text from image. Please try pasting text manually.');
-                loader.style.display = 'none';
-                analyzeBtn.style.display = 'block';
-            });
-        }
-    }
-
     function analyzeMessage() {
-        let rawText = '';
-        if (activeInputMode === 'text') {
-            const inputElem = document.getElementById('message-input');
-            rawText = inputElem ? inputElem.value.trim().toLowerCase() : '';
-        } else {
-            rawText = extractedImageText.trim().toLowerCase();
-        }
+        const text = document.getElementById("scamInput").value.trim();
+        const resultContainer = id("resultContainer");
 
-        const resultsContainer = document.getElementById('results-container');
-        const resultTitle = document.getElementById('result-title');
-        const resultDesc = document.getElementById('result-description');
-        const stepsWrapper = document.getElementById('steps-wrapper');
-        const stepsList = document.getElementById('steps-list');
-        const compromiseDropdown = document.getElementById('compromise-dropdown-wrapper');
-        const resourcesHeading = document.getElementById('resources-heading');
-        const resourcesIntro = document.getElementById('resources-intro');
-        const resourcesList = document.getElementById('resources-list');
-
-        if (!rawText) {
-            alert(activeInputMode === 'text' ? 'Please paste a message into the text box first.' : 'Please upload a screenshot containing readable text.');
+        if (!text) {
+            alert("Please paste a message to analyze.");
             return;
         }
 
-        // Text Normalization: Strip hyphens and excessive spacing to defeat evasion tactics (e.g. "S-u-s-p-e-n-s-i-o-n")
-        const text = rawText.replace(/-/g, ' ').replace(/\s+/g, ' ');
-
-        resultsContainer.style.display = 'block';
-        stepsList.innerHTML = '';
-        resourcesList.innerHTML = '';
-
-        // Contextual Categorized Threat Detection
-        let threatType = null;
-
-        const isCourierGold = text.includes('gold bar') || text.includes('precious metals') || text.includes('cash courier') || text.includes('liquidate') || text.includes('safe account') || text.includes('protected account');
-        const isLegalGov = text.includes('arrest') || text.includes('warrant') || text.includes('court order') || text.includes('summons') || text.includes('lawsuit against') || text.includes('social security suspended') || text.includes('irs audit');
-        const isDeliverySmishing = text.includes('package delivery') || text.includes('track your shipment') || text.includes('toll fee') || text.includes('sunpass alert') || text.includes('pcn fine') || text.includes('redelivery hold');
-        const isHomeRepair = text.includes('unlicensed contractor') || text.includes('roof inspection scam') || text.includes('storm damage repair') || text.includes('cash upfront repair') || text.includes('roof damage') || text.includes('storm damage') || text.includes('cash repair') || (text.includes('repair') && text.includes('contract'));
-        const isRecovery = text.includes('recover funds') || text.includes('get your money back') || text.includes('recovery agent') || text.includes('asset recovery') || text.includes('fund retrieval');
-        const isJobOrAcademicScam = text.includes('research internship') || text.includes('academic research fellowship') || text.includes('research assistance inquiry') || text.includes('research assistant needed') || text.includes('new internship opportunity') || text.includes('part-time work-study') || text.includes('remote position') || text.includes('paid weekly') || text.includes('office of career services') || (text.includes('internship') && (text.includes('@gmail.com') || text.includes('@yahoo.com') || text.includes('per week')));
-        const isAccountQuotaScam = text.includes('exceeded its mail quota') || text.includes('account will be inactive') || text.includes('verify your account') || text.includes('axess') || text.includes('online pay statement available') || text.includes('employee pay raise') || text.includes('grant information') || text.includes('403b account');
-        const isComplianceAuditScam = text.includes('compliance audit') || text.includes('annual audit') || text.includes('personnel documents') || text.includes('active status') || text.includes('verify-secure') || text.includes('compliance review');
-        const isUtilityShutoffScam = text.includes('power disconnection') || text.includes('past-due balance') || text.includes('electric & water') || text.includes('service disconnect') || text.includes('service account') || text.includes('municipal electric');
-        const isHoaCommunityScam = text.includes('hoa notice') || text.includes('architectural compliance') || text.includes('gate card deactivation') || text.includes('resident portal') || text.includes('neighborhood assessment') || text.includes('community association');
-        const isPdfAttachmentScam = text.includes('attached file:') || text.includes('statement_') || text.includes('.pdf') || text.includes('adobe acrobat document') || text.includes('secure adobe') || text.includes('updated digital statement');
-        const isHsmvScam = text.includes('highway safety and motor vehicles') || text.includes('vehicle registration renewal') || text.includes('emissions processing fee') || text.includes('driving privileges') || text.includes('administrative suspension penalties');
-        const isExecutiveReimbursementScam = text.includes('reimbursement request') || text.includes('peer payment') || text.includes('handle some expenses') || text.includes('quick favor') || text.includes('out of the office right now') || text.includes('purchase gift cards for') || text.includes('zelle payment') || text.includes('wire funds to') || text.includes('digital gift vouchers') || text.includes('digital wallet') || text.includes('milestone tokens') || text.includes('corporate ledger');
-        const isDisasterReliefScam = text.includes('hurricane recovery') || text.includes('emergency relief directorate') || text.includes('disaster assistance stipend') || text.includes('storm impacts') || text.includes('community relief grants');
-        const isRawUrlPhishing = (text.includes('http://') || text.includes('https://')) && (text.includes('auth') || text.includes('login') || text.includes('token') || text.includes('refresh') || text.includes('secure') || text.includes('portal') || text.includes('update') || text.includes('verify') || text.includes('join'));
-        const isAudioCallbackScam = text.includes('audio notice') || text.includes('voice authorization') || text.includes('security hotline') || text.includes('dial our') || (text.includes('bank transfer') && (text.includes('dial') || text.includes('call'))) || (text.includes('hotline') && (text.includes('security') || text.includes('support')));
+        // Simple static pattern matching representing the Agentic 4-Step Action Chain
+        const lowerText = text.toLowerCase();
+        const scamKeywords = ["urgent", "locked", "bank", "verify", "suspend", "winner", "prize", "gift card", "social security", "irs", "fbi", "click here", "password", "crypto", "wire"];
         
-        // Token Array Matching / Fuzzy Evasion Fallback
-        const hasTokenSuspension = text.includes('suspension') || text.includes('suspend') || text.includes('deactivation');
-        const hasTokenSecurity = text.includes('security') || text.includes('profile') || text.includes('account');
-        const hasTokenAction = text.includes('immediate') || text.includes('update') || text.includes('verify') || text.includes('action');
-        const isTokenEvasionScam = (hasTokenSuspension && hasTokenSecurity) || (hasTokenSecurity && hasTokenAction && text.includes('notice'));
-
-        const isCorporateJargonScam = text.includes('asset distribution') || text.includes('ledger adjustment') || text.includes('cloud terminal') || text.includes('financial tokens') || text.includes('balance before close of business') || (text.includes('ledger') && (text.includes('adjust') || text.includes('balance'))) || (text.includes('asset') && text.includes('distribution'));
-        const isInvoiceRedirectionScam = text.includes('remittance update') || text.includes('infrastructure migration') || text.includes('pending invoices') || text.includes('escrow routing account') || text.includes('routing account') || text.includes('update your payment ledger') || (text.includes('remittance') && text.includes('update')) || (text.includes('invoice') && (text.includes('redirect') || text.includes('routing')));
-        const isVirtualConferenceScam = text.includes('virtual leadership sync') || text.includes('encrypted video conference') || text.includes('state grant appropriations') || text.includes('legislative committee session') || text.includes('video conference link') || (text.includes('video conference') && text.includes('link')) || (text.includes('leadership sync') || text.includes('grant appropriations'));
-
-        const isAdvancedVector = text.includes('scan the qr code') || text.includes('qr code below') || text.includes('docusign') || text.includes('shared a document') || text.includes('dropbox file') || text.includes('adobe sign') || text.includes('previous thread') || text.includes('continuing our discussion') || text.includes('complete the captcha');
-        const isInstitutionalArchiveVector = text.includes('direct deposit update') || text.includes('payroll redirection') || text.includes('ucpath') || text.includes('campus id card') || text.includes('id verification scan') || text.includes('duo bypass') || text.includes('calendar invite') || text.includes('shared cloud file');
-        const isAiResearchOrProductivitySpam = text.includes('wikipedia page writing') || text.includes('research question inquiry') || text.includes('publication data request') || text.includes('calendar invitation spam') || text.includes('bcal invite');
-        const isForeignIpOrSalaryLure = text.includes('unusual sign-in activity') || text.includes('sign-in from foreign ip') || text.includes('sign-in attempt from') || text.includes('employee salary adjustment') || text.includes('wage increase notification') || text.includes('compensation review');
-        const isAccountCompromiseAlert = text.includes('account has been compromised') || text.includes('account has been hacked') || text.includes('unauthorized access detected') || text.includes('security breach detected') || text.includes('account compromise alert');
-        const isBrandImpersonation = text.includes('membership suspended') || text.includes('subscription billing failed') || text.includes('update your payment method') || text.includes('booking reservation issue') || text.includes('netflix billing') || text.includes('stream account suspended') || text.includes('payment declined on your account');
-        const isVoicemailOrCallbackPhishing = text.includes('new voicemail') || text.includes('voicemail received') || text.includes('listen to message') || text.includes('audio attachment') || text.includes('.svg') || text.includes('call us at') || text.includes('call support at') || text.includes('customer service number') || text.includes('toll free support');
-        const isHeaderMismatch = text.includes('reply-to:') || text.includes('spf fail') || text.includes('dkim fail') || text.includes('dmarc fail') || text.includes('header mismatch') || (text.includes('from:') && text.includes('reply-to:')) || text.includes('authentication-results');
-        const isCloudStoragePhishing = text.includes('file deletion reminder') || text.includes('shared a file with you') || text.includes('shared a document') || text.includes('onedrive notification') || text.includes('sharepoint document') || text.includes('google drive shared') || text.includes('files.fm') || text.includes('document preview available');
-
-        const scamIndicators = [
-            'gift card', 'crypto investment', 'bitcoin wallet', 'tech support scam', 'microsoft alert', 
-            'apple support scam', 'grandparent emergency', 'voice clone', 'bail money', 'account frozen',
-            'verify your ssn', 'claim against your assets', 'courier pickup'
-        ];
-
-        let matchCount = 0;
-        scamIndicators.forEach(indicator => {
-            if (text.includes(indicator)) matchCount++;
-        });
-
-        const hasLinkOrUrl = text.includes('http://') || text.includes('https://') || text.includes('bit.ly') || text.includes('tinyurl');
-        const hasFearPressure = text.includes('immediate action') || text.includes('final attempt') || text.includes('warrant for arrest') || text.includes('account suspended immediately');
-
-        if (isCourierGold) {
-            threatType = 'courier';
-        } else if (isLegalGov) {
-            threatType = 'legal';
-        } else if (isDeliverySmishing || (hasLinkOrUrl && (text.includes('package') || text.includes('delivery') || text.includes('toll') || text.includes('shipping')))) {
-            threatType = 'delivery';
-        } else if (isHomeRepair) {
-            threatType = 'repair';
-        } else if (isRecovery) {
-            threatType = 'recovery';
-        } else if (isJobOrAcademicScam) {
-            threatType = 'job';
-        } else if (isAccountQuotaScam) {
-            threatType = 'account';
-        } else if (isComplianceAuditScam) {
-            threatType = 'compliance';
-        } else if (isUtilityShutoffScam) {
-            threatType = 'utility';
-        } else if (isHoaCommunityScam) {
-            threatType = 'hoa';
-        } else if (isPdfAttachmentScam) {
-            threatType = 'pdfattachment';
-        } else if (isHsmvScam) {
-            threatType = 'hsmv';
-        } else if (isExecutiveReimbursementScam) {
-            threatType = 'execpayment';
-        } else if (isDisasterReliefScam) {
-            threatType = 'disaster';
-        } else if (isRawUrlPhishing) {
-            threatType = 'rawurl';
-        } else if (isAudioCallbackScam) {
-            threatType = 'audiocallback';
-        } else if (isTokenEvasionScam) {
-            threatType = 'tokenevasion';
-        } else if (isCorporateJargonScam) {
-            threatType = 'corporatejargon';
-        } else if (isInvoiceRedirectionScam) {
-            threatType = 'invoiceredirection';
-        } else if (isVirtualConferenceScam) {
-            threatType = 'virtualconference';
-        } else if (isAdvancedVector) {
-            threatType = 'advanced';
-        } else if (isInstitutionalArchiveVector) {
-            threatType = 'institutional';
-        } else if (isAiResearchOrProductivitySpam) {
-            threatType = 'airesearch';
-        } else if (isForeignIpOrSalaryLure) {
-            threatType = 'signinsalary';
-        } else if (isAccountCompromiseAlert) {
-            threatType = 'compromise';
-        } else if (isBrandImpersonation) {
-            threatType = 'brandimpersonation';
-        } else if (isVoicemailOrCallbackPhishing) {
-            threatType = 'voicemailcallback';
-        } else if (isHeaderMismatch) {
-            threatType = 'headermismatch';
-        } else if (isCloudStoragePhishing) {
-            threatType = 'cloudstorage';
-        } else if (matchCount >= 1 || hasFearPressure) {
-            threatType = 'general';
+        let isScam = false;
+        let matchedKeyword = "";
+        
+        for (let kw of scamKeywords) {
+            if (lowerText.includes(kw)) {
+                isScam = true;
+                matchedKeyword = kw;
+                break;
+            }
         }
 
-        // Full Master Resource List items
-        const resOss = '<li><strong>Operation Senior Shield Portal:</strong> Learn about statewide fraud alerts and prevention initiatives at the <a href="https://opseniorshieldfl.com" target="_blank">Operation Senior Shield Website</a>.</li>';
-        const resDoa = '<li><strong>Florida Department of Elder Affairs (DOEA):</strong> Access statewide aging services and official resources at the <a href="https://elderaffairs.org" target="_blank">DOEA Official Website</a>.</li>';
-        const resHelpline = '<li><strong>Florida DOEA Elder Helpline:</strong> Call <strong>1-800-96-ELDER (1-800-963-5337)</strong> or visit the <a href="https://elderaffairs.org" target="_blank">DOEA Elder Helpline Portal</a>.</li>';
-        const resAg = '<li><strong>Florida Attorney General Senior Protection Team:</strong> Call <strong>1-866-9NO-SCAM (1-866-966-7226)</strong> or visit the <a href="https://www.myfloridalegal.com" target="_blank">AG Senior Protection Directory</a>. (Investigates statewide deceptive trade practices and consumer fraud).</li>';
-        const resAbuse = '<li><strong>Florida Abuse Hotline (Exploitation & Neglect):</strong> Call <strong>1-800-96-ABUSE (1-800-962-2873)</strong> or report online via the <a href="https://reportabuse.myflfamilies.com" target="_blank">DCF Abuse Reporting Portal</a>.</li>';
-        const resFff = '<li><strong>Fraud Free Florida (Florida Dept. of Financial Services):</strong> Report insurance, investment, and financial fraud or check out tips at <a href="https://www.myfloridacfo.com/fraudfreeflorida/" target="_blank">FraudFreeFlorida.com</a>.</li>';
-        const resFdle = '<li><strong>FDLE Cybercrime Office:</strong> Report online computer crimes, cyber-enabled fraud, and identity theft at the <a href="https://www.fdle.state.fl.us/fco/report-a-cybercrime-2026" target="_blank">FDLE Cybercrime Reporting Portal</a>.</li>';
-        const resIc3 = '<li><strong>FBI Internet Crime Complaint Center (IC3):</strong> Report cyber-enabled crimes, online financial fraud, and phishing attacks to federal investigators at <a href="https://www.ic3.gov" target="_blank">IC3.gov</a>.</li>';
-        const resFtc = '<li><strong>Federal Trade Commission Reporting:</strong> Submit online fraud complaints directly at <a href="https://reportfraud.ftc.gov" target="_blank">ReportFraud.ftc.gov</a>. (National database tracking identity theft and cross-border fraud syndicates).</li>';
+        let outputHTML = "";
 
-        if (threatType !== null) {
-            resultsContainer.className = 'danger-result';
-            resultTitle.textContent = 'HIGH RISK: Potential Scam Detected';
-            
-            // Conditionally show the compromise/download dropdown ONLY for link, file download, or credential entry threats
-            const linkDownloadThreats = ['delivery', 'account', 'compliance', 'pdfattachment', 'rawurl', 'tokenevasion', 'virtualconference', 'advanced', 'institutional', 'cloudstorage', 'brandimpersonation'];
-            if (linkDownloadThreats.includes(threatType)) {
-                compromiseDropdown.style.display = 'block';
-            } else {
-                compromiseDropdown.style.display = 'none';
-            }
-            
-            let specificSteps = [];
-            let orderedResources = [];
+        if (isScam || lowerText.length < 15) {
+            // Step 2 & 3: Panic Interruption & Numbered Action Chain (Scam Detected)
+            outputHTML = `
+                <div class="halt-box">
+                    <h3>⚠️ STOP. POTENTIAL SCAM DETECTED.</h3>
+                    <p><strong>Threat Vector Identified:</strong> Suspicious language pattern matched ("${matchedKeyword}"). This message is exhibiting classic signs of digital fraud or financial exploitation.</p>
+                </div>
+                
+                <div class="action-steps">
+                    <h4>Required Safety Actions:</h4>
+                    <ol>
+                        <li><strong>Do Not Click Any Links:</strong> Tapping links in this message could compromise your device or personal data.</li>
+                        <li><strong>Do Not Call Provided Numbers:</strong> Do not dial phone numbers listed inside this message. Scammers staff these lines directly.</li>
+                        <li><strong>Verify Independently:</strong> If this claims to be from your bank, utility, or government agency, look at the back of your actual card or official statement and call that verified number directly.</li>
+                        <li><strong>Delete the Message:</strong> Remove the threat from your inbox or phone immediately.</li>
+                    </ol>
+                </div>
 
-            if (threatType === 'courier') {
-                resultDesc.textContent = 'This message matches high-risk physical courier and precious metal liquidation schemes where scammers manipulate victims into handing over cash or gold bars.';
-                specificSteps = [
-                    "Do not withdraw cash, purchase gold bars, or hand over valuables to any courier or stranger.",
-                    "If a courier is currently arriving or cash/valuables were already handed over, contact local law enforcement immediately to file an official police report.",
-                    "Report elder financial exploitation right away to the Florida Abuse Hotline at 1-800-96-ABUSE (1-800-962-2873).",
-                    "Contact the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM to investigate deceptive consumer practices.",
-                    "Call the Florida DOEA Elder Helpline at 1-800-96-ELDER (1-800-963-5337) for direct victim support and guidance.",
-                    "Forward message details to 7726 (SPAM) to report and block the carrier threat."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Exploitation & Elder Protection';
-                resourcesIntro.textContent = 'Prioritized agency contacts for physical exploitation, followed by complete state and federal resources:';
-                orderedResources = [resAbuse, resHelpline, resAg, resFff, resFdle, resIc3, resOss, resDoa, resFtc];
-            } else if (threatType === 'legal') {
-                resultDesc.textContent = 'This message exhibits characteristics of government, tax, or legal imposter intimidation (such as fake warrants, court orders, or tax agency threats).';
-                specificSteps = [
-                    "Do not call phone numbers or follow instructions provided in threatening messages.",
-                    "If you already sent money or shared personal information, contact your bank immediately to freeze accounts and file a local police report.",
-                    "File a formal victim complaint with the Federal Trade Commission at ReportFraud.ftc.gov to feed intelligence into the national fraud database.",
-                    "Contact the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM to report state-level consumer fraud.",
-                    "Forward text message spam directly to 7726 (SPAM)."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Government & Tax Imposter Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for government imposter fraud, followed by complete state and federal resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'delivery') {
-                resultDesc.textContent = 'This message displays signs of delivery smishing or toll/parking penalty fraud designed to steal personal data or credit card details through malicious links.';
-                specificSteps = [
-                    "Do not click any embedded links or web addresses in the message.",
-                    "If you entered credit card details, contact your bank immediately to secure your accounts and dispute unauthorized charges.",
-                    "File a victim report at ReportFraud.ftc.gov to document identity or financial compromise nationally.",
-                    "Contact the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM if you suffered financial loss.",
-                    "Forward text message spam directly to 7726 (SPAM)."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Smishing & Digital Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for digital smishing fraud, followed by complete state and federal resources:';
-                orderedResources = [resFtc, resIc3, resHelpline, resAg, resFff, resFdle, resOss, resDoa, resAbuse];
-            } else if (threatType === 'repair') {
-                resultDesc.textContent = 'This message displays indicators consistent with unlicensed contractor or home repair fraud targeting property owners.';
-                specificSteps = [
-                    "Do not sign unverified contracts or hand over large cash deposits upfront.",
-                    "If you hired an unlicensed contractor or paid a fraudulent deposit, contact local law enforcement immediately to file a police report.",
-                    "Report home repair fraud to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM to pursue state consumer protection enforcement.",
-                    "Call the Florida DOEA Elder Helpline at 1-800-96-ELDER (1-800-963-5337) for consumer guidance.",
-                    "Forward text message spam directly to 7726 (SPAM)."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Home Repair & Contractor Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for home repair fraud, followed by complete state and federal resources:';
-                orderedResources = [resAg, resHelpline, resFff, resFdle, resFtc, resIc3, resOss, resDoa, resAbuse];
-            } else if (threatType === 'recovery') {
-                resultDesc.textContent = 'This message displays traits of an asset recovery or secondary revictimization scam targeting previous fraud victims with false promises of fund retrieval.';
-                specificSteps = [
-                    "Do not pay upfront fees or commissions to anyone claiming they can recover previously lost funds.",
-                    "If you already paid a recovery fee, report it immediately to local law enforcement and the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM.",
-                    "File a federal complaint online at ReportFraud.ftc.gov to track secondary scam networks.",
-                    "Forward message details to 7726 (SPAM)."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Asset Recovery Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for asset recovery scams, followed by complete state and federal resources:';
-                orderedResources = [resAg, resFff, resFdle, resIc3, resFtc, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'job') {
-                resultDesc.textContent = 'This message matches fraudulent academic internship, fellowship, or employment recruitment phishing schemes using public webmail addresses to harvest personal data.';
-                specificSteps = [
-                    "Do not reply, submit personal information, or email any external webmail addresses listed in the recruitment notice.",
-                    "If you already submitted personal details, student IDs, or deposited checks, monitor your credit and secure your accounts immediately.",
-                    "File an identity theft and phishing complaint online with the Federal Trade Commission at ReportFraud.ftc.gov.",
-                    "Report recruitment fraud to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM.",
-                    "Contact official organizational career services directly through verified official domains to verify job postings."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Employment & Phishing Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for job recruitment and identity theft fraud, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'account') {
-                resultDesc.textContent = 'This message displays characteristics of credential harvesting, fake IT account quotas, or payroll/benefits phishing designed to steal login credentials.';
-                specificSteps = [
-                    "Do not click any embedded links or enter your credentials on external login pages.",
-                    "Always verify that login portals use official trusted domains.",
-                    "If you already entered your password, change it immediately on the official service website and secure your account.",
-                    "Report online credential theft to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Credential Harvesting & Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for account compromise and credential theft, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'compliance') {
-                resultDesc.textContent = 'This message matches administrative or compliance audit phishing lures designed to mimic organizational reviews and harvest personnel credentials through unverified external links.';
-                specificSteps = [
-                    "Do not click embedded verification links or log into external portals referenced in compliance or audit notices.",
-                    "Verify requests for personnel reviews, audits, or document confirmations by contacting your organization independently through official published phone numbers.",
-                    "If you entered your password or credentials on an external site, change your password immediately on your official account.",
-                    "Report credential harvesting and organizational phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Compliance & Audit Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for administrative phishing and credential harvesting, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'utility') {
-                resultDesc.textContent = 'This message matches fake utility disconnection or municipal billing scams designed to pressure residents into paying past-due balances through lookalike payment links.';
-                specificSteps = [
-                    "Do not click links or pay bills through web addresses provided in urgent utility disconnection text messages.",
-                    "Verify your utility billing status independently by calling your local electric or water provider using the trusted phone number listed on your monthly paper bill or official city website.",
-                    "If you entered credit card or bank details on a fraudulent utility portal, contact your bank immediately to secure your accounts.",
-                    "Report utility imposter scams to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Utility & Service Shutoff Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for utility imposter fraud, followed by complete state and federal resources:';
-                orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
-            } else if (threatType === 'hoa') {
-                resultDesc.textContent = 'This message matches fake homeowners association (HOA) or residential community fee scams designed to trick residents into paying bogus architectural assessments or updating billing on lookalike portals.';
-                specificSteps = [
-                    "Do not click links or submit payment details on residential portal links provided in unexpected HOA fee notices.",
-                    "Verify your community dues or architectural compliance status independently by contacting your property management company or HOA board through official trusted phone numbers or statements.",
-                    "If you entered banking or credit card details on a fraudulent resident portal, contact your bank immediately to secure your accounts.",
-                    "Report residential community and HOA imposter scams to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: HOA & Residential Community Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for residential community fraud, followed by complete state and federal resources:';
-                orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
-            } else if (threatType === 'pdfattachment') {
-                resultDesc.textContent = 'This message matches malicious PDF statement attachments or document preview lures designed to deliver malware or drive users to unverified credential-harvesting pages.';
-                specificSteps = [
-                    "Do not open unsolicited PDF attachments or document previews claiming to be account statements or financial summaries from unknown senders.",
-                    "Verify statement and billing details independently by logging directly into your official trusted vendor or bank app/website.",
-                    "If you downloaded an attachment or entered your login credentials after opening a statement notification, change your password immediately on your official account.",
-                    "Report document attachment phishing and malware distribution campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: PDF Attachment & Document Lures';
-                resourcesIntro.textContent = 'Prioritized agency contacts for document attachment phishing, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'hsmv') {
-                resultDesc.textContent = 'This message matches fake state agency vehicle registration, driver license renewal, or emissions fee smishing notices designed to steal payment data through lookalike domains.';
-                specificSteps = [
-                    "Do not click links or pay fees through web addresses provided in text messages claiming to be from the Department of Highway Safety and Motor Vehicles (FLHSMV).",
-                    "Verify your vehicle registration or driver license status independently by navigating directly to the official state portal at flhsmv.gov.",
-                    "If you entered credit card details on a fraudulent vehicle renewal site, contact your bank immediately to secure your accounts.",
-                    "Report state agency imposter and registration smishing scams to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: FLHSMV & State Agency Imposter Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for state agency and DMV imposter fraud, followed by complete resources:';
-                orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
-            } else if (threatType === 'execpayment') {
-                resultDesc.textContent = 'This message matches executive peer payment, gift voucher, and reimbursement redirection scams requesting urgent digital wallet transfers, expense handling, or voucher purchases.';
-                specificSteps = [
-                    "Do not send money, wire funds, purchase gift cards, or buy digital vouchers based on urgent requests from supervisors or executives via email.",
-                    "Verify any unusual financial or reimbursement requests by calling or messaging the colleague directly through official verified contact numbers.",
-                    "If funds were already transferred via Zelle, PayPal, wire, or digital voucher codes, contact your bank immediately to report potential fraud.",
-                    "Report fake boss requests, peer payment scams, and imposter money demands to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Executive Payment & Reimbursement Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for executive payment fraud, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'disaster') {
-                resultDesc.textContent = 'This message matches fake disaster relief, hurricane recovery stipend, or emergency grant scams designed to exploit community crises and harvest personal data through lookalike URLs.';
-                specificSteps = [
-                    "Do not click links or submit personal information on websites claiming to offer disaster relief stipends or emergency grants via text or unverified emails.",
-                    "Verify official state emergency assistance and disaster recovery programs directly through verified government channels such as FloridaDisaster.org or the Florida Division of Emergency Management.",
-                    "If you submitted sensitive personal details or Social Security numbers on a fraudulent disaster relief portal, monitor your credit immediately and report identity theft.",
-                    "Report disaster relief fraud and government imposter scams to the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Disaster Relief & Emergency Imposter Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for disaster relief fraud, followed by complete state and federal resources:';
-                orderedResources = [resAg, resHelpline, resFff, resFtc, resFdle, resIc3, resOss, resDoa, resAbuse];
-            } else if (threatType === 'rawurl') {
-                resultDesc.textContent = 'This message contains unverified authentication or login links disguised as security updates or credential portals.';
-                specificSteps = [
-                    "Do not click raw web links or login URLs provided in unsolicited messages.",
-                    "Always navigate directly to official platforms by typing known secure web addresses into your browser.",
-                    "If credentials or tokens were entered on an unverified link, change your account passwords immediately on the official website.",
-                    "Report credential harvesting and suspicious phishing links to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: URL Phishing & Credential Harvesting';
-                resourcesIntro.textContent = 'Prioritized agency contacts for link-based phishing, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'audiocallback') {
-                resultDesc.textContent = 'This message matches audio notice, voice authorization, and security hotline callback scams designed to trick victims into dialing rogue numbers regarding fake bank transfers.';
-                specificSteps = [
-                    "Do not call phone numbers or security hotlines provided in unsolicited audio or voice authorization notices.",
-                    "Verify your bank account security or transfer status independently by calling the official customer service number printed on the back of your debit or credit card.",
-                    "If you called a fraudulent security hotline and provided sensitive account details, contact your bank immediately to secure your funds.",
-                    "Report telephone callback and voice authorization scams to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Audio & Hotline Callback Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for telephone callback fraud, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'tokenevasion') {
-                resultDesc.textContent = 'This message exhibits deliberate character obfuscation and tokenized keyword evasion (such as hyphenated words) designed to disguise suspension and account security threats.';
-                specificSteps = [
-                    "Do not respond to or act upon messages featuring broken or hyphenated wording regarding account security or suspension warnings.",
-                    "Verify your account status independently by navigating directly to your trusted service provider or platform app.",
-                    "If you clicked a link or provided information based on obfuscated warnings, secure your credentials immediately on official platforms.",
-                    "Report obfuscated phishing messages and credential harvesting attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Obfuscated Phishing & Evasion Scams';
-                resourcesIntro.textContent = 'Prioritized agency contacts for evasion and phishing tactics, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'corporatejargon') {
-                resultDesc.textContent = 'This message matches sophisticated Business Email Compromise (BEC) and corporate jargon imposter scams mimicking internal executive directives or financial token adjustments.';
-                specificSteps = [
-                    "Do not approve ledger adjustments, transfer financial tokens, or execute administrative financial requests received via unexpected messages.",
-                    "Verify unusual executive or managerial directives by contacting your colleague or supervisor directly through official trusted phone extensions or messaging platforms.",
-                    "If corporate credentials or unauthorized financial actions were executed, contact your organization's management or administrative office immediately.",
-                    "Report Business Email Compromise (BEC) and executive imposter scams to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Business Email Compromise (BEC) & Corporate Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for corporate and executive fraud, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'invoiceredirection') {
-                resultDesc.textContent = 'This message matches vendor invoice redirection and remittance update fraud attempting to divert municipal or corporate payments into fraudulent escrow accounts.';
-                specificSteps = [
-                    "Do not alter payment routing, change bank accounts, or transfer funds based on unexpected remittance update notices or escrow account instructions.",
-                    "Verify any vendor or municipal billing changes by calling the supplier independently using a trusted, pre-established phone number from your official vendor records (never use numbers listed in the suspicious email).",
-                    "If payment routing was modified or funds were wired to an unverified account, contact your bank and financial department immediately to initiate a recall.",
-                    "Report vendor email compromise and invoice redirection fraud to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Invoice Redirection & Vendor Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for vendor email compromise and invoice fraud, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'virtualconference') {
-                resultDesc.textContent = 'This message matches fake virtual conference, deepfake video meeting, and executive sync lures designed to harvest credentials or manipulate staff via unverified meeting links.';
-                specificSteps = [
-                    "Do not click links or join unverified video conference rooms, virtual leadership syncs, or external meeting portals claiming to be from supervisors or executives.",
-                    "Verify requests for virtual meetings or post-meeting syncs by messaging your colleague or executive directly through official established communication channels.",
-                    "If credentials or multi-factor authentication tokens were entered on an unverified meeting login page, change your password immediately on your official account.",
-                    "Report virtual conference phishing and executive impersonation attempts to the FBI Internet Crime Complaint Center at IC3.gov and the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Virtual Conference & Executive Imposter Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for virtual meeting fraud and executive impersonation, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'advanced') {
-                resultDesc.textContent = 'This message displays advanced enterprise phishing vectors, such as Quishing (malicious QR codes), collaboration tool impersonation (DocuSign/Dropbox), or thread hijacking.';
-                specificSteps = [
-                    "Do not scan embedded QR codes or click links disguised as shared document portals or e-signature requests.",
-                    "Verify requests for document signatures or shared files by navigating directly to your official vendor portal independently.",
-                    "If credentials or multi-factor tokens were shared, secure your official accounts immediately.",
-                    "Report advanced phishing and credential compromise to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Advanced Phishing & Credential Theft';
-                resourcesIntro.textContent = 'Prioritized agency contacts for advanced technical phishing, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'institutional') {
-                resultDesc.textContent = 'This message matches institutional security archive examples involving direct deposit/payroll redirection schemes, campus ID scans, or malicious calendar/cloud-share spam.';
-                specificSteps = [
-                    "Do not modify direct deposit settings or submit payroll changes based on email links or unverified messages.",
-                    "Do not send campus ID card scans, sensitive identification documents, or multi-factor verification codes in response to inquiries.",
-                    "Verify payroll or administrative requests by navigating independently to your official institutional portal.",
-                    "Report credential and payroll harvesting attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Institutional & Payroll Fraud';
-                resourcesIntro.textContent = 'Prioritized agency contacts for institutional security and payroll compromise, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'airesearch') {
-                resultDesc.textContent = 'This message matches AI-generated LLM research inquiries or productivity app spam (such as fake publication data harvesting or malicious calendar/cloud invites).';
-                specificSteps = [
-                    "Do not respond to unsolicited research assistance or Wikipedia writing inquiries that request personal intellectual data or metrics.",
-                    "Decline and report unsolicited calendar meeting invitations or cloud-share notifications originating from unknown or external senders.",
-                    "Verify academic collaborations and requests through official institutional channels before sharing data.",
-                    "Report data harvesting and productivity app spam to appropriate organizational authorities."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: AI Research Inquiries & Productivity Spam';
-                resourcesIntro.textContent = 'Prioritized agency contacts for data harvesting and institutional security, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'signinsalary') {
-                resultDesc.textContent = 'This message matches security alerts claiming foreign IP sign-in attempts or employee salary/wage adjustments designed to trigger urgent credential theft.';
-                specificSteps = [
-                    "Do not click verification links in unexpected security alerts claiming logins from foreign IP addresses or countries.",
-                    "Navigate independently to your official sign-in portal or benefits system to verify account activity.",
-                    "If you entered login credentials or two-factor codes, change your password immediately on your official account.",
-                    "Report deceptive compensation or foreign sign-in phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Sign-In Security & Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for sign-in security and phishing, followed by complete resources:';
-                orderedResources = [resFtc, resIc3, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'compromise') {
-                resultDesc.textContent = 'This message matches fake security warnings claiming your account has been hacked, compromised, or subjected to a breach to force immediate credential entry.';
-                specificSteps = [
-                    "Do not click links or call numbers provided in alerts claiming your account has been hacked or breached.",
-                    "Open your browser independently, navigate directly to your account portal, and check your security dashboard safely.",
-                    "If you clicked a link and entered your password, change your credentials immediately on the official platform.",
-                    "Report credential harvesting and fake security breach notifications to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Account Compromise & Security Alerts';
-                resourcesIntro.textContent = 'Prioritized agency contacts for account breach warnings, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'brandimpersonation') {
-                resultDesc.textContent = 'This message matches cloned brand and service impersonation scams (such as fake Netflix, subscription billing, or travel booking alerts) designed to steal payment details.';
-                specificSteps = [
-                    "Do not click links or enter credit card information in messages claiming your subscription, streaming account, or booking billing has failed.",
-                    "Always navigate directly to the official vendor app or website by typing the trusted web address into your browser.",
-                    "If you entered credit card details into a cloned portal, contact your bank immediately to freeze your cards and dispute charges.",
-                    "Report deceptive brand impersonation and payment phishing sites to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloned Brand & Service Impersonation';
-                resourcesIntro.textContent = 'Prioritized agency contacts for subscription and brand impersonation fraud, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'voicemailcallback') {
-                resultDesc.textContent = 'This message matches voicemail-themed attachment lures (such as malicious SVG or HTML files) or callback phishing tactics featuring unverified support phone numbers.';
-                specificSteps = [
-                    "Do not open unsolicited PDF attachments, audio files, SVG graphics, or HTML documents claiming to be missed voicemails or billing alerts.",
-                    "Do not call phone numbers provided in unsolicited warning emails or billing alerts; always use official contact numbers from trusted statements.",
-                    "If you called a rogue support number and provided remote access, banking details, or passwords, contact your bank immediately.",
-                    "Report voicemail attachment luring and callback phishing campaigns to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Voicemail & Callback Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for voicemail and callback telephone scams, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'headermismatch') {
-                resultDesc.textContent = 'This message exhibits email header authentication failures or discrepancies between the displayed From: sender and the Reply-To: address.';
-                specificSteps = [
-                    "Do not reply to emails where the Reply-To address differs from the official organizational sender or domain.",
-                    "Check email authentication results when inspecting raw email headers for spoofing indicators.",
-                    "If sensitive information or credentials were submitted in response to a spoofed header email, secure your accounts immediately.",
-                    "Report email authentication spoofing and phishing attempts to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Email Header & Reply-To Spoofing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for email header spoofing, followed by complete resources:';
-                orderedResources = [resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else if (threatType === 'cloudstorage') {
-                resultDesc.textContent = 'This message matches cloud storage and shared document collaboration phishing lures (such as fake SharePoint, OneDrive, Google Drive, or file deletion notices) designed to harvest credentials or deliver malware.';
-                specificSteps = [
-                    "Do not click links or preview shared documents in unexpected emails warning of file deletion or cloud storage expiration.",
-                    "Navigate directly to your official cloud storage portal by typing the trusted web address into your browser.",
-                    "If you downloaded an attachment or entered your login credentials on a shared document page, change your password immediately on your official account.",
-                    "Report cloud-based phishing and document collaboration scams to the Federal Trade Commission at ReportFraud.ftc.gov."
-                ];
-                resourcesHeading.textContent = 'Priority Response & Complete Directory: Cloud Storage & Shared Document Phishing';
-                resourcesIntro.textContent = 'Prioritized agency contacts for cloud storage and document sharing fraud, followed by complete resources:';
-                orderedResources = [resIc3, resFtc, resAg, resFff, resFdle, resHelpline, resOss, resDoa, resAbuse];
-            } else {
-                resultDesc.textContent = 'This message displays characteristics consistent with top reported mass-market fraud and social engineering vectors. Do not click links or call numbers provided.';
-                specificSteps = [
-                    "Do not reply to the message or click any embedded web links.",
-                    "If you suffered a financial loss, contact your bank immediately, file a local police report, and call the Florida DOEA Elder Helpline at 1-800-96-ELDER.",
-                    "File a report at ReportFraud.ftc.gov if money was sent to feed national investigative data.",
-                    "Contact the Florida Attorney General Senior Protection Team at 1-866-9NO-SCAM for state consumer assistance.",
-                    "Forward text message spam directly to 7726 (SPAM) to report and block the carrier threat."
-                ];
-                resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
-                resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
-                orderedResources = [resOss, resDoa, resHelpline, resAg, resAbuse, resFff, resFdle, resIc3, resFtc];
-            }
-
-            stepsWrapper.style.display = 'block';
-            specificSteps.forEach(step => {
-                let li = document.createElement('li');
-                li.textContent = step;
-                stepsList.appendChild(li);
-            });
-
-            orderedResources.forEach(resHtml => {
-                resourcesList.innerHTML += resHtml;
-            });
-
+                <div class="official-resources">
+                    <h4>Official Florida & Federal Help Resources:</h4>
+                    <ul>
+                        <li>📞 <strong>DOEA Elder Helpline:</strong> <a href="tel:18009635337">1-800-96-ELDER (1-800-963-5337)</a></li>
+                        <li>📞 <strong>Florida Abuse Hotline (Financial Exploitation):</strong> <a href="tel:18009622873">1-800-96-ABUSE</a></li>
+                        <li>🌐 <strong>Operation Senior Shield:</strong> <a href="https://opseniorshieldfl.com/" target="_blank">opseniorshieldfl.com</a></li>
+                        <li>⚖️ <strong>FTC Reporting Portal:</strong> <a href="https://reportfraud.ftc.gov" target="_blank">reportfraud.ftc.gov</a></li>
+                    </ul>
+                </div>
+            `;
         } else {
-            resultsContainer.className = 'safe-result';
-            resultTitle.textContent = 'LOW RISK: Appears to be Normal Communication';
-            resultDesc.textContent = 'The text does not trigger standard high-risk mass-market fraud flags. However, always remain cautious if unexpected personal or financial details are requested.';
-            stepsWrapper.style.display = 'none';
-            compromiseDropdown.style.display = 'none';
-
-            resourcesHeading.textContent = 'Verified Florida & Federal Resource Directory';
-            resourcesIntro.textContent = 'Connect directly with official state and federal protection agencies:';
-            resourcesList.innerHTML = resOss + resDoa + resHelpline + resAg + resAbuse + resFff + resFdle + resIc3 + resFtc;
+            // Safe / Normal Message
+            outputHTML = `
+                <div class="safe-box">
+                    <h3>✅ NO IMMEDIATE THREAT DETECTED</h3>
+                    <p>The text analyzed does not contain common high-risk fraud keywords or emergency pressure tactics. However, always exercise normal digital caution before sharing personal or financial information.</p>
+                </div>
+                <div class="official-resources">
+                    <h4>Need Guidance?</h4>
+                    <p>If you still feel uneasy about this message, you can always contact the Florida Department of Elder Affairs Helpline at <a href="tel:18009635337">1-800-96-ELDER</a>.</p>
+                </div>
+            `;
         }
+
+        resultContainer.style.display = "block";
+        resultContainer.innerHTML = outputHTML;
+        resultContainer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function clearForm() {
+        document.getElementById("scamInput").value = "";
+        document.getElementById("resultContainer").style.display = "none";
+    }
+
+    function id(elementId) {
+        return document.getElementById(elementId);
     }
 </script>
 
