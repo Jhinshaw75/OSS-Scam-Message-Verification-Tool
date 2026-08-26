@@ -440,10 +440,16 @@
             return;
         }
 
-        // Normalize text by removing hyphens and extra spaces to prevent obfuscation bypasses (e.g., "U-R-G-E-N-T" -> "urgent")
         const normalizedText = rawText.replace(/-/g, '').toLowerCase();
 
-        const scamKeywords = ["urgent", "locked", "bank", "verify", "suspend", "winner", "prize", "gift card", "social security", "irs", "fbi", "click here", "password", "crypto", "wire", "attachment", "screenshot", "warrant", "federal", "arrest"];
+        // Expanded threat vector keywords including administrative, utility, and compliance pressure tactics
+        const scamKeywords = [
+            "urgent", "locked", "bank", "verify", "suspend", "winner", "prize", 
+            "gift card", "social security", "irs", "fbi", "click here", "password", 
+            "crypto", "wire", "attachment", "screenshot", "warrant", "federal", 
+            "arrest", "compliance", "directive", "termination", "audit", 
+            "jurisdiction", "penalty", "backflow", "assembly", "lapsed"
+        ];
         
         let isScam = false;
         let matchedKeyword = "";
@@ -462,7 +468,7 @@
             outputHTML = `
                 <div class="halt-box">
                     <h3>⚠️ STOP. POTENTIAL SCAM DETECTED.</h3>
-                    <p><strong>Threat Vector Identified:</strong> Suspicious language pattern matched ("${matchedKeyword}"). This message or attached file exhibits classic signs of digital fraud or financial exploitation.</p>
+                    <p><strong>Threat Vector Identified:</strong> Suspicious language pattern matched ("${matchedKeyword}"). This message or attached file exhibits classic signs of digital fraud, utility intimidation, or financial exploitation.</p>
                 </div>
                 
                 <div class="action-steps">
