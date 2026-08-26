@@ -442,23 +442,34 @@
 
         const normalizedText = rawText.replace(/-/g, '').toLowerCase();
 
-        // Expanded threat vector keywords including administrative, utility, and compliance pressure tactics
+        // Expanded threat keywords including social engineering, outreach pretexts, and link directives
         const scamKeywords = [
             "urgent", "locked", "bank", "verify", "suspend", "winner", "prize", 
             "gift card", "social security", "irs", "fbi", "click here", "password", 
             "crypto", "wire", "attachment", "screenshot", "warrant", "federal", 
             "arrest", "compliance", "directive", "termination", "audit", 
-            "jurisdiction", "penalty", "backflow", "assembly", "lapsed"
+            "jurisdiction", "penalty", "backflow", "assembly", "lapsed",
+            "http", "portal", "schedule", "confirm", "review", "outreach", 
+            "grant", "assistance", "claim", "update", "click", "link"
         ];
         
         let isScam = false;
         let matchedKeyword = "";
         
-        for (let kw of scamKeywords) {
-            if (normalizedText.includes(kw)) {
-                isScam = true;
-                matchedKeyword = kw;
-                break;
+        // If message contains an external URL or link structure combined with outreach/scheduling terms, flag it
+        const hasUrl = normalizedText.includes("http") || normalizedText.includes("www.") || normalizedText.includes(".net") || normalizedText.includes(".com");
+        const hasSocialEngineering = (normalizedText.includes("outreach") || normalizedText.includes("grant") || normalizedText.includes("wellness") || normalizedText.includes("community")) && (hasUrl || normalizedText.includes("confirm") || normalizedText.includes("schedule"));
+
+        if (hasSocialEngineering) {
+            isScam = true;
+            matchedKeyword = "social engineering / community outreach pretext";
+        } else {
+            for (let kw of scamKeywords) {
+                if (normalizedText.includes(kw)) {
+                    isScam = true;
+                    matchedKeyword = kw;
+                    break;
+                }
             }
         }
 
@@ -468,7 +479,7 @@
             outputHTML = `
                 <div class="halt-box">
                     <h3>⚠️ STOP. POTENTIAL SCAM DETECTED.</h3>
-                    <p><strong>Threat Vector Identified:</strong> Suspicious language pattern matched ("${matchedKeyword}"). This message or attached file exhibits classic signs of digital fraud, utility intimidation, or financial exploitation.</p>
+                    <p><strong>Threat Vector Identified:</strong> Suspicious pattern matched ("${matchedKeyword}"). This message or attached file exhibits classic signs of digital fraud, social engineering pretexts, or unauthorized credential harvesting.</p>
                 </div>
                 
                 <div class="action-steps">
