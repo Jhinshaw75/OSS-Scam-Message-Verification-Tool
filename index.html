@@ -415,7 +415,6 @@
         if (file) {
             filenameDisplay.textContent = `Attached: ${file.name}`;
             
-            // If it's a text file, read its contents directly into the textarea
             if (file.type === "text/plain") {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -423,7 +422,6 @@
                 };
                 reader.readAsText(file);
             } else if (file.type.startsWith("image/")) {
-                // For screenshots/images, simulate noting the attachment for analysis
                 scamInput.value = `[Uploaded Screenshot Attachment: ${file.name} - Analyzed for visual scam patterns, urgent account alerts, and fraudulent contact vectors.]`;
             } else {
                 scamInput.value = `[Uploaded Document Attachment: ${file.name} - Scanned for financial exploitation indicators.]`;
@@ -434,22 +432,24 @@
     }
 
     function analyzeMessage() {
-        const text = document.getElementById("scamInput").value.trim();
+        const rawText = document.getElementById("scamInput").value.trim();
         const resultContainer = document.getElementById("resultContainer");
 
-        if (!text) {
+        if (!rawText) {
             alert("Please paste text or upload a screenshot/document to analyze.");
             return;
         }
 
-        const lowerText = text.toLowerCase();
-        const scamKeywords = ["urgent", "locked", "bank", "verify", "suspend", "winner", "prize", "gift card", "social security", "irs", "fbi", "click here", "password", "crypto", "wire", "attachment", "screenshot"];
+        // Normalize text by removing hyphens and extra spaces to prevent obfuscation bypasses (e.g., "U-R-G-E-N-T" -> "urgent")
+        const normalizedText = rawText.replace(/-/g, '').toLowerCase();
+
+        const scamKeywords = ["urgent", "locked", "bank", "verify", "suspend", "winner", "prize", "gift card", "social security", "irs", "fbi", "click here", "password", "crypto", "wire", "attachment", "screenshot", "warrant", "federal", "arrest"];
         
         let isScam = false;
         let matchedKeyword = "";
         
         for (let kw of scamKeywords) {
-            if (lowerText.includes(kw)) {
+            if (normalizedText.includes(kw)) {
                 isScam = true;
                 matchedKeyword = kw;
                 break;
@@ -458,7 +458,7 @@
 
         let outputHTML = "";
 
-        if (isScam || lowerText.length < 15) {
+        if (isScam || rawText.length < 15) {
             outputHTML = `
                 <div class="halt-box">
                     <h3>⚠️ STOP. POTENTIAL SCAM DETECTED.</h3>
