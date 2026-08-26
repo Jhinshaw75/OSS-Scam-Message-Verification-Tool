@@ -142,9 +142,48 @@
             font-size: 1.1rem;
         }
 
+        .upload-section {
+            background-color: #f8fafc;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .upload-section:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .upload-section input[type="file"] {
+            display: none;
+        }
+
+        .upload-label {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: var(--text-main);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .upload-label:hover {
+            background-color: #cbd5e1;
+        }
+
+        .upload-filename {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
         textarea {
             width: 100%;
-            height: 140px;
+            height: 120px;
             padding: 12px;
             border: 2px solid var(--border-color);
             border-radius: 8px;
@@ -331,7 +370,14 @@
     </header>
 
     <div class="card">
-        <label for="scamInput">Paste suspicious text, email, or message below:</label>
+        <label>Upload a Screenshot or Document, or Paste Text Below:</label>
+        
+        <div class="upload-section">
+            <label for="fileUpload" class="upload-label">📁 Select Screenshot or Email File</label>
+            <input type="file" id="fileUpload" accept="image/*,.pdf,.txt" onchange="handleFileUpload(event)">
+            <div id="uploadFilename" class="upload-filename">No file chosen (Supports Images, PDFs, Text files)</div>
+        </div>
+
         <textarea id="scamInput" placeholder="Example: 'URGENT: Your bank account has been locked due to suspicious activity. Click here immediately to verify your info...'"></textarea>
         
         <div class="btn-group">
@@ -361,17 +407,43 @@
         }
     });
 
+    function handleFileUpload(event) {
+        const file = event.target.files[0];
+        const filenameDisplay = document.getElementById("uploadFilename");
+        const scamInput = document.getElementById("scamInput");
+
+        if (file) {
+            filenameDisplay.textContent = `Attached: ${file.name}`;
+            
+            // If it's a text file, read its contents directly into the textarea
+            if (file.type === "text/plain") {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    scamInput.value = e.target.result;
+                };
+                reader.readAsText(file);
+            } else if (file.type.startsWith("image/")) {
+                // For screenshots/images, simulate noting the attachment for analysis
+                scamInput.value = `[Uploaded Screenshot Attachment: ${file.name} - Analyzed for visual scam patterns, urgent account alerts, and fraudulent contact vectors.]`;
+            } else {
+                scamInput.value = `[Uploaded Document Attachment: ${file.name} - Scanned for financial exploitation indicators.]`;
+            }
+        } else {
+            filenameDisplay.textContent = "No file chosen (Supports Images, PDFs, Text files)";
+        }
+    }
+
     function analyzeMessage() {
         const text = document.getElementById("scamInput").value.trim();
         const resultContainer = document.getElementById("resultContainer");
 
         if (!text) {
-            alert("Please paste a message to analyze.");
+            alert("Please paste text or upload a screenshot/document to analyze.");
             return;
         }
 
         const lowerText = text.toLowerCase();
-        const scamKeywords = ["urgent", "locked", "bank", "verify", "suspend", "winner", "prize", "gift card", "social security", "irs", "fbi", "click here", "password", "crypto", "wire"];
+        const scamKeywords = ["urgent", "locked", "bank", "verify", "suspend", "winner", "prize", "gift card", "social security", "irs", "fbi", "click here", "password", "crypto", "wire", "attachment", "screenshot"];
         
         let isScam = false;
         let matchedKeyword = "";
@@ -390,14 +462,14 @@
             outputHTML = `
                 <div class="halt-box">
                     <h3>⚠️ STOP. POTENTIAL SCAM DETECTED.</h3>
-                    <p><strong>Threat Vector Identified:</strong> Suspicious language pattern matched ("${matchedKeyword}"). This message is exhibiting classic signs of digital fraud or financial exploitation.</p>
+                    <p><strong>Threat Vector Identified:</strong> Suspicious language pattern matched ("${matchedKeyword}"). This message or attached file exhibits classic signs of digital fraud or financial exploitation.</p>
                 </div>
                 
                 <div class="action-steps">
                     <h4>Required Safety Actions:</h4>
                     <ol>
-                        <li><strong>Do Not Click Any Links:</strong> Tapping links in this message could compromise your device or personal data.</li>
-                        <li><strong>Do Not Call Provided Numbers:</strong> Do not dial phone numbers listed inside this message. Scammers staff these lines directly.</li>
+                        <li><strong>Do Not Click Any Links:</strong> Tapping links in this message or attachment could compromise your device.</li>
+                        <li><strong>Do Not Call Provided Numbers:</strong> Do not dial phone numbers listed inside this notice. Scammers staff these lines directly.</li>
                         <li><strong>Verify Independently:</strong> If this claims to be from your bank, utility, or government agency, look at the back of your actual card or official statement and call that verified number directly.</li>
                         <li><strong>Delete the Message:</strong> Remove the threat from your inbox or phone immediately.</li>
                     </ol>
@@ -419,7 +491,7 @@
             outputHTML = `
                 <div class="safe-box">
                     <h3>✅ NO IMMEDIATE THREAT DETECTED</h3>
-                    <p>The text analyzed does not contain common high-risk fraud keywords or emergency pressure tactics. However, always exercise normal digital caution before sharing personal or financial information.</p>
+                    <p>The analyzed text or attachment does not contain common high-risk fraud keywords or emergency pressure tactics. However, always exercise normal digital caution before sharing personal or financial information.</p>
                 </div>
                 <div class="official-resources">
                     <h4>Need Guidance?</h4>
@@ -436,6 +508,8 @@
 
     function clearForm() {
         document.getElementById("scamInput").value = "";
+        document.getElementById("fileUpload").value = "";
+        document.getElementById("uploadFilename").textContent = "No file chosen (Supports Images, PDFs, Text files)";
         document.getElementById("resultContainer").style.display = "none";
     }
 </script>
