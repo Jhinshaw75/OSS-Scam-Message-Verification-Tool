@@ -635,7 +635,18 @@
                 }
             ];
 
-            let matchedThreat = threats.find(t => t.keys.some(k => lowerText.includes(k)));
+            let matchedThreat = threats.find(t => {
+                return t.keys.some(k => {
+                    if (lowerText.includes(k)) {
+                        // Exception rule: ignore 'bail' match if it's part of the name Bailey
+                        if (k === 'bail' && lowerText.includes('bailey')) {
+                            return false;
+                        }
+                        return true;
+                    }
+                    return false;
+                });
+            });
 
             if (isSymbolOnlySpam) {
                 matchedThreat = {
