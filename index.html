@@ -411,14 +411,16 @@
         </main>
 
         <!-- Printable Wallet Reference Card -->
-        <div class="printable-card">
+        <div class="printable-card" id="printableCardContainer">
             <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
-            <p><strong>Golden Rules to Remember:</strong></p>
-            <ul>
-                <li>Never call phone numbers listed in suspicious text messages, emails, or pop-ups.</li>
-                <li>Never click unfamiliar links or download attachments from unknown senders.</li>
-                <li>Always use our verified Operation Senior Shield resource links.</li>
-            </ul>
+            <div id="printDynamicContent">
+                <p><strong>Golden Rules to Remember:</strong></p>
+                <ul>
+                    <li>Never call phone numbers listed in suspicious text messages, emails, or pop-ups.</li>
+                    <li>Never click unfamiliar links or download attachments from unknown senders.</li>
+                    <li>Always use our verified Operation Senior Shield resource links.</li>
+                </ul>
+            </div>
             <h3>Verified Emergency & Support Contacts:</h3>
             <ul>
                 <li><strong>DOEA Elder Helpline:</strong> <a href="tel:18009635337">1-800-963-5337</a> | <a href="https://elderaffairs.org" target="_blank" rel="noopener">elderaffairs.org</a></li>
@@ -627,13 +629,24 @@
                     '<div class="warning-desc">' + desc + '</div>' +
                     '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Zero-Gap Action Plan:</div>' +
                     '<ol class="action-list">' + steps + '</ol>';
+                
+                // Dynamically populate the printable card so it matches the specific scam detected
+                document.getElementById('printDynamicContent').innerHTML = 
+                    '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
+                    '<p>' + desc + '</p>' +
+                    '<p><strong>Your Zero-Gap Action Plan:</strong></p>' +
+                    '<ol style="padding-left: 20px; font-size: 13px;">' + steps + '</ol>';
             } else {
                 resultBox.className = 'result-box safe';
                 resultContent.innerHTML = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong><br>' +
                     'Even so, always proceed with caution and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
+                
+                document.getElementById('printDynamicContent').innerHTML = 
+                    '<p><strong>Analysis Result:</strong> No common threat patterns found. Proceed with caution.</p>' +
+                    '<p><strong>Golden Rules to Remember:</strong></p>' +
+                    '<ul><li>Never call phone numbers listed in suspicious messages.</li><li>Always use verified Operation Senior Shield resource links.</li></ul>';
             }
             
-            // Ensure the result box becomes visible
             resultBox.style.display = 'block';
         }
 
