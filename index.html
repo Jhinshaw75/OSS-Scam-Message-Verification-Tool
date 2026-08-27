@@ -27,7 +27,7 @@
             right: 30px;
             background-color: #e2e8f0;
             color: #334155;
-            border: none;
+            border: 1px solid #cbd5e1;
             padding: 8px 16px;
             border-radius: 6px;
             font-size: 13px;
@@ -39,12 +39,16 @@
         }
         .header-logos {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
         }
         h2 {
             color: #1e3a8a;
             text-align: center;
-            margin-top: 10px;
+            margin-top: 5px;
             margin-bottom: 5px;
             font-size: 26px;
         }
@@ -97,6 +101,7 @@
             padding: 8px 16px;
             border-radius: 6px;
             font-size: 14px;
+            border: 1px solid #cbd5e1;
         }
         .upload-subtext {
             font-size: 12px;
@@ -124,13 +129,14 @@
             padding: 12px;
             font-size: 15px;
             font-weight: bold;
-            border: none;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             cursor: pointer;
         }
         #analyze-btn {
             background-color: #1e3a8a;
             color: white;
+            border-color: #1e3a8a;
         }
         #clear-btn {
             background-color: #e2e8f0;
@@ -162,13 +168,15 @@
     <button class="how-to-use-btn">How to Use</button>
 
     <div class="header-logos">
-        <!-- Exact original stacked logo structure matching your second screenshot -->
-        <div style="margin-bottom: 8px;">
-            <span style="font-weight: bold; font-size: 20px; color: #1e3a8a; letter-spacing: -0.5px;">Elder</span>
-            <span style="font-weight: bold; font-size: 20px; color: #1e3a8a; letter-spacing: -0.5px;">Affairs</span>
-            <span style="font-size: 12px; color: #64748b; font-weight: bold; display: block; letter-spacing: 1px;">FLORIDA</span>
+        <!-- Exact image/text placement matching your confirmed screenshot -->
+        <div style="text-align: center;">
+            <span style="font-weight: bold; font-size: 19px; color: #1e3a8a; letter-spacing: -0.5px;">Elder</span><br>
+            <span style="font-weight: bold; font-size: 19px; color: #1e3a8a; letter-spacing: -0.5px;">Affairs</span><br>
+            <span style="font-size: 10px; color: #64748b; font-weight: bold; letter-spacing: 1px;">FLORIDA</span>
         </div>
-        <span style="display: inline-block; padding: 3px 8px; background: #d97706; color: white; font-size: 11px; font-weight: bold; border-radius: 4px;">SENIOR SHIELD</span>
+        <div style="background: #b45309; color: white; padding: 4px 8px; font-weight: bold; font-size: 11px; border-radius: 4px; text-align: center; line-height: 1.2;">
+            SENIOR<br><span style="font-size: 9px;">SHIELD</span>
+        </div>
     </div>
 
     <h2>Scam Detector</h2>
