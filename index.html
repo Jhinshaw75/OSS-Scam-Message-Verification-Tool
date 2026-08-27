@@ -546,6 +546,20 @@
 
             const threatCategories = [
                 {
+                    keywords: ['library', 'admin', 'membership', 'institutional credentials', 'backup portal', 'account suspension'],
+                    minMatches: 2,
+                    title: "Institutional Portal Phishing Trap",
+                    desc: "A deceptive library or university administrative notice is trying to trick you into re-authenticating your credentials on a fake backup portal.",
+                    warn: "Scammers use institutional credential harvesting to gain unauthorized access to internal systems and databases."
+                },
+                {
+                    keywords: ['ceo', 'emergency board', 'wire', 'escrow holding', 'liquid capital', 'confidentiality'],
+                    minMatches: 2,
+                    title: "Executive Wire / CEO Fraud Extortion",
+                    desc: "A fraudulent executive audio or message warning is demanding rushed wire transfers under strict internal secrecy.",
+                    warn: "Business email compromise and executive impersonation scams exploit artificial urgency to divert funds into fraudulent escrow accounts."
+                },
+                {
                     keywords: ['expense report', 'reimbursement', 'receipt validation', 'employee self-service', 'forfeiture'],
                     minMatches: 2,
                     title: "Corporate Expense Reimbursement Phishing",
