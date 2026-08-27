@@ -144,6 +144,7 @@
             border-radius: 8px;
             padding: 20px;
             background-color: #eff6ff;
+            margin-top: 30px;
             margin-bottom: 20px;
         }
 
@@ -330,12 +331,6 @@
             background-color: #7f1d1d;
         }
 
-        .action-button-group {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
         .warning-title {
             font-size: 18px;
             font-weight: bold;
@@ -437,15 +432,6 @@
 
         <!-- Main Tool View -->
         <main id="toolView" style="display: none;">
-            <!-- Always Visible Scam Text Reporting Info Box -->
-            <div class="permanent-info-box">
-                <h3>📲 How to Report Scam Text Messages (7726)</h3>
-                <p>If you receive a suspicious text message, you can report it instantly to mobile carriers and security authorities without clicking any links:</p>
-                <p><strong>1. Copy or Screenshot:</strong> Do not tap any links inside the message.</p>
-                <p><strong>2. Forward to 7726:</strong> Open your text message app, press and hold the suspicious text message, select "Forward", and send it to the short code <strong>7726</strong> (spells "SPAM").</p>
-                <p><strong>3. Follow-up:</strong> Your carrier will reply asking for the sender's phone number. Reply with the number that sent the text to complete the block.</p>
-            </div>
-
             <div class="oss-promo-banner">
                 <p class="oss-promo-text">Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
                 <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" rel="noopener" class="oss-promo-btn">Sign Up Now</a>
@@ -471,6 +457,15 @@
                 <div id="resultContent">
                     <!-- Dynamic targeted walkthrough injected here -->
                 </div>
+            </div>
+
+            <!-- Always Visible Scam Text Reporting Info Box (Moved Below Analyze) -->
+            <div class="permanent-info-box">
+                <h3>📲 How to Report Scam Text Messages (7726)</h3>
+                <p>If you receive a suspicious text message, you can report it instantly to mobile carriers and security authorities without clicking any links:</p>
+                <p><strong>1. Copy or Screenshot:</strong> Do not tap any links inside the message.</p>
+                <p><strong>2. Forward to 7726:</strong> Open your text message app, press and hold the suspicious text message, select "Forward", and send it to the short code <strong>7726</strong> (spells "SPAM").</p>
+                <p><strong>3. Follow-up:</strong> Your carrier will reply asking for the sender's phone number. Reply with the number that sent the text to complete the block.</p>
             </div>
         </main>
 
@@ -520,9 +515,6 @@
         }
 
         function printActionPlan() {
-            const originalContent = document.body.innerHTML;
-            const printContent = document.getElementById('resultContent').innerHTML;
-            
             window.print();
         }
 
@@ -748,7 +740,7 @@
                     '<div class="warning-desc">' + desc + '</div>' +
                     '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Action Plan:</div>' +
                     '<ol class="action-list">' + steps + '</ol>' +
-                    '<div class="action-button-group">' +
+                    '<div style="margin-top: 20px;">' +
                     '<button class="secondary-btn" onclick="printActionPlan()">🖨️ Print Action Plan</button>' +
                     '</div>';
                 
