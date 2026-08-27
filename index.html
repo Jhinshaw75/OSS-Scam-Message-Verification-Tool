@@ -330,10 +330,12 @@
 <body>
 
     <div class="container">
+        <!-- Instructions Toggle Top Right -->
         <div class="header-top">
             <button class="instructions-toggle-btn" id="toggleInstructionsBtn" onclick="toggleInstructions()">How to Use</button>
         </div>
 
+        <!-- Collapsible Instructions Panel -->
         <div class="instructions-panel" id="instructionsPanel">
             <h3>Step-by-Step Instructions</h3>
             <ol>
@@ -366,6 +368,7 @@
             <p class="subtitle">Instant Scam & Fraud Protection Analyzer</p>
         </div>
 
+        <!-- Legal & Educational Disclaimer View -->
         <div id="disclaimerView" class="disclaimer-box">
             <h3>Legal & Educational Disclaimer</h3>
             <p>Please review before accessing the Senior Digital Safeguard tool:</p>
@@ -376,6 +379,7 @@
             <button class="primary-btn" onclick="acceptDisclaimer()" style="width: 100%;">I Have Read and Agree — Enter Tool</button>
         </div>
 
+        <!-- Main Tool View -->
         <main id="toolView" style="display: none;">
             <div class="oss-promo-banner">
                 <p class="oss-promo-text">Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
@@ -400,10 +404,12 @@
 
             <div id="resultBox" class="result-box">
                 <div id="resultContent">
-                    </div>
+                    <!-- Dynamic targeted walkthrough injected here -->
+                </div>
             </div>
         </main>
 
+        <!-- Printable Wallet Reference Card -->
         <div class="printable-card" id="printableCardContainer">
             <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
             <div id="printDynamicContent">
@@ -459,10 +465,15 @@
                 return;
             }
 
-            // Normalize text: lowercase, leetspeak swap, and remove extra spacing/scrambled gaps for evasion detection
+            // Comprehensive leetspeak normalization mapping numbers and symbols to letters
             const rawLower = text.toLowerCase()
-                .replace(/[0]/g, 'o').replace(/[1]/g, 'i').replace(/[3]/g, 'e')
-                .replace(/[4]/g, 'a').replace(/[5]/g, 's').replace(/[7]/g, 't').replace(/[8]/g, 'b');
+                .replace(/0/g, 'o')
+                .replace(/[1!]/g, 'i')
+                .replace(/3/g, 'e')
+                .replace(/4/g, 'a')
+                .replace(/5/g, 's')
+                .replace(/7/g, 't')
+                .replace(/8/g, 'b');
 
             const condensedText = rawLower.replace(/\s+/g, '');
             const lowerText = rawLower;
@@ -472,7 +483,7 @@
 
             const threats = [
                 {
-                    phrases: ['grandma in jail', 'grandpa in jail', 'grandchild in jail', 'grandchild arrest', 'grandchild bail', 'grandma bail', 'grandpa bail', 'accident bail', 'emergency cash bail', 'grandchild1njail', 'grandchildin jail'],
+                    phrases: ['grandma in jail', 'grandpa in jail', 'grandchild in jail', 'grandchild arrest', 'grandchild bail', 'grandma bail', 'grandpa bail', 'accident bail', 'emergency cash bail', 'grandchild1njail', 'grandchildin jail', 'grandchild1njai1'],
                     title: "Fake Grandchild in Trouble Scam",
                     desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
                     warn: "They are exploiting your family care and love to force rushed cash transfers.",
@@ -480,7 +491,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    phrases: ['irs audit', 'tax audit', 'irs arrest', 'tax warrant', 'owe back taxes', 'unpaid taxes arrest', 'irsawarrant'],
+                    phrases: ['irs audit', 'tax audit', 'irs arrest', 'tax warrant', 'owe back taxes', 'unpaid taxes arrest', 'irswarrant'],
                     title: "Fake IRS Tax Threat",
                     desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
                     warn: "They are using fake government intimidation to steal your money.",
@@ -488,7 +499,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    phrases: ['social security frozen', 'social security canceled', 'ssn suspended', 'social security suspended', 'benefits frozen'],
+                    phrases: ['social security frozen', 'social security canceled', 'ssn suspended', 'social security suspended', 'benefits frozen', 'socialsecuritynumberisfrozen'],
                     title: "Fake Social Security Scam",
                     desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
                     warn: "They are trying to trick you into handing over your sensitive personal numbers.",
@@ -528,7 +539,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    phrases: ['zelle transfer', 'unauthorized zelle', 'unauthorized transfer', 'peer transfer alert'],
+                    phrases: ['zelle transfer', 'unauthorized zelle', 'unauthorized transfer', 'peer transfer alert', 'zelleunauthorizedtransfer'],
                     title: "Fake Money App (Zelle) Scam",
                     desc: "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.",
                     warn: "Never read security pins or verification codes over the phone to anyone.",
