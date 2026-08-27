@@ -39,20 +39,16 @@
         }
         .header-logos {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 12px;
-        }
-        .header-logos img {
-            height: 38px;
-            width: auto;
+            gap: 15px;
         }
         h2 {
             color: #1e3a8a;
             text-align: center;
-            margin-top: 0;
+            margin-top: 5px;
             margin-bottom: 5px;
             font-size: 26px;
         }
@@ -172,8 +168,19 @@
     <button class="how-to-use-btn">How to Use</button>
 
     <div class="header-logos">
-        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida">
-        <img src="senior-shield-logo.png" alt="Senior Shield">
+        <!-- Replaced broken image references with inline SVGs matching your exact logo proportions and colors -->
+        <svg height="40" viewBox="0 0 160 45" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#1e3a8a">Elder</text>
+            <text x="0" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#1e3a8a">Affairs</text>
+            <text x="58" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#64748b">FLORIDA</text>
+            <circle cx="63" cy="30" r="4" fill="#fbbf24"/>
+            <path d="M63 22l1 4h-2z" fill="#fbbf24"/>
+        </svg>
+        <svg height="40" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 2L5 8v14c0 11.5 7.5 21.5 17 24 9.5-2.5 17-12.5 17-24V8L22 2z" fill="#881337" stroke="#fbbf24" stroke-width="2"/>
+            <text x="22" y="22" font-family="Arial" font-size="8" font-weight="bold" fill="#fff" text-anchor="middle">SENIOR</text>
+            <text x="22" y="32" font-family="Arial" font-size="7" font-weight="bold" fill="#fbbf24" text-anchor="middle">SHIELD</text>
+        </svg>
     </div>
 
     <h2>Scam Detector</h2>
