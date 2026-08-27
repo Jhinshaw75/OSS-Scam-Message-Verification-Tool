@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senior Digital Safeguard</title>
+    <title>Scam Detector</title>
     <style>
         :root {
             --primary: #1b365d;
@@ -16,30 +16,96 @@
         }
         body {
             font-family: Arial, sans-serif;
-            line-height: 1.25;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
             padding: 20px;
         }
         .container {
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
             background: var(--card-bg);
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: relative;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .logos {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
+        }
+        .title-area {
+            text-align: center;
+            margin-bottom: 25px;
         }
         h1 {
             color: var(--primary);
-            font-size: 24px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 10px;
+            font-size: 28px;
+            margin: 5px 0;
         }
-        h2 {
-            color: var(--secondary);
-            font-size: 18px;
-            margin-top: 25px;
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+        }
+        .signup-banner {
+            background: #f0f4f8;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .signup-banner p {
+            margin: 0;
+            font-size: 14px;
+            color: var(--primary);
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-primary:hover {
+            background-color: #142844;
+        }
+        .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            background: #fafafa;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .drop-zone:hover {
+            background: #f1f5f9;
         }
         textarea {
             width: 100%;
@@ -47,25 +113,48 @@
             padding: 12px;
             border: 1px solid var(--border);
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 15px;
             box-sizing: border-box;
-            margin-top: 10px;
+            margin-bottom: 20px;
+            resize: vertical;
         }
-        button {
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+        .button-group button {
+            flex: 1;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn-analyze {
             background-color: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 15px;
         }
-        button:hover {
+        .btn-analyze:hover {
             background-color: #142844;
         }
+        .btn-clear {
+            background-color: #ffffff;
+            color: var(--text);
+        }
+        .btn-clear:hover {
+            background-color: #f1f5f9;
+        }
+        .btn-print {
+            background-color: #e2e8f0;
+            color: var(--primary);
+        }
+        .btn-print:hover {
+            background-color: #cbd5e1;
+        }
         .result-box {
-            margin-top: 20px;
+            margin-top: 25px;
             padding: 20px;
             border-radius: 6px;
             display: none;
@@ -80,36 +169,59 @@
             border: 1px solid var(--accent);
             color: #c5221f;
         }
-        .disclaimer {
-            font-size: 14px;
+        .footer-note {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
             color: #64748b;
-            background: #f8fafc;
-            padding: 15px;
-            border-left: 4px solid var(--secondary);
-            margin-bottom: 20px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 15px;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Senior Digital Safeguard</h1>
-    
-    <div class="disclaimer">
-        <strong>Terms of Use & Privacy Notice:</strong> This tool runs entirely in your browser session. No personal data, text inputs, or uploads are ever saved or sent to a server. Use this utility for educational triage and self-defense against scams.
+    <div class="header-top">
+        <div class="logos">
+            <!-- Replace with actual logo image paths if needed -->
+            <strong>DOEA</strong> | <strong>Senior Shield</strong>
+        </div>
+        <button class="btn-outline" onclick="alert('How to Use modal/info')">How to Use</button>
     </div>
 
-    <h2>Check a Suspicious Message</h2>
-    <p>Paste the text message, email, or transcript below and click analyze:</p>
-    
-    <textarea id="messageInput" placeholder="Paste suspicious message here..."></textarea>
-    <br>
-    <button onclick="analyzeMessage()">Analyze Message</button>
+    <div class="title-area">
+        <h1>Scam Detector</h1>
+        <div class="subtitle">Instant Scam & Fraud Protection Analyzer</div>
+    </div>
+
+    <div class="signup-banner">
+        <p>Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
+        <button class="btn-primary" onclick="alert('Sign up link')">Sign Up Now</button>
+    </div>
+
+    <div class="drop-zone" onclick="document.getElementById('fileInput').click()">
+        📂 <strong>Select Screenshot or Email File</strong>
+        <div style="font-size: 12px; color: #64748b; margin-top: 5px;">No file chosen (Supports Images, PDFs, Text files)</div>
+        <input type="file" id="fileInput" style="display: none;" onchange="handleFileSelect(event)">
+    </div>
+
+    <textarea id="messageInput" placeholder="Paste message text here..."></textarea>
+
+    <div class="button-group">
+        <button class="btn-analyze" onclick="analyzeMessage()">Analyze Message</button>
+        <button class="btn-clear" onclick="clearForm()">Clear</button>
+        <button class="btn-print" onclick="window.print()">Print Reference Guide</button>
+    </div>
 
     <div id="resultBox" class="result-box">
         <h3 id="resultTitle"></h3>
         <p id="resultDesc"></p>
         <div id="actionSteps"></div>
+    </div>
+
+    <div class="footer-note">
+        Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.
     </div>
 </div>
 
@@ -122,6 +234,19 @@
         "usps", "package pending", "delivery fee", "shutoff"
     ];
 
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.querySelector('.drop-zone').innerHTML = `📂 <strong>Selected File:</strong> ${file.name}`;
+        }
+    }
+
+    function clearForm() {
+        document.getElementById("messageInput").value = "";
+        document.getElementById("resultBox").style.display = "none";
+        document.querySelector('.drop-zone').innerHTML = `📂 <strong>Select Screenshot or Email File</strong><div style="font-size: 12px; color: #64748b; margin-top: 5px;">No file chosen (Supports Images, PDFs, Text files)</div>`;
+    }
+
     function analyzeMessage() {
         const text = document.getElementById("messageInput").value.toLowerCase();
         const resultBox = document.getElementById("resultBox");
@@ -130,7 +255,7 @@
         const actionSteps = document.getElementById("actionSteps");
 
         if (!text.trim()) {
-            alert("Please paste a message first.");
+            alert("Please paste a message or select a file first.");
             return;
         }
 
