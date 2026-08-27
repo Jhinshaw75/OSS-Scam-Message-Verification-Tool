@@ -463,156 +463,165 @@
                 return;
             }
 
-            // Bulletproof normalization: lowercase and map number substitutions
-            let lowerText = text.toLowerCase()
-                .replace(/0/g, 'o')
-                .replace(/1/g, 'i')
-                .replace(/3/g, 'e')
-                .replace(/4/g, 'a')
-                .replace(/5/g, 's')
-                .replace(/7/g, 't')
-                .replace(/8/g, 'b');
+            // Streamlined normalization map
+            const lowerText = text.toLowerCase()
+                .replace(/[0]/g, 'o').replace(/[1]/g, 'i').replace(/[3]/g, 'e')
+                .replace(/[4]/g, 'a').replace(/[5]/g, 's').replace(/[7]/g, 't').replace(/[8]/g, 'b');
 
-            // Check if text consists entirely of symbols/emojis or lacks alphanumeric letters
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
-
-            const isIRS = lowerText.includes('irs') || lowerText.includes('audit') || lowerText.includes('tax');
-            const isSSN = lowerText.includes('social security') || lowerText.includes('ssn') || lowerText.includes('social sec');
-            const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail') || lowerText.includes('jury');
-            const isCustoms = lowerText.includes('customs') || lowerText.includes('border protection') || lowerText.includes('contraband') || lowerText.includes('package');
-            const isCourt = lowerText.includes('court') || lowerText.includes('process server') || lowerText.includes('subpoena') || lowerText.includes('indictment') || lowerText.includes('lawsuit');
-            
-            const isBank = lowerText.includes('checking account') || lowerText.includes('debit card') || lowerText.includes('bank account') || lowerText.includes('frozen') || lowerText.includes('bank');
-            const isZelle = lowerText.includes('zelle') || lowerText.includes('unauthorized transfer') || lowerText.includes('peer');
-            const isCrypto = lowerText.includes('bitcoin') || lowerText.includes('crypto') || lowerText.includes('blockchain') || lowerText.includes('wallet') || lowerText.includes('investment');
-            const isSweepstakes = lowerText.includes('sweepstakes') || lowerText.includes('grand prize') || lowerText.includes('won the') || lowerText.includes('prize');
-            const isWire = lowerText.includes('wire transfer') || lowerText.includes('compliance officer') || lowerText.includes('international wire') || lowerText.includes('wire');
-
-            const isTech = lowerText.includes('microsoft') || lowerText.includes('windows') || lowerText.includes('trojan') || lowerText.includes('virus') || lowerText.includes('infected') || lowerText.includes('support number on the screen') || lowerText.includes('computer');
-            const isApple = lowerText.includes('apple') || lowerText.includes('icloud') || lowerText.includes('apple id');
-            const isRouter = lowerText.includes('router') || lowerText.includes('broadband') || lowerText.includes('botnet') || lowerText.includes('internet');
-            const isStreaming = lowerText.includes('streaming') || lowerText.includes('subscription') || lowerText.includes('membership payment') || lowerText.includes('netflix');
-            const isEmailStorage = lowerText.includes('mailbox') || lowerText.includes('storage quota') || lowerText.includes('cloud storage capacity') || lowerText.includes('email');
-
-            const isUtility = lowerText.includes('shutoff') || lowerText.includes('disconnection') || lowerText.includes('electric') || lowerText.includes('power bill') || lowerText.includes('water') || lowerText.includes('utility');
-            const isGrandchild = lowerText.includes('grandma') || lowerText.includes('grandpa') || lowerText.includes('accident while traveling') || lowerText.includes('family');
-            const isHospital = lowerText.includes('hospital') || lowerText.includes('trauma center') || lowerText.includes('surgery') || lowerText.includes('medical');
-            const isHomeWarranty = lowerText.includes('home warranty') || lowerText.includes('property lien') || lowerText.includes('foreclosure') || lowerText.includes('warranty');
-            const isCharity = lowerText.includes('disaster relief') || lowerText.includes('hurricane') || lowerText.includes('emergency shelter') || lowerText.includes('charity');
-
-            // Force threat trigger if input is symbol/emoji only without text, or matches threat keywords/files
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
-            const isThreat = isSymbolOnlySpim = isSymbolOnlySpam || fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
+
+            // Condensed threat detection dictionary mapping keywords to titles and specific warnings
+            const threats = [
+                {
+                    keys: ['irs', 'audit', 'tax'],
+                    title: "Fake IRS Tax Threat",
+                    desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
+                    warn: "They are using fake government intimidation to steal your money."
+                },
+                {
+                    keys: ['social security', 'ssn', 'social sec'],
+                    title: "Fake Social Security Scam",
+                    desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
+                    warn: "They are trying to trick you into handing over your sensitive personal numbers."
+                },
+                {
+                    keys: ['leon county', 'sheriff', 'police', 'warrant', 'arrest', 'bail', 'jury'],
+                    title: "Fake Police or Jury Duty Scam",
+                    desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
+                    warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone."
+                },
+                {
+                    keys: ['customs', 'border protection', 'contraband', 'package'],
+                    title: "Fake Customs Package Scam",
+                    desc: "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.",
+                    warn: "This is a scare tactic to force you into paying bogus clearance fees."
+                },
+                {
+                    keys: ['court', 'process server', 'subpoena', 'indictment', 'lawsuit'],
+                    title: "Fake Court Legal Notice",
+                    desc: "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.",
+                    warn: "Courts serve official papers in person or by mail, never through urgent threat texts."
+                },
+                {
+                    keys: ['checking account', 'debit card', 'bank account', 'frozen', 'bank'],
+                    title: "Fake Bank Account Lockout Scam",
+                    desc: "Scammers are sending a fake alert pretending your checking account or debit card is frozen to steal your login password.",
+                    warn: "They are trying to get you to click a fake link to capture your bank password."
+                },
+                {
+                    keys: ['zelle', 'unauthorized transfer', 'peer'],
+                    title: "Fake Money App (Zelle) Scam",
+                    desc: "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.",
+                    warn: "Never read security pins or verification codes over the phone to anyone."
+                },
+                {
+                    keys: ['bitcoin', 'crypto', 'blockchain', 'wallet', 'investment'],
+                    title: "Fake Digital Money / Investment Trap",
+                    desc: "A fake online investment or digital savings trap is trying to trick you into handing over your hard-earned money.",
+                    warn: "This is a fraudulent financial scheme designed to drain your savings."
+                },
+                {
+                    keys: ['sweepstakes', 'grand prize', 'won the', 'prize'],
+                    title: "Fake Contest / Sweepstakes Scam",
+                    desc: "A fake contest win is claiming you won a huge cash prize, but you have to pay taxes or buy gift cards first.",
+                    warn: "Legitimate contests never require upfront payment or gift cards to claim a prize."
+                },
+                {
+                    keys: ['wire transfer', 'compliance officer', 'international wire', 'wire'],
+                    title: "Fake Bank Wire Fraud Scam",
+                    desc: "Someone pretending to be a bank fraud investigator is trying to trick you into wiring your money to them.",
+                    warn: "They are impersonating security officers to intercept and steal your wire transfer."
+                },
+                {
+                    keys: ['microsoft', 'windows', 'trojan', 'virus', 'infected', 'support number on the screen', 'computer'],
+                    title: "Scary Computer Pop-Up Virus Scam",
+                    desc: "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.",
+                    warn: "This is a browser trap designed to freeze your screen and force you to call fake technicians."
+                },
+                {
+                    keys: ['apple', 'icloud', 'apple id'],
+                    title: "Fake Apple / iCloud Hacking Scam",
+                    desc: "A fake message claims your Apple or iCloud account has been hacked to trick you into entering your password on a fake page.",
+                    warn: "They are harvesting your device account credentials through a fake login page."
+                },
+                {
+                    keys: ['router', 'broadband', 'botnet', 'internet'],
+                    title: "Fake Home Internet Router Warning",
+                    desc: "A fake warning claims your home internet router has security problems to trick you into downloading harmful software.",
+                    warn: "This is a trick to install remote access malware onto your home network."
+                },
+                {
+                    keys: ['streaming', 'subscription', 'membership payment', 'netflix'],
+                    title: "Fake TV / Streaming Bill Scam",
+                    desc: "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.",
+                    warn: "They are using popular subscription names to steal updated credit card details."
+                },
+                {
+                    keys: ['mailbox', 'storage quota', 'cloud storage capacity', 'email'],
+                    title: "Fake Email Full Warning Scam",
+                    desc: "A fake email warning claims your email storage is completely full and will be deleted unless you click a link.",
+                    warn: "This is a credential-stealing trick to take over your personal email account."
+                },
+                {
+                    keys: ['shutoff', 'disconnection', 'electric', 'power bill', 'water', 'utility'],
+                    title: "Fake Utility Shutoff Threat",
+                    desc: "A scammer is threatening to cut off your electricity, water, or power immediately unless you pay them right now.",
+                    warn: "Utility companies do not demand immediate same-hour prepaid card payments over the phone."
+                },
+                {
+                    keys: ['grandma', 'grandpa', 'accident while traveling', 'family'],
+                    title: "Fake Grandchild in Trouble Scam",
+                    desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
+                    warn: "They are exploiting your family care and love to force rushed cash transfers."
+                },
+                {
+                    keys: ['hospital', 'trauma center', 'surgery', 'medical'],
+                    title: "Fake Hospital Emergency Scam",
+                    desc: "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.",
+                    warn: "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits."
+                },
+                {
+                    keys: ['home warranty', 'property lien', 'foreclosure', 'warranty'],
+                    title: "Fake Home Warranty / Property Notice",
+                    desc: "A deceptive letter or text claims your home warranty expired or a lien is on your property to trick you into paying fees.",
+                    warn: "This is a misleading solicitation designed to charge you for unnecessary property services."
+                },
+                {
+                    keys: ['disaster relief', 'hurricane', 'emergency shelter', 'charity'],
+                    title: "Fake Disaster Relief Charity Scam",
+                    desc: "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
+                    warn: "Scammers frequently create fake disaster relief funds to exploit community generosity."
+                }
+            ];
+
+            let matchedThreat = threats.find(t => t.keys.some(k => lowerText.includes(k)));
+
+            if (isSymbolOnlySpam) {
+                matchedThreat = {
+                    title: "Suspicious Symbol / Emoji Spam Detected",
+                    desc: "This message contains unusual or unrecognizable characters often used to bypass filters or confuse recipients.",
+                    warn: "Unrecognized symbol sequences are frequently tied to automated spam or phishing tactics."
+                };
+            }
+
+            const isThreat = isSymbolOnlySpam || fileInput.files.length > 0 || matchedThreat;
 
             if (isThreat) {
                 resultBox.className = 'result-box danger';
                 
-                let title = "Stop! This is a Known Scam Trick";
-                let desc = "This message is trying to scare you into acting quickly before you have time to think.";
-                let specificWarning = "";
+                const title = matchedThreat ? matchedThreat.title : "Stop! This is a Known Scam Trick";
+                const desc = matchedThreat ? matchedThreat.desc : "This message is trying to scare you into acting quickly before you have time to think.";
+                const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause panic and financial loss.";
 
-                if (isSymbolOnlySpam) {
-                    title = "Suspicious Symbol / Emoji Spam Detected";
-                    desc = "This message contains unusual or unrecognizable characters often used to bypass filters or confuse recipients.";
-                    specificWarning = "Unrecognized symbol sequences are frequently tied to automated spam or phishing tactics.";
-                } else if (isIRS) {
-                    title = "Fake IRS Tax Threat";
-                    desc = "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.";
-                    specificWarning = "They are using fake government intimidation to steal your money.";
-                } else if (isSSN) {
-                    title = "Fake Social Security Scam";
-                    desc = "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.";
-                    specificWarning = "They are trying to trick you into handing over your sensitive personal numbers.";
-                } else if (isPolice) {
-                    title = "Fake Police or Jury Duty Scam";
-                    desc = "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.";
-                    specificWarning = "Law enforcement will never call you demanding immediate cash or gift cards over the phone.";
-                } else if (isCustoms) {
-                    title = "Fake Customs Package Scam";
-                    desc = "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.";
-                    specificWarning = "This is a scare tactic to force you into paying bogus clearance fees.";
-                } else if (isCourt) {
-                    title = "Fake Court Legal Notice";
-                    desc = "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.";
-                    specificWarning = "Courts serve official papers in person or by mail, never through urgent threat texts.";
-                } else if (isBank) {
-                    title = "Fake Bank Account Lockout Scam";
-                    desc = "Scammers are sending a fake alert pretending your checking account or debit card is frozen to steal your login password.";
-                    specificWarning = "They are trying to get you to click a fake link to capture your bank password.";
-                } else if (isZelle) {
-                    title = "Fake Money App (Zelle) Scam";
-                    desc = "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.";
-                    specificWarning = "Never read security pins or verification codes over the phone to anyone.";
-                } else if (isCrypto) {
-                    title = "Fake Digital Money / Investment Trap";
-                    desc = "A fake online investment or digital savings trap is trying to trick you into handing over your hard-earned money.";
-                    specificWarning = "This is a fraudulent financial scheme designed to drain your savings.";
-                } else if (isSweepstakes) {
-                    title = "Fake Contest / Sweepstakes Scam";
-                    desc = "A fake contest win is claiming you won a huge cash prize, but you have to pay taxes or buy gift cards first.";
-                    specificWarning = "Legitimate contests never require upfront payment or gift cards to claim a prize.";
-                } else if (isWire) {
-                    title = "Fake Bank Wire Fraud Scam";
-                    desc = "Someone pretending to be a bank fraud investigator is trying to trick you into wiring your money to them.";
-                    specificWarning = "They are impersonating security officers to intercept and steal your wire transfer.";
-                } else if (isTech) {
-                    title = "Scary Computer Pop-Up Virus Scam";
-                    desc = "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.";
-                    specificWarning = "This is a browser trap designed to freeze your screen and force you to call fake technicians.";
-                } else if (isApple) {
-                    title = "Fake Apple / iCloud Hacking Scam";
-                    desc = "A fake message claims your Apple or iCloud account has been hacked to trick you into entering your password on a fake page.";
-                    specificWarning = "They are harvesting your device account credentials through a fake login page.";
-                } else if (isRouter) {
-                    title = "Fake Home Internet Router Warning";
-                    desc = "A fake warning claims your home internet router has security problems to trick you into downloading harmful software.";
-                    specificWarning = "This is a trick to install remote access malware onto your home network.";
-                } else if (isStreaming) {
-                    title = "Fake TV / Streaming Bill Scam";
-                    desc = "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.";
-                    specificWarning = "They are using popular subscription names to steal updated credit card details.";
-                } else if (isEmailStorage) {
-                    title = "Fake Email Full Warning Scam";
-                    desc = "A fake email warning claims your email storage is completely full and will be deleted unless you click a link.";
-                    specificWarning = "This is a credential-stealing trick to take over your personal email account.";
-                } else if (isUtility) {
-                    title = "Fake Utility Shutoff Threat";
-                    desc = "A scammer is threatening to cut off your electricity, water, or power immediately unless you pay them right now.";
-                    specificWarning = "Utility companies do not demand immediate same-hour prepaid card payments over the phone.";
-                } else if (isGrandchild) {
-                    title = "Fake Grandchild in Trouble Scam";
-                    desc = "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.";
-                    specificWarning = "They are exploiting your family care and love to force rushed cash transfers.";
-                } else if (isHospital) {
-                    title = "Fake Hospital Emergency Scam";
-                    desc = "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.";
-                    specificWarning = "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits.";
-                } else if (isHomeWarranty) {
-                    title = "Fake Home Warranty / Property Notice";
-                    desc = "A deceptive letter or text claims your home warranty expired or a lien is on your property to trick you into paying fees.";
-                    specificWarning = "This is a misleading solicitation designed to charge you for unnecessary property services.";
-                } else if (isCharity) {
-                    title = "Fake Disaster Relief Charity Scam";
-                    desc = "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.";
-                    specificWarning = "Scammers frequently create fake disaster relief funds to exploit community generosity.";
-                } else {
-                    title = "Stop! This is a Known Scam Trick";
-                    desc = "This message uses scare tactics—like pretending to be the government, threatening you with arrest, or demanding money in a hurry.";
-                    specificWarning = "This matches fraudulent patterns designed to cause panic and financial loss.";
-                }
-
-                // Zero-gap, hand-holding 4-step walkthrough plan with unified trusted routing
-                steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
-                        'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
-                        
-                        '<li><strong>Step 2: Understand the Trick</strong><br>' +
-                        '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
-                        
-                        '<li><strong>Step 3: Connect Safely With Our Trusted Specialists</strong><br>' +
-                        'Do not search the internet on your own. Instead, let us guide you directly to our trusted experts. Call the Florida Department of Elder Affairs (DOEA) Elder Helpline right now at <a href="tel:18009635337" style="color: #991b1b; font-weight: bold; text-decoration: underline;">1-800-96-ELDER</a> (1-800-963-5337) to speak with a trained, trusted professional who will handle everything for you.</li>' +
-                        
-                        '<li><strong>Step 4: Stay Within Our Secure Resource Network</strong><br>' +
-                        'Keep your protection active by clicking through to our official <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener" style="color: #991b1b; font-weight: bold; text-decoration: underline;">Operation Senior Shield Resource Hub</a> to review verified safety updates and get further secure assistance.</li>';
+                const steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
+                              'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
+                              '<li><strong>Step 2: Understand the Trick</strong><br>' +
+                              '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
+                              '<li><strong>Step 3: Connect Safely With Our Trusted Specialists</strong><br>' +
+                              'Do not search the internet on your own. Instead, let us guide you directly to our trusted experts. Call the Florida Department of Elder Affairs (DOEA) Elder Helpline right now at <a href="tel:18009635337" style="color: #991b1b; font-weight: bold; text-decoration: underline;">1-800-96-ELDER</a> (1-800-963-5337) to speak with a trained, trusted professional who will handle everything for you.</li>' +
+                              '<li><strong>Step 4: Stay Within Our Secure Resource Network</strong><br>' +
+                              'Keep your protection active by clicking through to our official <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener" style="color: #991b1b; font-weight: bold; text-decoration: underline;">Operation Senior Shield Resource Hub</a> to review verified safety updates and get further secure assistance.</li>';
 
                 resultContent.innerHTML = 
                     '<div class="warning-title">⚠️ ' + title + '</div>' +
@@ -631,7 +640,6 @@
             document.getElementById('imageUpload').value = '';
             document.getElementById('fileInfo').textContent = "No file chosen (Supports Images, PDFs, Text files)";
             document.getElementById('resultBox').style.display = 'none';
-            // Return back to the legal disclaimer view and hide the tool view
             document.getElementById('toolView').style.display = 'none';
             document.getElementById('disclaimerView').style.display = 'block';
         }
