@@ -459,17 +459,20 @@
                 return;
             }
 
-            const lowerText = text.toLowerCase()
+            // Normalize text: lowercase, leetspeak swap, and remove extra spacing/scrambled gaps for evasion detection
+            const rawLower = text.toLowerCase()
                 .replace(/[0]/g, 'o').replace(/[1]/g, 'i').replace(/[3]/g, 'e')
                 .replace(/[4]/g, 'a').replace(/[5]/g, 's').replace(/[7]/g, 't').replace(/[8]/g, 'b');
+
+            const condensedText = rawLower.replace(/\s+/g, '');
+            const lowerText = rawLower;
 
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
-            // Multi-word phrase patterns and contextual threat combinations
             const threats = [
                 {
-                    phrases: ['grandma in jail', 'grandpa in jail', 'grandchild in jail', 'grandchild arrest', 'grandchild bail', 'grandma bail', 'grandpa bail', 'accident bail', 'emergency cash bail'],
+                    phrases: ['grandma in jail', 'grandpa in jail', 'grandchild in jail', 'grandchild arrest', 'grandchild bail', 'grandma bail', 'grandpa bail', 'accident bail', 'emergency cash bail', 'grandchild1njail', 'grandchildin jail'],
                     title: "Fake Grandchild in Trouble Scam",
                     desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
                     warn: "They are exploiting your family care and love to force rushed cash transfers.",
@@ -477,7 +480,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    phrases: ['irs audit', 'tax audit', 'irs arrest', 'tax warrant', 'owe back taxes', 'unpaid taxes arrest'],
+                    phrases: ['irs audit', 'tax audit', 'irs arrest', 'tax warrant', 'owe back taxes', 'unpaid taxes arrest', 'irsawarrant'],
                     title: "Fake IRS Tax Threat",
                     desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
                     warn: "They are using fake government intimidation to steal your money.",
@@ -632,7 +635,8 @@
 
             let matchedThreat = threats.find(t => {
                 return t.phrases.some(phrase => {
-                    if (lowerText.includes(phrase)) {
+                    const cleanPhrase = phrase.replace(/\s+/g, '');
+                    if (lowerText.includes(phrase) || condensedText.includes(cleanPhrase)) {
                         // Exception rule: ignore if phrase involves 'bail' but 'bailey' is present
                         if (phrase.includes('bail') && lowerText.includes('bailey')) {
                             return false;
