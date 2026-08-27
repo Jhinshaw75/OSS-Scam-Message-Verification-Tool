@@ -473,6 +473,9 @@
                 .replace(/7/g, 't')
                 .replace(/8/g, 'b');
 
+            // Check if text consists entirely of symbols/emojis or lacks alphanumeric letters
+            const hasAlphanumeric = /[a-z0-9]/i.test(text);
+
             const isIRS = lowerText.includes('irs') || lowerText.includes('audit') || lowerText.includes('tax');
             const isSSN = lowerText.includes('social security') || lowerText.includes('ssn') || lowerText.includes('social sec');
             const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail') || lowerText.includes('jury');
@@ -497,7 +500,9 @@
             const isHomeWarranty = lowerText.includes('home warranty') || lowerText.includes('property lien') || lowerText.includes('foreclosure') || lowerText.includes('warranty');
             const isCharity = lowerText.includes('disaster relief') || lowerText.includes('hurricane') || lowerText.includes('emergency shelter') || lowerText.includes('charity');
 
-            const isThreat = fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
+            // Force threat trigger if input is symbol/emoji only without text, or matches threat keywords/files
+            const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
+            const isThreat = isSymbolOnlySpam || fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
 
             if (isThreat) {
                 resultBox.className = 'result-box danger';
@@ -506,7 +511,11 @@
                 let desc = "This message is trying to scare you into acting quickly before you have time to think.";
                 let specificWarning = "";
 
-                if (isIRS) {
+                if (isSymbolOnlySpam) {
+                    title = "Suspicious Symbol / Emoji Spam Detected";
+                    desc = "This message contains unusual or unrecognizable characters often used to bypass filters or confuse recipients.";
+                    specificWarning = "Unrecognized symbol sequences are frequently tied to automated spam or phishing tactics.";
+                } else if (isIRS) {
                     title = "Fake IRS Tax Threat";
                     desc = "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.";
                     specificWarning = "They are using fake government intimidation to steal your money.";
@@ -594,7 +603,7 @@
 
                 // Zero-gap, hand-holding 4-step walkthrough plan with unified trusted routing
                 steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
-                        'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
+                        'Take a deep breath and relax. Do NOT reply to Khomeini or any suspicious sender, do NOT call any phone numbers listed in the message, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
                         
                         '<li><strong>Step 2: Understand the Trick</strong><br>' +
                         '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
@@ -633,4 +642,4 @@
         }
     </script>
 </body>
-</html> 
+</html>
