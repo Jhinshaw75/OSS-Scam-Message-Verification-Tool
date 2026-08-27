@@ -43,11 +43,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
-        }
-        .header-logos img {
-            height: 42px;
-            width: auto;
+            gap: 15px;
         }
         h2 {
             color: #1e3a8a;
@@ -164,49 +160,16 @@
             border-top: 1px solid #e2e8f0;
             padding-top: 15px;
         }
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-        }
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 25px;
-            border-radius: 8px;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .close-btn:hover {
-            color: #000;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button class="how-to-use-btn" onclick="openModal()">How to Use</button>
+    <button class="how-to-use-btn">How to Use</button>
 
     <div class="header-logos">
-        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida" onerror="this.style.display='none'; document.getElementById('fallback-logo-1').style.display='block';">
-        <span id="fallback-logo-1" style="display:none; font-weight:bold; color:#1e3a8a; font-size:18px;">Elder Affairs Florida</span>
-        
-        <img src="senior-shield-logo.png" alt="Senior Shield" onerror="this.style.display='none'; document.getElementById('fallback-logo-2').style.display='block';">
-        <span id="fallback-logo-2" style="display:none; font-weight:bold; color:#b45309; font-size:14px; background:#fef3c7; padding:2px 6px; border-radius:4px;">Senior Shield</span>
+        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida">
+        <img src="senior-shield-logo.png" alt="Senior Shield">
     </div>
 
     <h2>Scam Detector</h2>
@@ -214,13 +177,13 @@
 
     <div class="banner">
         <span>Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</span>
-        <a href="https://elderaffairs.org" target="_blank" class="sign-up-btn">Sign Up Now</a>
+        <a href="#" class="sign-up-btn">Sign Up Now</a>
     </div>
 
     <div class="upload-box" onclick="document.getElementById('file-input').click()">
         <label class="upload-label">📁 Select Screenshot or Email File</label>
-        <input type="file" id="file-input" onchange="handleFileSelect(event)">
-        <div id="file-name-display" class="upload-subtext">No file chosen (Supports Images, PDFs, Text files)</div>
+        <input type="file" id="file-input">
+        <div class="upload-subtext">No file chosen (Supports Images, PDFs, Text files)</div>
     </div>
 
     <textarea id="message-input" placeholder="Paste message text here..."></textarea>
@@ -228,24 +191,13 @@
     <div class="btn-group">
         <button id="analyze-btn" onclick="runAnalysis()">Analyze Message</button>
         <button id="clear-btn" onclick="clearAll()">Clear</button>
-        <button id="print-btn" onclick="printReferenceGuide()">Print Reference Guide</button>
+        <button id="print-btn" onclick="window.print()">Print Reference Guide</button>
     </div>
 
     <div id="output" class="result-box"></div>
 
     <div class="footer-note">
         Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.
-    </div>
-</div>
-
-<!-- How to Use Modal -->
-<div id="howToUseModal" class="modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h3 style="color: #1e3a8a; margin-top: 0;">How to Use Scam Detector</h3>
-        <p>1. <strong>Paste or Upload:</strong> Paste suspicious text into the box or upload an email/screenshot file.</p>
-        <p>2. <strong>Analyze:</strong> Click "Analyze Message" to scan for known fraud patterns and fake threat triggers.</p>
-        <p>3. <strong>Verify:</strong> Review the risk breakdown and use the official Florida Department of Elder Affairs links provided to report or verify safely.</p>
     </div>
 </div>
 
@@ -320,37 +272,9 @@
 
     function clearAll() {
         document.getElementById('message-input').value = '';
-        document.getElementById('file-input').value = '';
-        document.getElementById('file-name-display').innerText = 'No file chosen (Supports Images, PDFs, Text files)';
         const outputBox = document.getElementById('output');
         outputBox.style.display = 'none';
         outputBox.innerHTML = '';
-    }
-
-    function handleFileSelect(event) {
-        const file = event.target.files[0];
-        if (file) {
-            document.getElementById('file-name-display').innerText = 'Selected file: ' + file.name;
-        }
-    }
-
-    function openModal() {
-        document.getElementById('howToUseModal').style.display = 'block';
-    }
-
-    function closeModal() {
-        document.getElementById('howToUseModal').style.display = 'none';
-    }
-
-    window.onclick = function(event) {
-        const modal = document.getElementById('howToUseModal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    }
-
-    function printReferenceGuide() {
-        window.print();
     }
 </script>
 
