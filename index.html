@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -544,51 +544,52 @@
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
+            // Ordered from specific institutional threats down to general family alerts
             const threatCategories = [
                 {
-                    keywords: ['compliance officer', 'crypto', 'blockchain', 'checking account', 'wire', 'bitcoin', 'federal custody'],
+                    keywords: ['irs', 'tax', 'audit', 'back taxes'],
+                    minMatches: 1,
+                    title: "Fake IRS Tax Threat",
+                    desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
+                    warn: "They are using fake government intimidation to steal your money."
+                },
+                {
+                    keywords: ['social security', 'ssn', 'benefits'],
+                    minMatches: 1,
+                    title: "Fake Social Security Scam",
+                    desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
+                    warn: "They are trying to trick you into handing over your sensitive personal numbers."
+                },
+                {
+                    keywords: ['jury duty', 'sheriff', 'police', 'bench warrant', 'court'],
+                    minMatches: 1,
+                    title: "Fake Police or Jury Duty Scam",
+                    desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
+                    warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone."
+                },
+                {
+                    keywords: ['compliance officer', 'crypto', 'blockchain', 'checking account', 'wire', 'bitcoin'],
                     minMatches: 2,
                     title: "Fake Bank Wire / Crypto Compliance Scam",
                     desc: "A scammer is impersonating a bank compliance or security officer claiming your accounts or digital assets are frozen.",
                     warn: "They are creating manufactured financial panic to trick you into wiring funds or moving crypto."
                 },
                 {
-                    keywords: ['grandchild', 'grandma', 'grandpa', 'family', 'accident', 'jail', 'arrest', 'bail', 'emergency'],
+                    keywords: ['grandchild', 'grandma', 'grandpa', 'bail', 'accident', 'jail'],
                     minMatches: 2,
                     title: "Fake Grandchild in Trouble Scam",
                     desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
                     warn: "They are exploiting your family care and love to force rushed cash transfers."
                 },
                 {
-                    keywords: ['irs', 'tax', 'audit', 'warrant', 'arrest', 'back taxes', 'unpaid', 'penalties'],
-                    minMatches: 2,
-                    title: "Fake IRS Tax Threat",
-                    desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
-                    warn: "They are using fake government intimidation to steal your money."
-                },
-                {
-                    keywords: ['social security', 'ssn', 'benefits', 'frozen', 'suspended', 'canceled', 'federal'],
-                    minMatches: 2,
-                    title: "Fake Social Security Scam",
-                    desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
-                    warn: "They are trying to trick you into handing over your sensitive personal numbers."
-                },
-                {
-                    keywords: ['jury duty', 'sheriff', 'police', 'warrant', 'arrest', 'court', 'fine', 'bench warrant'],
-                    minMatches: 2,
-                    title: "Fake Police or Jury Duty Scam",
-                    desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
-                    warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone."
-                },
-                {
-                    keywords: ['customs', 'border protection', 'package', 'contraband', 'illegal', 'seized', 'international'],
+                    keywords: ['customs', 'border protection', 'package', 'contraband', 'seized'],
                     minMatches: 2,
                     title: "Fake Customs Package Scam",
                     desc: "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.",
                     warn: "This is a scare tactic to force you into paying bogus clearance fees."
                 },
                 {
-                    keywords: ['legal notice', 'process server', 'subpoena', 'lawsuit', 'court action', 'summons'],
+                    keywords: ['legal notice', 'process server', 'subpoena', 'lawsuit'],
                     minMatches: 2,
                     title: "Fake Court Legal Notice",
                     desc: "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.",
@@ -602,7 +603,7 @@
                     warn: "They are trying to get you to click a fake link to capture your bank password."
                 },
                 {
-                    keywords: ['zelle', 'unauthorized', 'transfer', 'peer', 'payment alert', 'verification code'],
+                    keywords: ['zelle', 'payment alert', 'verification code'],
                     minMatches: 2,
                     title: "Fake Money App (Zelle) Scam",
                     desc: "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.",
@@ -623,14 +624,7 @@
                     warn: "Legitimate contests never require upfront payment or gift cards to claim a prize."
                 },
                 {
-                    keywords: ['compliance officer', 'international wire', 'secure wire', 'intercept'],
-                    minMatches: 2,
-                    title: "Fake Bank Wire Fraud Scam",
-                    desc: "Someone pretending to be a bank fraud investigator is trying to trick you into wiring your money to them.",
-                    warn: "They are impersonating security officers to intercept and steal your wire transfer."
-                },
-                {
-                    keywords: ['microsoft', 'windows', 'computer', 'infected', 'trojan', 'malware', 'support number', 'screen'],
+                    keywords: ['microsoft', 'windows', 'computer', 'infected', 'trojan', 'malware', 'support number'],
                     minMatches: 2,
                     title: "Scary Computer Pop-Up Virus Scam",
                     desc: "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.",
