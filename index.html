@@ -26,7 +26,7 @@
             font-family: Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            line-height: 1.4;
+            line-height: 1.5;
             margin: 0;
             padding: 20px;
         }
@@ -261,7 +261,7 @@
 
         .result-box {
             margin-top: 30px;
-            padding: 20px;
+            padding: 25px;
             border-radius: 8px;
             display: none;
         }
@@ -281,57 +281,58 @@
         }
 
         .warning-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
             color: var(--danger-text);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .warning-desc {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--danger-text);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .action-list {
-            margin: 0 0 15px 0;
+            margin: 0 0 20px 0;
             padding-left: 20px;
-            font-size: 14px;
+            font-size: 15px;
             color: var(--danger-text);
         }
 
         .action-list li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            line-height: 1.6;
         }
 
         .helpline-box {
-            margin-top: 15px;
+            margin-top: 20px;
             background: #ffffff;
-            padding: 15px;
-            border-radius: 6px;
+            padding: 20px;
+            border-radius: 8px;
             border: 1px solid var(--danger-border);
         }
 
         .helpline-box h4 {
             margin-top: 0;
             color: var(--primary);
-            font-size: 15px;
+            font-size: 16px;
         }
 
         .helpline-box p {
-            font-size: 13px;
+            font-size: 14px;
             color: #334155;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .helpline-links a {
             display: inline-block;
             margin-right: 15px;
-            margin-top: 5px;
+            margin-top: 8px;
             color: var(--primary);
             font-weight: bold;
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
         }
 
         .helpline-links a:hover {
@@ -384,7 +385,7 @@
                 <li>Review the result:
                     <ul>
                         <li>If no common scam patterns show up, the tool will let you know.</li>
-                        <li>If a scam is found, a warning box will appear right away telling you what the trick is and guiding you step-by-step through our trusted Operation Senior Shield resource channels.</li>
+                        <li>If a scam is found, a zero-gap guidance box will appear right away to walk you through what to do and connect you directly with our trusted Operation Senior Shield resources.</li>
                     </ul>
                 </li>
                 <li>Click the print reference guide button if you want a paper copy of the emergency numbers and trusted web links to keep by your phone.</li>
@@ -438,7 +439,7 @@
 
             <div id="resultBox" class="result-box">
                 <div id="resultContent">
-                    <!-- Dynamic step-by-step walkthrough injected here -->
+                    <!-- Dynamic zero-gap walkthrough injected here -->
                 </div>
                 <div class="helpline-box" id="helplineBox">
                     <h4>Verified State & Federal Resources</h4>
@@ -508,7 +509,7 @@
                 return;
             }
 
-            // Bulletproof normalization: lowercase and map common number-to-letter substitutions (fuzzing resistance)
+            // Bulletproof normalization: lowercase and map number substitutions
             let lowerText = text.toLowerCase()
                 .replace(/0/g, 'o')
                 .replace(/1/g, 'i')
@@ -518,7 +519,6 @@
                 .replace(/7/g, 't')
                 .replace(/8/g, 'b');
 
-            // 20 distinct scam category checks mapped to plain, senior-friendly language and funneled guidance
             const isIRS = lowerText.includes('irs') || lowerText.includes('audit') || lowerText.includes('tax');
             const isSSN = lowerText.includes('social security') || lowerText.includes('ssn') || lowerText.includes('social sec');
             const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail') || lowerText.includes('jury');
@@ -550,125 +550,117 @@
                 
                 let title = "Stop! This is a Known Scam Trick";
                 let desc = "This message is trying to scare you into acting quickly before you have time to think.";
-                let steps = "";
+                let specificWarning = "";
 
                 if (isIRS) {
                     title = "Fake IRS Tax Threat";
                     desc = "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.";
-                    steps = '<li><strong>Do NOT</strong> call the phone number or reply to this message.</li>' +
-                            '<li><strong>What to do next:</strong> Report this fake tax threat safely through the <a href="https://www.tigta.gov" target="_blank" rel="noopener">TIGTA Tax Fraud Reporting Portal</a> or our <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Hub</a>.</li>';
+                    specificWarning = "They are using fake government intimidation to steal your money.";
                 } else if (isSSN) {
                     title = "Fake Social Security Scam";
                     desc = "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.";
-                    steps = '<li><strong>Do NOT</strong> give out your Social Security number, passwords, or personal details.</li>' +
-                            '<li><strong>What to do next:</strong> File a report safely through the <a href="https://oig.ssa.gov" target="_blank" rel="noopener">Social Security OIG Fraud Reporting Portal</a> or connect via <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "They are trying to trick you into handing over your sensitive personal numbers.";
                 } else if (isPolice) {
                     title = "Fake Police or Jury Duty Scam";
                     desc = "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.";
-                    steps = '<li><strong>Do NOT</strong> send money, gift cards, or cryptocurrency to anyone.</li>' +
-                            '<li><strong>What to do next:</strong> Report this intimidation trick to the <a href="https://www.fdle.state.fl.us" target="_blank" rel="noopener">Florida Department of Law Enforcement (FDLE)</a> or through <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "Law enforcement will never call you demanding immediate cash or gift cards over the phone.";
                 } else if (isCustoms) {
                     title = "Fake Customs Package Scam";
                     desc = "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.";
-                    steps = '<li><strong>Do NOT</strong> send money or click any internet links in the message.</li>' +
-                            '<li><strong>What to do next:</strong> Submit a complaint through the <a href="https://www.cbp.gov/contact" target="_blank" rel="noopener">CBP Info Center</a> or visit <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "This is a scare tactic to force you into paying bogus clearance fees.";
                 } else if (isCourt) {
                     title = "Fake Court Legal Notice";
                     desc = "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.";
-                    steps = '<li><strong>Do NOT</strong> call the settlement number listed in the message.</li>' +
-                            '<li><strong>What to do next:</strong> Report the fake legal threat through the <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Reporting Portal</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "Courts serve official papers in person or by mail, never through urgent threat texts.";
                 } else if (isBank) {
                     title = "Fake Bank Account Lockout Scam";
                     desc = "Scammers are sending a fake alert pretending your checking account or debit card is frozen to steal your login password.";
-                    steps = '<li><strong>Do NOT</strong> click the login link inside the message.</li>' +
-                            '<li><strong>What to do next:</strong> Report the fake bank alert through the <a href="https://www.phishing.org" target="_blank" rel="noopener">Anti-Phishing Working Group</a> or our trusted <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Portal</a>.</li>';
+                    specificWarning = "They are trying to get you to click a fake link to capture your bank password.";
                 } else if (isZelle) {
                     title = "Fake Money App (Zelle) Scam";
                     desc = "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.";
-                    steps = '<li><strong>Do NOT</strong> read security codes or account pins to anyone over the phone.</li>' +
-                            '<li><strong>What to do next:</strong> Get guidance from <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Consumer Advice</a> or visit our <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Hub</a>.</li>';
+                    specificWarning = "Never read security pins or verification codes over the phone to anyone.";
                 } else if (isCrypto) {
                     title = "Fake Digital Money / Investment Trap";
                     desc = "A fake online investment or digital savings trap is trying to trick you into handing over your hard-earned money.";
-                    steps = '<li><strong>Do NOT</strong> connect your accounts or send money on unfamiliar websites.</li>' +
-                            '<li><strong>What to do next:</strong> Report the online investment trap to the <a href="https://www.ic3.gov" target="_blank" rel="noopener">FBI Internet Crime Complaint Center (IC3)</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "This is a fraudulent financial scheme designed to drain your savings.";
                 } else if (isSweepstakes) {
                     title = "Fake Contest / Sweepstakes Scam";
                     desc = "A fake contest win is claiming you won a huge cash prize, but you have to pay taxes or buy gift cards first.";
-                    steps = '<li><strong>Do NOT</strong> buy gift cards or send money to claim any prize.</li>' +
-                            '<li><strong>What to do next:</strong> Report the fake contest scam to the <a href="https://www.uspis.gov" target="_blank" rel="noopener">US Postal Inspection Service</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "Legitimate contests never require upfront payment or gift cards to claim a prize.";
                 } else if (isWire) {
                     title = "Fake Bank Wire Fraud Scam";
                     desc = "Someone pretending to be a bank fraud investigator is trying to trick you into wiring your money to them.";
-                    steps = '<li><strong>Do NOT</strong> provide your banking login information or wire tracking numbers.</li>' +
-                            '<li><strong>What to do next:</strong> Report the wire fraud attempt to the <a href="https://www.finra.org" target="_blank" rel="noopener">FINRA Securities Helpline for Seniors</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "They are impersonating security officers to intercept and steal your wire transfer.";
                 } else if (isTech) {
                     title = "Scary Computer Pop-Up Virus Scam";
                     desc = "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.";
-                    steps = '<li><strong>Do NOT</strong> call any phone number listed on the pop-up warning screen.</li>' +
-                            '<li><strong>What to do next:</strong> Report the fake tech support trick directly to the <a href="https://reportfraud.ftc.gov" target="_blank" rel="noopener">FTC Report Fraud Portal</a> or our <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.</li>';
+                    specificWarning = "This is a browser trap designed to freeze your screen and force you to call fake technicians.";
                 } else if (isApple) {
                     title = "Fake Apple / iCloud Hacking Scam";
                     desc = "A fake message claims your Apple or iCloud account has been hacked to trick you into entering your password on a fake page.";
-                    steps = '<li><strong>Do NOT</strong> enter your Apple ID password on any external website link.</li>' +
-                            '<li><strong>What to do next:</strong> Visit official support through <a href="https://support.apple.com" target="_blank" rel="noopener">Apple Support</a> or route your steps through the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Hub</a>.</li>';
+                    specificWarning = "They are harvesting your device account credentials through a fake login page.";
                 } else if (isRouter) {
                     title = "Fake Home Internet Router Warning";
                     desc = "A fake warning claims your home internet router has security problems to trick you into downloading harmful software.";
-                    steps = '<li><strong>Do NOT</strong> download unknown software or remote programs.</li>' +
-                            '<li><strong>What to do next:</strong> Check official security guidelines via <a href="https://www.cisa.gov" target="_blank" rel="noopener">CISA Cybersecurity Guidance</a> or our <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Portal</a>.</li>';
+                    specificWarning = "This is a trick to install remote access malware onto your home network.";
                 } else if (isStreaming) {
                     title = "Fake TV / Streaming Bill Scam";
                     desc = "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.";
-                    steps = '<li><strong>Do NOT</strong> type your credit card information into links sent through text messages.</li>' +
-                            '<li><strong>What to do next:</strong> File a report through the <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Reporting Portal</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "They are using popular subscription names to steal updated credit card details.";
                 } else if (isEmailStorage) {
                     title = "Fake Email Full Warning Scam";
                     desc = "A fake email warning claims your email storage is completely full and will be deleted unless you click a link.";
-                    steps = '<li><strong>Do NOT</strong> click links to re-enter your email password.</li>' +
-                            '<li><strong>What to do next:</strong> Review official guidance via <a href="https://www.cisa.gov" target="_blank" rel="noopener">CISA Phishing Guidance</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "This is a credential-stealing trick to take over your personal email account.";
                 } else if (isUtility) {
                     title = "Fake Utility Shutoff Threat";
                     desc = "A scammer is threatening to cut off your electricity, water, or power immediately unless you pay them right now.";
-                    steps = '<li><strong>Do NOT</strong> buy prepaid debit cards or call the urgent number provided in the message.</li>' +
-                            '<li><strong>What to do next:</strong> Report the utility threat through the <a href="https://www.psc.state.fl.us" target="_blank" rel="noopener">Florida Public Service Commission</a> or our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Portal</a>.</li>';
+                    specificWarning = "Utility companies do not demand immediate same-hour prepaid card payments over the phone.";
                 } else if (isGrandchild) {
                     title = "Fake Grandchild in Trouble Scam";
                     desc = "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.";
-                    steps = '<li><strong>Do NOT</strong> wire money or send cash couriers anywhere.</li>' +
-                            '<li><strong>What to do next:</strong> Get trusted support through the <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Elder Justice Initiative</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "They are exploiting your family care and love to force rushed cash transfers.";
                 } else if (isHospital) {
                     title = "Fake Hospital Emergency Scam";
                     desc = "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.";
-                    steps = '<li><strong>Do NOT</strong> give out insurance details or credit card numbers over the phone.</li>' +
-                            '<li><strong>What to do next:</strong> Route your inquiry through the <a href="https://oig.hhs.gov" target="_blank" rel="noopener">HHS Office of Inspector General</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits.";
                 } else if (isHomeWarranty) {
                     title = "Fake Home Warranty / Property Notice";
                     desc = "A deceptive letter or text claims your home warranty expired or a lien is on your property to trick you into paying fees.";
-                    steps = '<li><strong>Do NOT</strong> pay processing fees or sign documents from the message.</li>' +
-                            '<li><strong>What to do next:</strong> Review official guidance via the <a href="https://www.fdacs.gov" target="_blank" rel="noopener">Florida Department of Agriculture and Consumer Services (FDACS)</a> or <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "This is a misleading solicitation designed to charge you for unnecessary property services.";
                 } else if (isCharity) {
                     title = "Fake Disaster Relief Charity Scam";
                     desc = "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.";
-                    steps = '<li><strong>Do NOT</strong> donate money through unverified links or social media requests.</li>' +
-                            '<li><strong>What to do next:</strong> Check charities safely via <a href="https://www.charitynavigator.org" target="_blank" rel="noopener">Charity Navigator</a> or connect through <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "Scammers frequently create fake disaster relief funds to exploit community generosity.";
                 } else {
                     title = "Stop! This is a Known Scam Trick";
                     desc = "This message uses scare tactics—like pretending to be the government, threatening you with arrest, or demanding money in a hurry.";
-                    steps = '<li><strong>Do NOT</strong> call any phone number listed in the message or screenshot.</li>' +
-                            '<li><strong>What to do next:</strong> Access verified support directly through <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield</a>.</li>';
+                    specificWarning = "This matches fraudulent patterns designed to cause panic and financial loss.";
                 }
+
+                // Zero-gap, hand-holding 4-step walkthrough plan
+                steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
+                        'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
+                        
+                        '<li><strong>Step 2: Understand the Trick</strong><br>' +
+                        '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
+                        
+                        '<li><strong>Step 3: Connect Safely With Our Trusted Specialists</strong><br>' +
+                        'Do not search the internet on your own. Instead, let us guide you directly to our trusted experts. Call the Florida Department of Elder Affairs (DOEA) Elder Helpline right now at <a href="tel:18009635337" style="color: #991b1b; font-weight: bold; text-decoration: underline;">1-800-96-ELDER</a> (1-800-963-5337) to speak with a trained, trusted professional who will handle everything for you.</li>' +
+                        
+                        '<li><strong>Step 4: Stay Within Our Secure Resource Network</strong><br>' +
+                        'Keep your protection active by clicking through to our official <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener" style="color: #991b1b; font-weight: bold; text-decoration: underline;">Operation Senior Shield Resource Hub</a> to review verified safety updates and get further secure assistance.</li>';
 
                 resultContent.innerHTML = 
                     '<div class="warning-title">⚠️ ' + title + '</div>' +
                     '<div class="warning-desc">' + desc + '</div>' +
-                    '<div class="warning-title">Recommended Step-by-Step Actions:</div>' +
+                    '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Zero-Gap Action Plan:</div>' +
                     '<ol class="action-list">' + steps + '</ol>';
                 helplineBox.style.display = 'block';
             } else {
                 resultBox.className = 'result-box safe';
                 resultContent.innerHTML = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong><br>' +
-                    'Even so, always proceed with caution and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you need help.';
+                    'Even so, always proceed with caution and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
                 helplineBox.style.display = 'none';
             }
         }
