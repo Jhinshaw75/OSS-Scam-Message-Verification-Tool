@@ -571,7 +571,7 @@
                     warn: "Utility companies do not demand immediate same-hour prepaid card payments over the phone."
                 },
                 {
-                    keys: ['grandma', 'grandpa', 'accident while traveling', 'family'],
+                    keys: ['grandma', 'grandpa', 'grandchild', 'bail', 'accident while traveling', 'family'],
                     title: "Fake Grandchild in Trouble Scam",
                     desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
                     warn: "They are exploiting your family care and love to force rushed cash transfers."
@@ -591,7 +591,7 @@
                 {
                     keys: ['disaster relief', 'hurricane', 'emergency shelter', 'charity'],
                     title: "Fake Disaster Relief Charity Scam",
-                    desc: "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
+                    desc: "Ah, fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
                     warn: "Scammers frequently create fake disaster relief funds to exploit community generosity."
                 }
             ];
@@ -630,7 +630,6 @@
                     '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Zero-Gap Action Plan:</div>' +
                     '<ol class="action-list">' + steps + '</ol>';
                 
-                // Dynamically populate the printable card so it matches the specific scam detected
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
                     '<p>' + desc + '</p>' +
@@ -663,7 +662,7 @@
         }
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
+            navigator.serviceWord.register('sw.js').catch(() => {});
         }
     </script>
 </body>
