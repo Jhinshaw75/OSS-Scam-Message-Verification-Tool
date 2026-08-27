@@ -471,7 +471,6 @@
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
-            // Condensed threat detection dictionary mapping keywords to titles and specific warnings
             const threats = [
                 {
                     keys: ['irs', 'audit', 'tax'],
@@ -633,6 +632,9 @@
                 resultContent.innerHTML = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong><br>' +
                     'Even so, always proceed with caution and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
             }
+            
+            // Ensure the result box becomes visible
+            resultBox.style.display = 'block';
         }
 
         function clearForm() {
@@ -640,8 +642,7 @@
             document.getElementById('imageUpload').value = '';
             document.getElementById('fileInfo').textContent = "No file chosen (Supports Images, PDFs, Text files)";
             document.getElementById('resultBox').style.display = 'none';
-            document.getElementById('toolView').style.display = 'none';
-            document.getElementById('disclaimerView').style.display = 'block';
+            document.getElementById('resultContent').innerHTML = '';
         }
 
         function printGuide() {
