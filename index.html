@@ -446,14 +446,16 @@
                     <p>Do not call numbers listed in suspicious messages. Use official contacts below:</p>
                     <div class="helpline-links">
                         <a href="tel:18009635337">DOEA Elder Helpline: 1-800-96-ELDER</a>
+                        <a href="https://elderaffairs.org" target="_blank" rel="noopener">DOEA Website</a>
                         <a href="tel:18009622873">Florida Abuse Hotline</a>
+                        <a href="https://www.myflfamilies.com" target="_blank" rel="noopener">DCF Website</a>
                         <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Reporting Portal</a>
                     </div>
                 </div>
             </div>
         </main>
 
-        <!-- Printable Wallet Reference Card -->
+        <!-- Printable Wallet Reference Card (Updated with Side-by-Side Web Links) -->
         <div class="printable-card">
             <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
             <p><strong>Golden Rules to Remember:</strong></p>
@@ -464,8 +466,8 @@
             </ul>
             <h3>Verified Emergency & Support Contacts:</h3>
             <ul>
-                <li><strong>DOEA Elder Helpline:</strong> <a href="tel:18009635337">1-800-963-5337</a></li>
-                <li><strong>Florida Abuse Hotline:</strong> <a href="tel:18009622873">1-800-962-2873</a></li>
+                <li><strong>DOEA Elder Helpline:</strong> <a href="tel:18009635337">1-800-963-5337</a> | <a href="https://elderaffairs.org" target="_blank" rel="noopener">elderaffairs.org</a></li>
+                <li><strong>Florida Abuse Hotline:</strong> <a href="tel:18009622873">1-800-962-2873</a> | <a href="https://www.myflfamilies.com" target="_blank" rel="noopener">myflfamilies.com</a></li>
                 <li><strong>FTC Reporting Portal:</strong> <a href="https://www.ftc.gov" target="_blank" rel="noopener">ftc.gov</a></li>
                 <li><strong>Operation Senior Shield:</strong> <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">opseniorshieldfl.com</a></li>
             </ul>
@@ -509,7 +511,6 @@
 
             const lowerText = text.toLowerCase();
 
-            // 20 distinct scam category checks mapped to tailored step-by-step guidance and specific reporting links
             const isIRS = lowerText.includes('irs') || lowerText.includes('audit');
             const isSSN = lowerText.includes('social security') || lowerText.includes('ssn');
             const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail');
