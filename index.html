@@ -3,280 +3,710 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Senior Digital Safeguard - Scam Detector</title>
+    <title>Scam Detector</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3a8a">
     <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-hover: #172554;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+            --danger-bg: #fef2f2;
+            --danger-border: #f87171;
+            --danger-text: #991b1b;
+            --safe-bg: #f0fdf4;
+            --safe-border: #4ade80;
+            --safe-text: #166534;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.5;
             margin: 0;
             padding: 20px;
         }
+
         .container {
-            max-width: 750px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 40px;
+            max-width: 800px;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .how-to-use-btn {
-            position: absolute;
-            top: 30px;
-            right: 30px;
+
+        .header-top {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 5px;
+        }
+
+        .instructions-toggle-btn {
             background-color: #e2e8f0;
-            color: #334155;
-            border: 1px solid #cbd5e1;
-            padding: 8px 16px;
+            color: #1e293b;
+            border: 1px solid var(--border-color);
+            padding: 8px 14px;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: bold;
             cursor: pointer;
         }
-        .how-to-use-btn:hover {
+
+        .instructions-toggle-btn:hover {
             background-color: #cbd5e1;
         }
-        .header-logos {
+
+        .instructions-panel {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .instructions-panel.active {
+            display: block;
+        }
+
+        .instructions-panel h3 {
+            margin-top: 0;
+            color: var(--primary);
+        }
+
+        .instructions-panel ol {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+
+        .instructions-panel li {
+            margin-bottom: 8px;
+        }
+
+        .brand-section {
             text-align: center;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .logos {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+            margin-bottom: 15px;
         }
-        h2 {
-            color: #1e3a8a;
-            text-align: center;
-            margin-top: 5px;
-            margin-bottom: 5px;
+
+        .logos img {
+            height: 45px;
+            object-fit: contain;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin: 0 0 5px 0;
             font-size: 26px;
         }
+
         .subtitle {
-            text-align: center;
             color: #64748b;
             font-size: 14px;
-            margin-bottom: 25px;
+            margin: 0;
         }
-        .banner {
-            background-color: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 12px 16px;
-            border-radius: 6px;
-            font-size: 13px;
+
+        .disclaimer-box {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer-box h3 {
+            margin-top: 0;
+            color: #1e293b;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .disclaimer-box p {
+            color: #475569;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .oss-promo-banner {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 15px 20px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 15px;
         }
-        .banner a.sign-up-btn {
-            background-color: #1e3a8a;
+
+        .oss-promo-text {
+            font-size: 14px;
+            color: #1e3a8a;
+            margin: 0;
+        }
+
+        .oss-promo-btn {
+            background-color: var(--primary);
             color: white;
-            padding: 6px 14px;
-            border-radius: 4px;
+            padding: 8px 14px;
+            border-radius: 6px;
             text-decoration: none;
+            font-size: 13px;
             font-weight: bold;
-            font-size: 12px;
             white-space: nowrap;
-            margin-left: 10px;
         }
-        .upload-box {
-            border: 2px dashed #cbd5e1;
+
+        .oss-promo-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .upload-dropzone {
+            border: 2px dashed var(--border-color);
             border-radius: 8px;
             padding: 20px;
             text-align: center;
             background-color: #fafafa;
             margin-bottom: 20px;
-            cursor: pointer;
         }
-        .upload-box input[type="file"] {
-            display: none;
-        }
-        .upload-label {
-            font-weight: bold;
-            color: #1e3a8a;
-            cursor: pointer;
+
+        .upload-dropzone label {
             display: inline-block;
-            background: #e2e8f0;
+            background-color: #e2e8f0;
+            color: #1e293b;
             padding: 8px 16px;
             border-radius: 6px;
-            font-size: 14px;
-            border: 1px solid #cbd5e1;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 8px;
         }
-        .upload-subtext {
-            font-size: 12px;
+
+        .upload-dropzone label:hover {
+            background-color: #cbd5e1;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-info {
+            font-size: 13px;
             color: #64748b;
-            margin-top: 8px;
+            margin: 0;
         }
-        textarea {
-            width: 100%;
-            height: 130px;
-            padding: 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            font-size: 14px;
-            resize: vertical;
-            box-sizing: border-box;
-            margin-bottom: 15px;
-        }
-        .btn-group {
-            display: flex;
-            gap: 12px;
+
+        .form-group {
             margin-bottom: 20px;
         }
-        .btn-group button {
-            flex: 1;
+
+        textarea {
+            width: 100%;
+            height: 140px;
             padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
             font-size: 15px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        button.primary-btn {
+            flex: 2;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
             font-weight: bold;
-            border: 1px solid #cbd5e1;
             border-radius: 6px;
             cursor: pointer;
         }
-        #analyze-btn {
-            background-color: #1e3a8a;
-            color: white;
-            border-color: #1e3a8a;
+
+        button.primary-btn:hover {
+            background-color: var(--primary-hover);
         }
-        #clear-btn {
+
+        button.secondary-btn {
+            flex: 1;
             background-color: #e2e8f0;
-            color: #334155;
-        }
-        #print-btn {
-            background-color: #e2e8f0;
-            color: #334155;
-        }
-        .result-box {
-            padding: 20px;
+            color: #1e293b;
+            border: none;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: bold;
             border-radius: 6px;
-            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        button.secondary-btn:hover {
+            background-color: #cbd5e1;
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 8px;
             display: none;
         }
+
+        .result-box.danger {
+            background-color: var(--danger-bg);
+            border: 2px solid var(--danger-border);
+            color: var(--danger-text);
+            display: block;
+        }
+
+        .result-box.safe {
+            background-color: var(--safe-bg);
+            border: 2px solid var(--safe-border);
+            color: var(--safe-text);
+            display: block;
+        }
+
+        .warning-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--danger-text);
+            margin-bottom: 8px;
+        }
+
+        .warning-desc {
+            font-size: 15px;
+            color: var(--danger-text);
+            margin-bottom: 20px;
+        }
+
+        .action-list {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 15px;
+            color: var(--danger-text);
+        }
+
+        .action-list li {
+            margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
         .footer-note {
+            margin-top: 35px;
             text-align: center;
             font-size: 12px;
             color: #64748b;
-            margin-top: 30px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid var(--border-color);
             padding-top: 15px;
+        }
+
+        .printable-card {
+            display: none;
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
+            .header-top, .instructions-panel, .oss-promo-banner, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
+            .printable-card { display: block !important; border: 2px dashed #1e3a8a; padding: 20px; border-radius: 8px; margin: 20px; }
+            .printable-card h2 { color: #1e3a8a; margin-top: 0; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <button class="how-to-use-btn">How to Use</button>
+    <div class="container">
+        <!-- Instructions Toggle Top Right -->
+        <div class="header-top">
+            <button class="instructions-toggle-btn" id="toggleInstructionsBtn" onclick="toggleInstructions()">How to Use</button>
+        </div>
 
-    <div class="header-logos">
-        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida">
-        <img src="senior-shield-logo.png" alt="Senior Shield">
+        <!-- Collapsible Instructions Panel -->
+        <div class="instructions-panel" id="instructionsPanel">
+            <h3>Step-by-Step Instructions</h3>
+            <ol>
+                <li>Open any standard web browser on your computer, tablet, or phone.</li>
+                <li>Read through the initial disclaimer screen when the page loads. Note that the tool runs entirely inside your browser session, meaning no personal information, text, or uploads are ever saved on a central server.</li>
+                <li>Choose how to check the suspicious message:
+                    <ul>
+                        <li><strong>Option A:</strong> Copy the text from the suspicious email, text message, or letter and paste it right into the box below.</li>
+                        <li><strong>Option B:</strong> Take a picture or screenshot of the message and upload the image file using the upload button.</li>
+                    </ul>
+                </li>
+                <li>Click the analyze button to check the message for common scam tricks.</li>
+                <li>Review the result:
+                    <ul>
+                        <li>If no common scam patterns show up, the tool will let you know.</li>
+                        <li>If a scam is found, a zero-gap guidance box will appear right away to walk you through what to do and connect you directly with our targeted protection resources.</li>
+                    </ul>
+                </li>
+                <li>Click the print reference guide button if you want a paper copy of the emergency numbers and trusted web links to keep by your phone.</li>
+                <li>Open your browser menu on a mobile device and select "Add to Home Screen" if you want to pin the tool to your phone like a regular app.</li>
+            </ol>
+        </div>
+
+        <div class="brand-section">
+            <div class="logos">
+                <a href="https://elderaffairs.org" target="_blank" rel="noopener"><img src="doea-logo.png" alt="Florida Department of Elder Affairs"></a>
+                <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener"><img src="oss-logo.png" alt="Operation Senior Shield"></a>
+            </div>
+            <h1>Scam Detector</h1>
+            <p class="subtitle">Instant Scam & Fraud Protection Analyzer</p>
+        </div>
+
+        <!-- Legal & Educational Disclaimer View -->
+        <div id="disclaimerView" class="disclaimer-box">
+            <h3>Legal & Educational Disclaimer</h3>
+            <p>Please review before accessing the Senior Digital Safeguard tool:</p>
+            <p><strong>1. Educational Purpose:</strong> Provided free for awareness under Operation Senior Shield as a quick first check.<br>
+            <strong>2. How It Works:</strong> Paste suspicious texts or upload screenshots to check for common scam indicators.<br>
+            <strong>3. No Guarantee:</strong> Always proceed with caution, consult our trusted resources, and verify through official channels.<br>
+            <strong>4. Liability:</strong> DOEA and Operation Senior Shield assume no legal liability for losses from tool usage.</p>
+            <button class="primary-btn" onclick="acceptDisclaimer()" style="width: 100%;">I Have Read and Agree — Enter Tool</button>
+        </div>
+
+        <!-- Main Tool View -->
+        <main id="toolView" style="display: none;">
+            <div class="oss-promo-banner">
+                <p class="oss-promo-text">Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
+                <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" rel="noopener" class="oss-promo-btn">Sign Up Now</a>
+            </div>
+
+            <div class="upload-dropzone">
+                <label for="imageUpload">📁 Select Screenshot or Email File</label>
+                <input type="file" id="imageUpload" accept="image/*,.pdf,.txt" onchange="updateFileName()">
+                <p class="file-info" id="fileInfo">No file chosen (Supports Images, PDFs, Text files)</p>
+            </div>
+
+            <div class="form-group">
+                <textarea id="scamInput" placeholder="Paste message text here..."></textarea>
+            </div>
+
+            <div class="button-group">
+                <button class="primary-btn" onclick="analyzeContent()">Analyze Message</button>
+                <button class="secondary-btn" onclick="clearForm()">Clear</button>
+                <button class="secondary-btn" onclick="printGuide()">Print Reference Guide</button>
+            </div>
+
+            <div id="resultBox" class="result-box">
+                <div id="resultContent">
+                    <!-- Dynamic targeted walkthrough injected here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Printable Wallet Reference Card -->
+        <div class="printable-card" id="printableCardContainer">
+            <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
+            <div id="printDynamicContent">
+                <p><strong>Golden Rules to Remember:</strong></p>
+                <ul>
+                    <li>Never call phone numbers listed in suspicious text messages, emails, or pop-ups.</li>
+                    <li>Never click unfamiliar links or download attachments from unknown senders.</li>
+                    <li>Always use our verified Operation Senior Shield resource links.</li>
+                </ul>
+            </div>
+            <h3>Verified Emergency & Support Contacts:</h3>
+            <ul>
+                <li><strong>DOEA Elder Helpline:</strong> <a href="tel:18009635337">1-800-963-5337</a> | <a href="https://elderaffairs.org" target="_blank" rel="noopener">elderaffairs.org</a></li>
+                <li><strong>Florida Abuse Hotline:</strong> <a href="tel:18009622873">1-800-962-2873</a> | <a href="https://www.myflfamilies.com" target="_blank" rel="noopener">myflfamilies.com</a></li>
+                <li><strong>DOEA File a Complaint:</strong> <a href="https://elderaffairs.org/resources/file-a-complaint/" target="_blank" rel="noopener">elderaffairs.org/resources/file-a-complaint/</a></li>
+                <li><strong>DOEA Fraud Trends & Protection:</strong> <a href="https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/" target="_blank" rel="noopener">Fraud Protection Programs</a></li>
+                <li><strong>Operation Senior Shield:</strong> <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">opseniorshieldfl.com</a></li>
+            </ul>
+            <p style="font-size: 11px; margin-top: 30px; text-align: center;">Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.</p>
+        </div>
+
+        <div class="footer-note">
+            Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.
+        </div>
     </div>
 
-    <h2>Scam Detector</h2>
-    <div class="subtitle">Instant Scam & Fraud Protection Analyzer</div>
-
-    <div class="banner">
-        <span>Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</span>
-        <a href="#" class="sign-up-btn">Sign Up Now</a>
-    </div>
-
-    <div class="upload-box" onclick="document.getElementById('file-input').click()">
-        <label class="upload-label">📁 Select Screenshot or Email File</label>
-        <input type="file" id="file-input">
-        <div class="upload-subtext">No file chosen (Supports Images, PDFs, Text files)</div>
-    </div>
-
-    <textarea id="message-input" placeholder="Paste message text here..."></textarea>
-    
-    <div class="btn-group">
-        <button id="analyze-btn" onclick="runAnalysis()">Analyze Message</button>
-        <button id="clear-btn" onclick="clearAll()">Clear</button>
-        <button id="print-btn" onclick="window.print()">Print Reference Guide</button>
-    </div>
-
-    <div id="output" class="result-box"></div>
-
-    <div class="footer-note">
-        Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.
-    </div>
-</div>
-
-<script>
-    const threats = [
-        {
-            keys: ['netflix streaming', 'hulu billing', 'streaming service failed', 'subscription payment failed', 'stream bill suspended'],
-            title: "Fake TV / Streaming Bill Scam",
-            desc: "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.",
-            warn: "They are using popular subscription names to steal updated credit card details.",
-            linkText: "DOEA Fraud Protection Programs",
-            linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
-        },
-        {
-            keys: ['social security', 'ssn', 's.s.n'],
-            title: "Fake Social Security Scam",
-            desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
-            warn: "They are trying to trick you into handing over your sensitive personal numbers.",
-            linkText: "DOEA File a Complaint Portal",
-            linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
+    <script>
+        function acceptDisclaimer() {
+            document.getElementById('disclaimerView').style.display = 'none';
+            document.getElementById('toolView').style.display = 'block';
         }
-    ];
 
-    function runAnalysis() {
-        const inputText = document.getElementById('message-input').value.trim();
-        const outputBox = document.getElementById('output');
-        
-        if (!inputText) {
-            outputBox.style.display = 'block';
-            outputBox.style.backgroundColor = '#fef2f2';
-            outputBox.style.border = '1px solid #fecaca';
-            outputBox.style.color = '#991b1b';
-            outputBox.innerHTML = '<h3>Input Required</h3><p>Please enter or paste a message to analyze.</p>';
-            return;
+        function toggleInstructions() {
+            const panel = document.getElementById('instructionsPanel');
+            const btn = document.getElementById('toggleInstructionsBtn');
+            panel.classList.toggle('active');
+            btn.textContent = panel.classList.contains('active') ? 'Hide Instructions' : 'How to Use';
         }
 
-        const lowerText = inputText.toLowerCase();
-        let matchedThreat = null;
+        function updateFileName() {
+            const input = document.getElementById('imageUpload');
+            document.getElementById('fileInfo').textContent = input.files.length > 0 ? input.files[0].name : "No file chosen (Supports Images, PDFs, Text files)";
+        }
 
-        for (let threat of threats) {
-            for (let key of threat.keys) {
-                if (lowerText.includes(key)) {
-                    matchedThreat = threat;
-                    break;
-                }
+        function analyzeContent() {
+            const text = document.getElementById('scamInput').value.trim();
+            const fileInput = document.getElementById('imageUpload');
+            const resultBox = document.getElementById('resultBox');
+            const resultContent = document.getElementById('resultContent');
+
+            if (!text && fileInput.files.length === 0) {
+                alert('Please paste message text or upload a file to analyze.');
+                return;
             }
-            if (matchedThreat) break;
+
+            const lowerText = text.toLowerCase()
+                .replace(/[0]/g, 'o').replace(/[1]/g, 'i').replace(/[3]/g, 'e')
+                .replace(/[4]/g, 'a').replace(/[5]/g, 's').replace(/[7]/g, 't').replace(/[8]/g, 'b');
+
+            const hasAlphanumeric = /[a-z0-9]/i.test(text);
+            const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
+
+            const threats = [
+                {
+                    keys: ['grandma', 'grandpa', 'grandchild', 'grandparent', 'bail'],
+                    title: "Fake Grandchild in Trouble Scam",
+                    desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
+                    warn: "They are exploiting your family care and love to force rushed cash transfers.",
+                    linkText: "DOEA Fraud Protection & Trend Resources",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['irs', 'audit', 'tax'],
+                    title: "Fake IRS Tax Threat",
+                    desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
+                    warn: "They are using fake government intimidation to steal your money.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['social security', 'ssn', 'social sec'],
+                    title: "Fake Social Security Scam",
+                    desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
+                    warn: "They are trying to trick you into handing over your sensitive personal numbers.",
+                    linkText: "DOEA File a Complaint Portal",
+                    linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
+                },
+                {
+                    keys: ['leon county', 'sheriff', 'police', 'warrant', 'arrest', 'jury'],
+                    title: "Fake Police or Jury Duty Scam",
+                    desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
+                    warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone.",
+                    linkText: "DOEA File a Complaint Portal",
+                    linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
+                },
+                {
+                    keys: ['customs', 'border protection', 'contraband', 'package'],
+                    title: "Fake Customs Package Scam",
+                    desc: "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.",
+                    warn: "This is a scare tactic to force you into paying bogus clearance fees.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['court', 'process server', 'subpoena', 'indictment', 'lawsuit'],
+                    title: "Fake Court Legal Notice",
+                    desc: "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.",
+                    warn: "Courts serve official papers in person or by mail, never through urgent threat texts.",
+                    linkText: "DOEA File a Complaint Portal",
+                    linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
+                },
+                {
+                    keys: ['checking account', 'debit card', 'bank account', 'frozen', 'bank'],
+                    title: "Fake Bank Account Lockout Scam",
+                    desc: "Scammers are sending a fake alert pretending your checking account or debit card is frozen to steal your login password.",
+                    warn: "They are trying to get you to click a fake link to capture your bank password.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['zelle', 'unauthorized transfer', 'peer'],
+                    title: "Fake Money App (Zelle) Scam",
+                    desc: "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.",
+                    warn: "Never read security pins or verification codes over the phone to anyone.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['bitcoin', 'crypto', 'blockchain', 'wallet', 'investment'],
+                    title: "Fake Digital Money / Investment Trap",
+                    desc: "A fake online investment or digital savings trap is trying to trick you into handing over your hard-earned money.",
+                    warn: "This is a fraudulent financial scheme designed to drain your savings.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['sweepstakes', 'grand prize', 'won the', 'prize'],
+                    title: "Fake Contest / Sweepstakes Scam",
+                    desc: "A fake contest win is claiming you won a huge cash prize, but you have to pay taxes or buy gift cards first.",
+                    warn: "Legitimate contests never require upfront payment or gift cards to claim a prize.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['wire transfer', 'compliance officer', 'international wire', 'wire'],
+                    title: "Fake Bank Wire Fraud Scam",
+                    desc: "Someone pretending to be a bank fraud investigator is trying to trick you into wiring your money to them.",
+                    warn: "They are impersonating security officers to intercept and steal your wire transfer.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['microsoft', 'windows', 'trojan', 'virus', 'infected', 'support number on the screen', 'computer'],
+                    title: "Scary Computer Pop-Up Virus Scam",
+                    desc: "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.",
+                    warn: "This is a browser trap designed to freeze your screen and force you to call fake technicians.",
+                    linkText: "Operation Senior Shield Resource Hub",
+                    linkUrl: "https://opseniorshieldfl.com/"
+                },
+                {
+                    keys: ['apple', 'icloud', 'apple id'],
+                    title: "Fake Apple / iCloud Hacking Scam",
+                    desc: "A fake message claims your Apple or iCloud account has been hacked to trick you into entering your password on a fake page.",
+                    warn: "They are harvesting your device account credentials through a fake login page.",
+                    linkText: "Operation Senior Shield Resource Hub",
+                    linkUrl: "https://opseniorshieldfl.com/"
+                },
+                {
+                    keys: ['router', 'broadband', 'botnet', 'internet'],
+                    title: "Fake Home Internet Router Warning",
+                    desc: "A fake warning claims your home internet router has security problems to trick you into downloading harmful software.",
+                    warn: "This is a trick to install remote access malware onto your home network.",
+                    linkText: "Operation Senior Shield Resource Hub",
+                    linkUrl: "https://opseniorshieldfl.com/"
+                },
+                {
+                    keys: ['netflix streaming', 'hulu billing', 'streaming service failed', 'subscription payment failed', 'stream bill suspended'],
+                    title: "Fake TV / Streaming Bill Scam",
+                    desc: "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.",
+                    warn: "They are using popular subscription names to steal updated credit card details.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['mailbox', 'storage quota', 'cloud storage capacity', 'email'],
+                    title: "Fake Email Full Warning Scam",
+                    desc: "A fake email warning claims your email storage is completely full and will be deleted unless you click a link.",
+                    warn: "This is a credential-stealing trick to take over your personal email account.",
+                    linkText: "Operation Senior Shield Resource Hub",
+                    linkUrl: "https://opseniorshieldfl.com/"
+                },
+                {
+                    keys: ['shutoff', 'disconnection', 'electric', 'power bill', 'water', 'utility'],
+                    title: "Fake Utility Shutoff Threat",
+                    desc: "A scammer is threatening to cut off your electricity, water, or power immediately unless you pay them right now.",
+                    warn: "Utility companies do not demand immediate same-hour prepaid card payments over the phone.",
+                    linkText: "DOEA File a Complaint Portal",
+                    linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
+                },
+                {
+                    keys: ['hospital', 'trauma center', 'surgery', 'medical'],
+                    title: "Fake Hospital Emergency Scam",
+                    desc: "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.",
+                    warn: "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                },
+                {
+                    keys: ['home warranty', 'property lien', 'foreclosure', 'warranty'],
+                    title: "Fake Home Warranty / Property Notice",
+                    desc: "A deceptive letter or text claims your home warranty expired or a lien is on your property to trick you into paying fees.",
+                    warn: "This is a misleading solicitation designed to charge you for unnecessary property services.",
+                    linkText: "DOEA File a Complaint Portal",
+                    linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
+                },
+                {
+                    keys: ['disaster relief', 'hurricane', 'emergency shelter', 'charity'],
+                    title: "Fake Disaster Relief Charity Scam",
+                    desc: "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
+                    warn: "Scammers frequently create fake disaster relief funds to exploit community generosity.",
+                    linkText: "DOEA Fraud Protection Programs",
+                    linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
+                }
+            ];
+
+            let matchedThreat = threats.find(t => t.keys.some(k => lowerText.includes(k)));
+
+            if (isSymbolOnlySpam) {
+                matchedThreat = {
+                    title: "Suspicious Symbol / Emoji Spam Detected",
+                    desc: "This message contains unusual or unrecognizable characters often used to bypass filters or confuse recipients.",
+                    warn: "Unrecognized symbol sequences are frequently tied to automated spam or phishing tactics.",
+                    linkText: "Operation Senior Shield Resource Hub",
+                    linkUrl: "https://opseniorshieldfl.com/"
+                };
+            }
+
+            const isThreat = isSymbolOnlySpam || fileInput.files.length > 0 || matchedThreat;
+
+            if (isThreat) {
+                resultBox.className = 'result-box danger';
+                
+                const title = matchedThreat ? matchedThreat.title : "Stop! This is a Known Scam Trick";
+                const desc = matchedThreat ? matchedThreat.desc : "This message is trying to scare you into acting quickly before you have time to think.";
+                const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause panic and financial loss.";
+                const linkText = matchedThreat ? matchedThreat.linkText : "Operation Senior Shield Resource Hub";
+                const linkUrl = matchedThreat ? matchedThreat.linkUrl : "https://opseniorshieldfl.com/";
+
+                const steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
+                              'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
+                              '<li><strong>Step 2: Understand the Trick</strong><br>' +
+                              '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
+                              '<li><strong>Step 3: Connect Safely With Our Trusted Specialists</strong><br>' +
+                              'Do not search the internet on your own. Instead, let us guide you directly to our trusted experts. Call the Florida Department of Elder Affairs (DOEA) Elder Helpline right now at <a href="tel:18009635337" style="color: #991b1b; font-weight: bold; text-decoration: underline;">1-800-96-ELDER</a> (1-800-963-5337) to speak with a trained, trusted professional who will handle everything for you.</li>' +
+                              '<li><strong>Step 4: Review Targeted State Resources</strong><br>' +
+                              'Keep your protection active by clicking through directly to our <a href="' + linkUrl + '" target="_blank" rel="noopener" style="color: #991b1b; font-weight: bold; text-decoration: underline;">' + linkText + '</a> to review verified safety guidelines tailored specifically to this situation.</li>';
+
+                resultContent.innerHTML = 
+                    '<div class="warning-title">⚠️ ' + title + '</div>' +
+                    '<div class="warning-desc">' + desc + '</div>' +
+                    '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Zero-Gap Action Plan:</div>' +
+                    '<ol class="action-list">' + steps + '</ol>';
+                
+                document.getElementById('printDynamicContent').innerHTML = 
+                    '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
+                    '<p>' + desc + '</p>' +
+                    '<p><strong>Your Zero-Gap Action Plan:</strong></p>' +
+                    '<ol style="padding-left: 20px; font-size: 13px;">' + steps + '</ol>';
+            } else {
+                resultBox.className = 'result-box safe';
+                resultContent.innerHTML = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong><br>' +
+                    'Even so, because you can never be too careful, utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
+                
+                document.getElementById('printDynamicContent').innerHTML = 
+                    '<p><strong>Analysis Result:</strong> No common threat patterns found. Proceed with caution.</p>' +
+                    '<p><strong>Golden Rules to Remember:</strong></p>' +
+                    '<ul><li>Never call phone numbers listed in suspicious messages.</li><li>Always use verified Operation Senior Shield resource links.</li></ul>';
+            }
+            
+            resultBox.style.display = 'block';
         }
 
-        outputBox.style.display = 'block';
-
-        if (matchedThreat) {
-            outputBox.style.backgroundColor = '#fef2f2';
-            outputBox.style.border = '1px solid #fecaca';
-            outputBox.style.color = '#991b1b';
-            outputBox.innerHTML = `
-                <h3 style="margin-top:0;">⚠️ ${matchedThreat.title}</h3>
-                <p><strong>What this means:</strong> ${matchedThreat.desc}</p>
-                <p><strong>The Risk:</strong> ${matchedThreat.warn}</p>
-                <a href="${matchedThreat.linkUrl}" target="_blank" style="color: #1d4ed8; font-weight: bold; text-decoration: none;">${matchedThreat.linkText} &rarr;</a>
-            `;
-        } else {
-            outputBox.style.backgroundColor = '#f0fdf4';
-            outputBox.style.border = '1px solid #bbf7d0';
-            outputBox.style.color = '#166534';
-            outputBox.innerHTML = `
-                <h3 style="margin-top:0;">✅ This looks okay.</h3>
-                <p>No common scam words or threat patterns found. Even so, because you can never be too careful, utilize our verified <a href="https://elderaffairs.org" target="_blank" style="color: #1d4ed8; font-weight: bold; text-decoration: none;">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.</p>
-            `;
+        function clearForm() {
+            document.getElementById('scamInput').value = '';
+            document.getElementById('imageUpload').value = '';
+            document.getElementById('fileInfo').textContent = "No file chosen (Supports Images, PDFs, Text files)";
+            document.getElementById('resultBox').style.display = 'none';
+            document.getElementById('resultContent').innerHTML = '';
         }
-    }
 
-    function clearAll() {
-        document.getElementById('message-input').value = '';
-        const outputBox = document.getElementById('output');
-        outputBox.style.display = 'none';
-        outputBox.innerHTML = '';
-    }
-</script>
+        function printGuide() {
+            window.print();
+        }
 
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+    </script>
 </body>
 </html>
