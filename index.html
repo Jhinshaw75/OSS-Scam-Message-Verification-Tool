@@ -351,7 +351,7 @@
                 <li>Review the result:
                     <ul>
                         <li>If no multi-word scam patterns show up, the tool will let you know.</li>
-                        <li>If a scam is found, a zero-gap guidance box will appear right away to walk you through what to do and connect you directly with our targeted protection resources.</li>
+                        <li>If a scam is found, a guidance box will appear right away to walk you through what to do and connect you with external resource channels.</li>
                     </ul>
                 </li>
                 <li>Click the print reference guide button if you want a paper copy of the emergency numbers and trusted web links to keep by your phone.</li>
@@ -653,12 +653,12 @@
                 const desc = matchedThreat ? matchedThreat.desc : "This message is trying to scare you into acting quickly before you have time to think.";
                 const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause panic and financial loss.";
                 
-                const step3Custom = "If you have actually suffered a loss or fallen victim to this fraud, file an official report directly through the <a href='https://elderaffairs.org/resources/file-a-complaint/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA File a Complaint Portal</a>.";
-                const step4Custom = "To learn more about current schemes and review verified protective measures, explore the <a href='https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA Fraud Protection Programs</a> hub.";
+                const step3Custom = "If you have actually suffered a financial loss or fallen victim to this communication, report the incident through the official <a href='https://elderaffairs.org/resources/file-a-complaint/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA File a Complaint Portal</a>.";
+                const step4Custom = "To review general security guidelines, scam trends, and educational resources, explore the <a href='https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA Fraud Protection Programs</a> hub.";
 
                 const steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
-                              'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
-                              '<li><strong>Step 2: Understand the Trick</strong><br>' +
+                              'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are completely safe as long as you do not interact with them.</li>' +
+                              '<li><strong>Step 2: Understand the Specific Trick</strong><br>' +
                               '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
                               '<li><strong>Step 3: Report Only If You Are a Victim</strong><br>' +
                               step3Custom + '</li>' +
@@ -668,24 +668,24 @@
                 resultContent.innerHTML = 
                     '<div class="warning-title">⚠️ ' + title + '</div>' +
                     '<div class="warning-desc">' + desc + '</div>' +
-                    '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Zero-Gap Action Plan:</div>' +
+                    '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Action Plan:</div>' +
                     '<ol class="action-list">' + steps + '</ol>';
                 
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
                     '<p>' + desc + '</p>' +
-                    '<p><strong>Your Zero-Gap Action Plan:</strong></p>' +
+                    '<p><strong>Your Action Plan:</strong></p>' +
                     '<ol style="padding-left: 20px; font-size: 13px;">' + steps + '</ol>';
             } else {
                 resultBox.className = 'result-box safe';
                 
                 const hasWeirdSymbols = /[^a-zA-Z0-9\s]/.test(text);
-                let safeMessage = '<strong>✅ This looks okay. No scam patterns or threat combinations found.</strong>';
+                let safeMessage = '<strong>✅ This looks okay. No common scam patterns or threat combinations found.</strong>';
                 
                 if (hasWeirdSymbols) {
-                    safeMessage += '<br><span style="font-size: 14px; color: #166534; display: block; margin-top: 6px;">⚠️ <em>Caution:</em> This message contains unusual characters or symbols. We cannot definitively determine if it is fully legitimate. If you need further guidance, please explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
+                    safeMessage += '<br><span style="font-size: 14px; color: #166534; display: block; margin-top: 6px;">⚠️ <em>Caution:</em> This message contains unusual characters or symbols. If you have questions or want to review general awareness materials, please explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
                 } else {
-                    safeMessage += '<br>Even so, if you ever have questions or need external guidance, you can explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
+                    safeMessage += '<br>Even so, if you ever want to check educational guides, you can explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
                 }
                 
                 resultContent.innerHTML = safeMessage;
