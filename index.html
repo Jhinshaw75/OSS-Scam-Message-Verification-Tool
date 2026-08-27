@@ -506,7 +506,7 @@
             const panel = document.getElementById('instructionsPanel');
             const btn = document.getElementById('toggleInstructionsBtn');
             panel.classList.toggle('active');
-            btn.textContent = panel.classList.contains('active') ? 'Hide Instructions' : 'How to Use';
+            btn.textContent = panel.classList.contains('active' ) ? 'Hide Instructions' : 'How to Use';
         }
 
         function updateFileName() {
@@ -543,6 +543,9 @@
 
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
+
+            // Exclude benign routine billing/statement notices from triggering threats
+            const isBenignRoutine = lowerText.includes('statement') || lowerText.includes('scheduled to process') || lowerText.includes('auto pay') || lowerText.includes('autopay') || lowerText.includes('ready to view');
 
             const threatCategories = [
                 {
@@ -630,7 +633,7 @@
                     warn: "They are creating manufactured financial panic to trick you into wiring funds or moving crypto."
                 },
                 {
-                    keywords: ['disconnect', 'shutoff', 'power', 'water', 'municipal', 'autopay', 're-connection', 'utility'],
+                    keywords: ['disconnect', 'shutoff', 'power', 'water', 'municipal', 're-connection', 'utility'],
                     minMatches: 2,
                     title: "Fake Utility Disconnection Threat",
                     desc: "A scammer is threatening to cut off your power, water, or utilities immediately unless you make a rushed payment.",
@@ -752,14 +755,16 @@
 
             let matchedThreat = null;
 
-            for (let cat of threatCategories) {
-                let matchCount = cat.keywords.filter(kw => condensedText.includes(kw.replace(/\s+/g, '')) || lowerText.includes(kw)).length;
-                if (matchCount >= cat.minMatches) {
-                    if ((cat.title.includes('Grandchild') || cat.title.includes('Jail') || cat.title.includes('Bail')) && lowerText.includes('bailey')) {
-                        continue;
+            if (!isBenignRoutine) {
+                for (let cat of threatCategories) {
+                    let matchCount = cat.keywords.filter(kw => condensedText.includes(kw.replace(/\s+/g, '')) || lowerText.includes(kw)).length;
+                    if (matchCount >= cat.minMatches) {
+                        if ((cat.title.includes('Grandchild') || cat.title.includes('Jail') || cat.title.includes('Bail')) && lowerText.includes('bailey')) {
+                            continue;
+                        }
+                        matchedThreat = cat;
+                        break;
                     }
-                    matchedThreat = cat;
-                    break;
                 }
             }
 
