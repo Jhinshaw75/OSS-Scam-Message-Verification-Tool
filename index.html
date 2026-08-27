@@ -574,11 +574,18 @@
                     warn: "They are creating manufactured financial panic to trick you into wiring funds or moving crypto."
                 },
                 {
-                    keywords: ['disconnect', 'shutoff', 'power', 'water services', 'past-due meter'],
+                    keywords: ['disconnect', 'shutoff', 'power', 'water', 'municipal', 'autopay', 're-connection', 'utility'],
                     minMatches: 2,
                     title: "Fake Utility Disconnection Threat",
                     desc: "A scammer is threatening to cut off your power, water, or utilities immediately unless you make a rushed payment.",
                     warn: "Utility companies do not disconnect services on short notice demanding immediate prepaid card payments."
+                },
+                {
+                    keywords: ['payroll', 'direct deposit', 'routing', 'hr notice', 'tax withholding'],
+                    minMatches: 2,
+                    title: "Subtle Executive Payroll Phishing",
+                    desc: "A deceptive HR or payroll notification is trying to trick you into updating your direct deposit and banking routing details.",
+                    warn: "Scammers use fake internal notices to divert payroll funds into unauthorized accounts."
                 },
                 {
                     keywords: ['grandchild', 'grandma', 'grandpa', 'bail', 'accident', 'jail'],
