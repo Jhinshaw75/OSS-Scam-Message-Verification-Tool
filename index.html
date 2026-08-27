@@ -455,7 +455,7 @@
             </div>
         </main>
 
-        <!-- Printable Wallet Reference Card (Updated with Side-by-Side Web Links) -->
+        <!-- Printable Wallet Reference Card -->
         <div class="printable-card">
             <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
             <p><strong>Golden Rules to Remember:</strong></p>
@@ -511,31 +511,32 @@
 
             const lowerText = text.toLowerCase();
 
-            const isIRS = lowerText.includes('irs') || lowerText.includes('audit');
-            const isSSN = lowerText.includes('social security') || lowerText.includes('ssn');
-            const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail');
-            const isCustoms = lowerText.includes('customs') || lowerText.includes('border protection') || lowerText.includes('contraband');
-            const isCourt = lowerText.includes('court') || lowerText.includes('process server') || lowerText.includes('subpoena') || lowerText.includes('indictment');
-            
+            // Category keyword checks (Reordered so specific tech, utility, and bank scams take priority over broad police/government terms)
+            const isTech = lowerText.includes('microsoft') || lowerText.includes('windows') || lowerText.includes('trojan') || lowerText.includes('virus') || lowerText.includes('infected') || lowerText.includes('support number on the screen');
+            const isApple = lowerText.includes('apple') || lowerText.includes('icloud') || lowerText.includes('apple id');
+            const isRouter = lowerText.includes('router') || lowerText.includes('broadband') || lowerText.includes('botnet');
+            const isStreaming = lowerText.includes('streaming') || lowerText.includes('subscription') || lowerText.includes('membership payment');
+            const isEmailStorage = lowerText.includes('mailbox') || lowerText.includes('storage quota') || lowerText.includes('cloud storage capacity');
+
+            const isUtility = lowerText.includes('shutoff') || lowerText.includes('disconnection') || lowerText.includes('electric') || lowerText.includes('power bill') || lowerText.includes('water');
+            const isGrandchild = lowerText.includes('grandma') || lowerText.includes('grandpa') || lowerText.includes('accident while traveling');
+            const isHospital = lowerText.includes('hospital') || lowerText.includes('trauma center') || lowerText.includes('surgery');
+            const isHomeWarranty = lowerText.includes('home warranty') || lowerText.includes('property lien') || lowerText.includes('foreclosure');
+            const isCharity = lowerText.includes('disaster relief') || lowerText.includes('hurricane') || lowerText.includes('emergency shelter');
+
             const isBank = lowerText.includes('checking account') || lowerText.includes('debit card') || lowerText.includes('bank account') || lowerText.includes('frozen');
             const isZelle = lowerText.includes('zelle') || lowerText.includes('unauthorized transfer');
             const isCrypto = lowerText.includes('bitcoin') || lowerText.includes('crypto') || lowerText.includes('blockchain') || lowerText.includes('wallet');
             const isSweepstakes = lowerText.includes('sweepstakes') || lowerText.includes('grand prize') || lowerText.includes('won the');
             const isWire = lowerText.includes('wire transfer') || lowerText.includes('compliance officer') || lowerText.includes('international wire');
 
-            const isTech = lowerText.includes('microsoft') || lowerText.includes('windows') || lowerText.includes('trojan') || lowerText.includes('virus') || lowerText.includes('infected');
-            const isApple = lowerText.includes('apple') || lowerText.includes('icloud') || lowerText.includes('apple id');
-            const isRouter = lowerText.includes('router') || lowerText.includes('broadband') || lowerText.includes('botnet');
-            const isStreaming = lowerText.includes('streaming') || lowerText.includes('subscription') || lowerText.includes('membership payment');
-            const isEmailStorage = lowerText.includes('mailbox') || lowerText.includes('storage quota') || lowerText.includes('cloud storage capacity');
+            const isIRS = lowerText.includes('irs') || lowerText.includes('audit');
+            const isSSN = lowerText.includes('social security') || lowerText.includes('ssn');
+            const isCustoms = lowerText.includes('customs') || lowerText.includes('border protection') || lowerText.includes('contraband');
+            const isCourt = lowerText.includes('court') || lowerText.includes('process server') || lowerText.includes('subpoena') || lowerText.includes('indictment');
+            const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail');
 
-            const isUtility = lowerText.includes('shutoff') || lowerText.includes('disconnection') || lowerText.includes('electric') || lowerText.includes('power bill');
-            const isGrandchild = lowerText.includes('grandma') || lowerText.includes('grandpa') || lowerText.includes('accident while traveling');
-            const isHospital = lowerText.includes('hospital') || lowerText.includes('trauma center') || lowerText.includes('surgery');
-            const isHomeWarranty = lowerText.includes('home warranty') || lowerText.includes('property lien') || lowerText.includes('foreclosure');
-            const isCharity = lowerText.includes('disaster relief') || lowerText.includes('hurricane') || lowerText.includes('emergency shelter');
-
-            const isThreat = fileInput.files.length > 0 || isIRS || isSSN || isPolice || isCustoms || isCourt || isBank || isZelle || isCrypto || isSweepstakes || isWire || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity;
+            const isThreat = fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
 
             if (isThreat) {
                 resultBox.className = 'result-box danger';
@@ -544,67 +545,7 @@
                 let desc = "This message matches common fraud tactics designed to cause panic or financial loss.";
                 let steps = "";
 
-                if (isIRS) {
-                    title = "Government Impersonation Detected: IRS Tax Scam";
-                    desc = "Real tax authorities never threaten instant arrest or demand immediate wire/crypto payments.";
-                    steps = '<li><strong>Do NOT</strong> call the number in the message or interact with the sender.</li>' +
-                            '<li><strong>Verify Independently:</strong> Contact the IRS directly via <a href="https://www.irs.gov" target="_blank" rel="noopener">IRS.gov</a> or call 1-800-829-1040.</li>' +
-                            '<li><strong>Report the Scam:</strong> File a formal report using the <a href="https://www.tigta.gov" target="_blank" rel="noopener">TIGTA Tax Fraud Reporting Portal</a>.</li>';
-                } else if (isSSN) {
-                    title = "Government Impersonation Detected: Social Security Scam";
-                    desc = "Social Security numbers are never suspended over text messages or phone calls.";
-                    steps = '<li><strong>Do NOT</strong> provide your SSN, banking info, or personal passwords.</li>' +
-                            '<li><strong>Verify Independently:</strong> Check your official status securely at <a href="https://www.ssa.gov" target="_blank" rel="noopener">SSA.gov</a>.</li>' +
-                            '<li><strong>Report the Scam:</strong> Submit a fraud report directly to the <a href="https://oig.ssa.gov" target="_blank" rel="noopener">Social Security OIG Fraud Reporting Portal</a>.</li>';
-                } else if (isPolice) {
-                    title = "Law Enforcement Impersonation Detected: Arrest / Jury Scam";
-                    desc = "Police and sheriffs do not call to demand bail money or fine payments over the phone.";
-                    steps = '<li><strong>Do NOT</strong> pay any fines using gift cards, prepaid cards, or crypto.</li>' +
-                            '<li><strong>Verify Independently:</strong> Look up your local sheriff office or court clerk number independently from official directories.</li>' +
-                            '<li><strong>Report the Scam:</strong> Report local intimidation tactics to the <a href="https://www.fdle.state.fl.us" target="_blank" rel="noopener">Florida Department of Law Enforcement (FDLE)</a>.</li>';
-                } else if (isCustoms) {
-                    title = "Federal Impersonation Detected: Customs Seizure Scam";
-                    desc = "Border protection agencies do not intercept packages and demand wire transfer fees.";
-                    steps = '<li><strong>Do NOT</strong> wire money or click verification links.</li>' +
-                            '<li><strong>Verify Independently:</strong> Check official tracking numbers directly on carrier websites (USPS, UPS, FedEx).</li>' +
-                            '<li><strong>Report the Scam:</strong> File an official complaint with the <a href="https://www.cbp.gov/contact" target="_blank" rel="noopener">CBP Info Center</a>.</li>';
-                } else if (isCourt) {
-                    title = "Legal Threat Detected: Fake Process Server Scam";
-                    desc = "Courts issue formal legal service in person or by certified mail, never via urgent automated texts.";
-                    steps = '<li><strong>Do NOT</strong> call threat settlement numbers or share personal data.</li>' +
-                            '<li><strong>Verify Independently:</strong> Call your county clerk of court directly using a verified public phone number.</li>' +
-                            '<li><strong>Report the Scam:</strong> Report deceptive legal threats to the <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Reporting Portal</a>.</li>';
-                } else if (isBank) {
-                    title = "Financial Fraud Detected: Bank Account Lockout Scam";
-                    desc = "Scammers send fake alerts pretending your bank account is frozen to steal your login credentials.";
-                    steps = '<li><strong>Do NOT</strong> click the login link provided in the text or email message.</li>' +
-                            '<li><strong>Verify Independently:</strong> Call the customer service phone number printed on the back of your debit or credit card.</li>' +
-                            '<li><strong>Report the Scam:</strong> Forward phishing emails to your bank\'s fraud department and report to <a href="https://www.phishing.org" target="_blank" rel="noopener">Anti-Phishing Working Group</a>.</li>';
-                } else if (isZelle) {
-                    title = "Financial Fraud Detected: P2P / Zelle Scam";
-                    desc = "Fraudsters claim unauthorized transfers occurred to trick you into giving up your account pin.";
-                    steps = '<li><strong>Do NOT</strong> read security codes or account pins over the phone.</li>' +
-                            '<li><strong>Verify Independently:</strong> Open your official banking app directly—do not follow links.</li>' +
-                            '<li><strong>Report the Scam:</strong> Notify your bank\'s fraud team immediately and report to <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Consumer Advice</a>.</li>';
-                } else if (isCrypto) {
-                    title = "Investment Fraud Detected: Crypto Wallet Drainer";
-                    desc = "Fake security nodes prompt you to sync your crypto wallet to steal digital assets.";
-                    steps = '<li><strong>Do NOT</strong> connect your wallet or sign transactions on unfamiliar sites.</li>' +
-                            '<li><strong>Verify Independently:</strong> Check official exchange security notices.</li>' +
-                            '<li><strong>Report the Scam:</strong> Report digital asset theft to the <a href="https://www.ic3.gov" target="_blank" rel="noopener">FBI Internet Crime Complaint Center (IC3)</a>.</li>';
-                } else if (isSweepstakes) {
-                    title = "Lottery Fraud Detected: Sweepstakes Advance Fee Scam";
-                    desc = "Legitimate sweepstakes never require you to pay taxes or fees upfront using gift cards.";
-                    steps = '<li><strong>Do NOT</strong> purchase gift cards or send money to claim a prize.</li>' +
-                            '<li><strong>Verify Independently:</strong> Review official contest rules from recognized organizations.</li>' +
-                            '<li><strong>Report the Scam:</strong> File a sweepstakes fraud complaint with the <a href="https://www.uspis.gov" target="_blank" rel="noopener">US Postal Inspection Service</a>.</li>';
-                } else if (isWire) {
-                    title = "Financial Fraud Detected: Wire Transfer Compliance Scam";
-                    desc = "Scammers mimic anti-money laundering officers to intercept international wire transfers.";
-                    steps = '<li><strong>Do NOT</strong> provide banking credentials or wire tracking numbers.</li>' +
-                            '<li><strong>Verify Independently:</strong> Contact your bank wire department directly using verified numbers.</li>' +
-                            '<li><strong>Report the Scam:</strong> Report wire fraud attempts to the <a href="https://www.finra.org" target="_blank" rel="noopener">FINRA Securities Helpline for Seniors</a>.</li>';
-                } else if (isTech) {
+                if (isTech) {
                     title = "Device Security Threat: Tech Support Lockout Scam";
                     desc = "Pop-up warnings use fake virus alerts to trick you into paying for unneeded software support.";
                     steps = '<li><strong>Do NOT</strong> call phone numbers listed on browser pop-up warnings.</li>' +
@@ -664,6 +605,66 @@
                     steps = '<li><strong>Do NOT</strong> donate through unverified links or social media peer-to-peer requests.</li>' +
                             '<li><strong>Verify Independently:</strong> Check charity registration status on official evaluation websites.</li>' +
                             '<li><strong>Report the Scam:</strong> Report fraudulent charities to <a href="https://www.charitynavigator.org" target="_blank" rel="noopener">Charity Navigator</a> or the FTC.</li>';
+                } else if (isBank) {
+                    title = "Financial Fraud Detected: Bank Account Lockout Scam";
+                    desc = "Scammers send fake alerts pretending your bank account is frozen to steal your login credentials.";
+                    steps = '<li><strong>Do NOT</strong> click the login link provided in the text or email message.</li>' +
+                            '<li><strong>Verify Independently:</strong> Call the customer service phone number printed on the back of your debit or credit card.</li>' +
+                            '<li><strong>Report the Scam:</strong> Forward phishing emails to your bank\'s fraud department and report to <a href="https://www.phishing.org" target="_blank" rel="noopener">Anti-Phishing Working Group</a>.</li>';
+                } else if (isZelle) {
+                    title = "Financial Fraud Detected: P2P / Zelle Scam";
+                    desc = "Fraudsters claim unauthorized transfers occurred to trick you into giving up your account pin.";
+                    steps = '<li><strong>Do NOT</strong> read security codes or account pins over the phone.</li>' +
+                            '<li><strong>Verify Independently:</strong> Open your official banking app directly—do not follow links.</li>' +
+                            '<li><strong>Report the Scam:</strong> Notify your bank\'s fraud team immediately and report to <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Consumer Advice</a>.</li>';
+                } else if (isCrypto) {
+                    title = "Investment Fraud Detected: Crypto Wallet Drainer";
+                    desc = "Fake security nodes prompt you to sync your crypto wallet to steal digital assets.";
+                    steps = '<li><strong>Do NOT</strong> connect your wallet or sign transactions on unfamiliar sites.</li>' +
+                            '<li><strong>Verify Independently:</strong> Check official exchange security notices.</li>' +
+                            '<li><strong>Report the Scam:</strong> Report digital asset theft to the <a href="https://www.ic3.gov" target="_blank" rel="noopener">FBI Internet Crime Complaint Center (IC3)</a>.</li>';
+                } else if (isSweepstakes) {
+                    title = "Lottery Fraud Detected: Sweepstakes Advance Fee Scam";
+                    desc = "Legitimate sweepstakes never require you to pay taxes or fees upfront using gift cards.";
+                    steps = '<li><strong>Do NOT</strong> purchase gift cards or send money to claim a prize.</li>' +
+                            '<li><strong>Verify Independently:</strong> Review official contest rules from recognized organizations.</li>' +
+                            '<li><strong>Report the Scam:</strong> File a sweepstakes fraud complaint with the <a href="https://www.uspis.gov" target="_blank" rel="noopener">US Postal Inspection Service</a>.</li>';
+                } else if (isWire) {
+                    title = "Financial Fraud Detected: Wire Transfer Compliance Scam";
+                    desc = "Scammers mimic anti-money laundering officers to intercept international wire transfers.";
+                    steps = '<li><strong>Do NOT</strong> provide banking credentials or wire tracking numbers.</li>' +
+                            '<li><strong>Verify Independently:</strong> Contact your bank wire department directly using verified numbers.</li>' +
+                            '<li><strong>Report the Scam:</strong> Report wire fraud attempts to the <a href="https://www.finra.org" target="_blank" rel="noopener">FINRA Securities Helpline for Seniors</a>.</li>';
+                } else if (isIRS) {
+                    title = "Government Impersonation Detected: IRS Tax Scam";
+                    desc = "Real tax authorities never threaten instant arrest or demand immediate wire/crypto payments.";
+                    steps = '<li><strong>Do NOT</strong> call the number in the message or interact with the sender.</li>' +
+                            '<li><strong>Verify Independently:</strong> Contact the IRS directly via <a href="https://www.irs.gov" target="_blank" rel="noopener">IRS.gov</a> or call 1-800-829-1040.</li>' +
+                            '<li><strong>Report the Scam:</strong> File a formal report using the <a href="https://www.tigta.gov" target="_blank" rel="noopener">TIGTA Tax Fraud Reporting Portal</a>.</li>';
+                } else if (isSSN) {
+                    title = "Government Impersonation Detected: Social Security Scam";
+                    desc = "Social Security numbers are never suspended over text messages or phone calls.";
+                    steps = '<li><strong>Do NOT</strong> provide your SSN, banking info, or personal passwords.</li>' +
+                            '<li><strong>Verify Independently:</strong> Check your official status securely at <a href="https://www.ssa.gov" target="_blank" rel="noopener">SSA.gov</a>.</li>' +
+                            '<li><strong>Report the Scam:</strong> Submit a fraud report directly to the <a href="https://oig.ssa.gov" target="_blank" rel="noopener">Social Security OIG Fraud Reporting Portal</a>.</li>';
+                } else if (isCustoms) {
+                    title = "Federal Impersonation Detected: Customs Seizure Scam";
+                    desc = "Border protection agencies do not intercept packages and demand wire transfer fees.";
+                    steps = '<li><strong>Do NOT</strong> wire money or click verification links.</li>' +
+                            '<li><strong>Verify Independently:</strong> Check official tracking numbers directly on carrier websites (USPS, UPS, FedEx).</li>' +
+                            '<li><strong>Report the Scam:</strong> File an official complaint with the <a href="https://www.cbp.gov/contact" target="_blank" rel="noopener">CBP Info Center</a>.</li>';
+                } else if (isCourt) {
+                    title = "Legal Threat Detected: Fake Process Server Scam";
+                    desc = "Courts issue formal legal service in person or by certified mail, never via urgent automated texts.";
+                    steps = '<li><strong>Do NOT</strong> call threat settlement numbers or share personal data.</li>' +
+                            '<li><strong>Verify Independently:</strong> Call your county clerk of court directly using a verified public phone number.</li>' +
+                            '<li><strong>Report the Scam:</strong> Report deceptive legal threats to the <a href="https://www.ftc.gov" target="_blank" rel="noopener">FTC Reporting Portal</a>.</li>';
+                } else if (isPolice) {
+                    title = "Law Enforcement Impersonation Detected: Arrest / Jury Scam";
+                    desc = "Police and sheriffs do not call to demand bail money or fine payments over the phone.";
+                    steps = '<li><strong>Do NOT</strong> pay any fines using gift cards, prepaid cards, or crypto.</li>' +
+                            '<li><strong>Verify Independently:</strong> Look up your local sheriff office or court clerk number independently from official directories.</li>' +
+                            '<li><strong>Report the Scam:</strong> Report local intimidation tactics to the <a href="https://www.fdle.state.fl.us" target="_blank" rel="noopener">Florida Department of Law Enforcement (FDLE)</a>.</li>';
                 } else {
                     title = "Stop! High-Risk Scam Pattern Identified";
                     desc = "This message uses scare tactics—like pretending to be the government, threatening you with arrest, or demanding money in a hurry.";
