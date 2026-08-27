@@ -32,14 +32,8 @@
         }
         .header-top {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .logos {
-            display: flex;
-            gap: 15px;
-            align-items: center;
+            justify-content: flex-end;
+            margin-bottom: 10px;
         }
         .btn-outline {
             background: transparent;
@@ -53,6 +47,13 @@
         }
         .btn-outline:hover {
             background: #f1f5f9;
+        }
+        .logo-area {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .logo-area img {
+            height: 50px;
         }
         .title-area {
             text-align: center;
@@ -183,11 +184,12 @@
 
 <div class="container">
     <div class="header-top">
-        <div class="logos">
-            <!-- Replace with actual logo image paths if needed -->
-            <strong>DOEA</strong> | <strong>Senior Shield</strong>
-        </div>
         <button class="btn-outline" onclick="alert('How to Use modal/info')">How to Use</button>
+    </div>
+
+    <div class="logo-area">
+        <!-- Centered Logos matching your layout -->
+        <strong>DOEA</strong> | <strong>Senior Shield</strong>
     </div>
 
     <div class="title-area">
