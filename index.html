@@ -691,8 +691,18 @@
                     '<ol style="padding-left: 20px; font-size: 13px;">' + steps + '</ol>';
             } else {
                 resultBox.className = 'result-box safe';
-                resultContent.innerHTML = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong><br>' +
-                    'Even so, because you can never be too careful, utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
+                
+                // Check if symbols/unusual characters are present while still passing as safe
+                const hasWeirdSymbols = /[^a-zA-Z0-9\s]/.test(text);
+                let safeMessage = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong>';
+                
+                if (hasWeirdSymbols) {
+                    safeMessage += '<br><span style="font-size: 14px; color: #166534; display: block; margin-top: 6px;">⚠️ <em>Caution:</em> This message contains unusual characters or symbols. We cannot definitively determine if it is fully legitimate. If you are not completely sure, seek guidance and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
+                } else {
+                    safeMessage += '<br>Even so, because you can never be too careful, utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
+                }
+                
+                resultContent.innerHTML = safeMessage;
                 
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p><strong>Analysis Result:</strong> No common threat patterns found. Proceed with caution.</p>' +
