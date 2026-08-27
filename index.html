@@ -280,6 +280,51 @@
             display: block;
         }
 
+        .emergency-banner {
+            background-color: #fee2e2;
+            border: 1px solid #f87171;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #991b1b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .emergency-call-btn {
+            background-color: #991b1b;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .emergency-call-btn:hover {
+            background-color: #7f1d1d;
+        }
+
+        .copy-summary-btn {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .copy-summary-btn:hover {
+            background-color: #cbd5e1;
+        }
+
         .warning-title {
             font-size: 18px;
             font-weight: bold;
@@ -452,6 +497,15 @@
         function updateFileName() {
             const input = document.getElementById('imageUpload');
             document.getElementById('fileInfo').textContent = input.files.length > 0 ? input.files[0].name : "No file chosen (Supports Images, PDFs, Text files)";
+        }
+
+        function copyGuidanceSummary() {
+            const textContent = document.getElementById('resultContent').innerText;
+            navigator.clipboard.writeText(textContent).then(() => {
+                alert('Action plan copied to clipboard!');
+            }).catch(() => {
+                alert('Could not copy text automatically.');
+            });
         }
 
         function analyzeContent() {
@@ -653,7 +707,7 @@
                 const desc = matchedThreat ? matchedThreat.desc : "This message is trying to scare you into acting quickly before you have time to think.";
                 const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause panic and financial loss.";
                 
-                const step3Custom = "If you have actually suffered a financial loss or fallen victim to this communication, report the incident to the appropriate authority: file with the <a href='https://reportfraud.ftc.gov' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Federal Trade Commission (FTC)</a>, contact your local law enforcement or the <a href='https://www.fdle.state.fl.us/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>FDLE</a> for criminal matters, or file a deceptive trade complaint with the <a href='https://www.myfloridalegal.com' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Florida Attorney General</a>.";
+                const step3Custom = "If you have actually suffered a financial loss or fallen victim to this communication, report the incident to the appropriate authority: file with the <a href='https://reportfraud.ftc.gov' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Federal Trade Commission (FTC)</a>, contact your local law enforcement or the <a href='https://www.fdle.state.fl.us/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>FDLE</a> for criminal matters, file a deceptive trade complaint with the <a href='https://www.myfloridalegal.com' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Florida Attorney General</a>, or forward scam text messages to <strong>7726</strong>.";
                 const step4Custom = "To review general security guidelines, scam trends, and educational resources, explore the <a href='https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA Fraud Protection Programs</a> hub.";
 
                 const steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
@@ -665,11 +719,18 @@
                               '<li><strong>Step 4: Review External Resource Channels</strong><br>' +
                               step4Custom + '</li>';
 
+                const emergencyBanner = '<div class="emergency-banner">' +
+                                        '<span>Need immediate telephone guidance? Call the DOEA Elder Helpline:</span>' +
+                                        '<a href="tel:18009635337" class="emergency-call-btn">1-800-963-5337</a>' +
+                                        '</div>';
+
                 resultContent.innerHTML = 
+                    emergencyBanner +
                     '<div class="warning-title">⚠️ ' + title + '</div>' +
                     '<div class="warning-desc">' + desc + '</div>' +
                     '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Action Plan:</div>' +
-                    '<ol class="action-list">' + steps + '</ol>';
+                    '<ol class="action-list">' + steps + '</ol>' +
+                    '<button class="copy-summary-btn" onclick="copyGuidanceSummary()">📋 Copy Action Plan Summary</button>';
                 
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
