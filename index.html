@@ -330,12 +330,10 @@
 <body>
 
     <div class="container">
-        <!-- Instructions Toggle Top Right -->
         <div class="header-top">
             <button class="instructions-toggle-btn" id="toggleInstructionsBtn" onclick="toggleInstructions()">How to Use</button>
         </div>
 
-        <!-- Collapsible Instructions Panel -->
         <div class="instructions-panel" id="instructionsPanel">
             <h3>Step-by-Step Instructions</h3>
             <ol>
@@ -347,10 +345,10 @@
                         <li><strong>Option B:</strong> Take a picture or screenshot of the message and upload the image file using the upload button.</li>
                     </ul>
                 </li>
-                <li>Click the analyze button to check the message for common scam tricks.</li>
+                <li>Click the analyze button to check the message for multi-word threat patterns or scam indicators.</li>
                 <li>Review the result:
                     <ul>
-                        <li>If no common scam patterns show up, the tool will let you know.</li>
+                        <li>If no multi-word scam patterns show up, the tool will let you know.</li>
                         <li>If a scam is found, a zero-gap guidance box will appear right away to walk you through what to do and connect you directly with our targeted protection resources.</li>
                     </ul>
                 </li>
@@ -368,7 +366,6 @@
             <p class="subtitle">Instant Scam & Fraud Protection Analyzer</p>
         </div>
 
-        <!-- Legal & Educational Disclaimer View -->
         <div id="disclaimerView" class="disclaimer-box">
             <h3>Legal & Educational Disclaimer</h3>
             <p>Please review before accessing the Senior Digital Safeguard tool:</p>
@@ -379,7 +376,6 @@
             <button class="primary-btn" onclick="acceptDisclaimer()" style="width: 100%;">I Have Read and Agree — Enter Tool</button>
         </div>
 
-        <!-- Main Tool View -->
         <main id="toolView" style="display: none;">
             <div class="oss-promo-banner">
                 <p class="oss-promo-text">Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
@@ -404,12 +400,10 @@
 
             <div id="resultBox" class="result-box">
                 <div id="resultContent">
-                    <!-- Dynamic targeted walkthrough injected here -->
-                </div>
+                    </div>
             </div>
         </main>
 
-        <!-- Printable Wallet Reference Card -->
         <div class="printable-card" id="printableCardContainer">
             <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
             <div id="printDynamicContent">
@@ -472,9 +466,10 @@
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
+            // Multi-word phrase patterns and contextual threat combinations
             const threats = [
                 {
-                    keys: ['grandma', 'grandpa', 'grandchild', 'grandparent', 'bail'],
+                    phrases: ['grandma in jail', 'grandpa in jail', 'grandchild in jail', 'grandchild arrest', 'grandchild bail', 'grandma bail', 'grandpa bail', 'accident bail', 'emergency cash bail'],
                     title: "Fake Grandchild in Trouble Scam",
                     desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
                     warn: "They are exploiting your family care and love to force rushed cash transfers.",
@@ -482,7 +477,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['irs', 'audit', 'tax'],
+                    phrases: ['irs audit', 'tax audit', 'irs arrest', 'tax warrant', 'owe back taxes', 'unpaid taxes arrest'],
                     title: "Fake IRS Tax Threat",
                     desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
                     warn: "They are using fake government intimidation to steal your money.",
@@ -490,7 +485,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['social security', 'ssn', 'social sec'],
+                    phrases: ['social security frozen', 'social security canceled', 'ssn suspended', 'social security suspended', 'benefits frozen'],
                     title: "Fake Social Security Scam",
                     desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
                     warn: "They are trying to trick you into handing over your sensitive personal numbers.",
@@ -498,7 +493,7 @@
                     linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
                 },
                 {
-                    keys: ['leon county', 'sheriff', 'police', 'warrant', 'arrest', 'jury'],
+                    phrases: ['missed jury duty', 'sheriff warrant', 'police warrant', 'arrest warrant', 'court fine arrest', 'warrant for your arrest'],
                     title: "Fake Police or Jury Duty Scam",
                     desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
                     warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone.",
@@ -506,7 +501,7 @@
                     linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
                 },
                 {
-                    keys: ['customs', 'border protection', 'contraband', 'package'],
+                    phrases: ['customs package', 'border protection package', 'contraband package', 'illegal package seized'],
                     title: "Fake Customs Package Scam",
                     desc: "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.",
                     warn: "This is a scare tactic to force you into paying bogus clearance fees.",
@@ -514,7 +509,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['court', 'process server', 'subpoena', 'indictment', 'lawsuit'],
+                    phrases: ['legal notice', 'process server', 'subpoena served', 'lawsuit filed', 'court action'],
                     title: "Fake Court Legal Notice",
                     desc: "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.",
                     warn: "Courts serve official papers in person or by mail, never through urgent threat texts.",
@@ -522,7 +517,7 @@
                     linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
                 },
                 {
-                    keys: ['checking account', 'debit card', 'bank account', 'frozen', 'bank'],
+                    phrases: ['checking account frozen', 'bank account frozen', 'debit card blocked', 'account locked verify', 'bank alert locked'],
                     title: "Fake Bank Account Lockout Scam",
                     desc: "Scammers are sending a fake alert pretending your checking account or debit card is frozen to steal your login password.",
                     warn: "They are trying to get you to click a fake link to capture your bank password.",
@@ -530,7 +525,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['zelle', 'unauthorized transfer', 'peer'],
+                    phrases: ['zelle transfer', 'unauthorized zelle', 'unauthorized transfer', 'peer transfer alert'],
                     title: "Fake Money App (Zelle) Scam",
                     desc: "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.",
                     warn: "Never read security pins or verification codes over the phone to anyone.",
@@ -538,7 +533,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['bitcoin', 'crypto', 'blockchain', 'wallet', 'investment'],
+                    phrases: ['crypto investment', 'bitcoin wallet', 'blockchain investment', 'digital savings high return', 'guaranteed crypto return'],
                     title: "Fake Digital Money / Investment Trap",
                     desc: "A fake online investment or digital savings trap is trying to trick you into handing over your hard-earned money.",
                     warn: "This is a fraudulent financial scheme designed to drain your savings.",
@@ -546,7 +541,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['sweepstakes', 'grand prize', 'won the', 'prize'],
+                    phrases: ['grand prize', 'won sweepstakes', 'sweepstakes winner', 'claim your prize', 'million dollar prize'],
                     title: "Fake Contest / Sweepstakes Scam",
                     desc: "A fake contest win is claiming you won a huge cash prize, but you have to pay taxes or buy gift cards first.",
                     warn: "Legitimate contests never require upfront payment or gift cards to claim a prize.",
@@ -554,7 +549,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['wire transfer', 'compliance officer', 'international wire', 'wire'],
+                    phrases: ['wire transfer', 'compliance officer wire', 'international wire transfer', 'secure wire account'],
                     title: "Fake Bank Wire Fraud Scam",
                     desc: "Someone pretending to be a bank fraud investigator is trying to trick you into wiring your money to them.",
                     warn: "They are impersonating security officers to intercept and steal your wire transfer.",
@@ -562,7 +557,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['microsoft', 'windows', 'trojan', 'virus', 'infected', 'support number on the screen', 'computer'],
+                    phrases: ['microsoft virus', 'windows virus', 'computer infected', 'trojan detected', 'support number on the screen', 'call microsoft support'],
                     title: "Scary Computer Pop-Up Virus Scam",
                     desc: "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.",
                     warn: "This is a browser trap designed to freeze your screen and force you to call fake technicians.",
@@ -570,7 +565,7 @@
                     linkUrl: "https://opseniorshieldfl.com/"
                 },
                 {
-                    keys: ['apple', 'icloud', 'apple id'],
+                    phrases: ['apple id hacked', 'icloud locked', 'apple security breach', 'icloud hacked'],
                     title: "Fake Apple / iCloud Hacking Scam",
                     desc: "A fake message claims your Apple or iCloud account has been hacked to trick you into entering your password on a fake page.",
                     warn: "They are harvesting your device account credentials through a fake login page.",
@@ -578,7 +573,7 @@
                     linkUrl: "https://opseniorshieldfl.com/"
                 },
                 {
-                    keys: ['router', 'broadband', 'botnet', 'internet'],
+                    phrases: ['router security', 'broadband hacked', 'botnet detected', 'internet router compromised'],
                     title: "Fake Home Internet Router Warning",
                     desc: "A fake warning claims your home internet router has security problems to trick you into downloading harmful software.",
                     warn: "This is a trick to install remote access malware onto your home network.",
@@ -586,7 +581,7 @@
                     linkUrl: "https://opseniorshieldfl.com/"
                 },
                 {
-                    keys: ['netflix streaming', 'hulu billing', 'streaming service failed', 'subscription payment failed', 'stream bill suspended'],
+                    phrases: ['netflix payment failed', 'hulu billing failed', 'streaming service failed', 'subscription payment failed', 'stream bill suspended'],
                     title: "Fake TV / Streaming Bill Scam",
                     desc: "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.",
                     warn: "They are using popular subscription names to steal updated credit card details.",
@@ -594,7 +589,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['mailbox', 'storage quota', 'cloud storage capacity', 'email'],
+                    phrases: ['mailbox full', 'storage quota full', 'cloud storage capacity full', 'email deleted soon'],
                     title: "Fake Email Full Warning Scam",
                     desc: "A fake email warning claims your email storage is completely full and will be deleted unless you click a link.",
                     warn: "This is a credential-stealing trick to take over your personal email account.",
@@ -602,7 +597,7 @@
                     linkUrl: "https://opseniorshieldfl.com/"
                 },
                 {
-                    keys: ['shutoff', 'disconnection', 'electric', 'power bill', 'water', 'utility'],
+                    phrases: ['electric shutoff', 'power bill disconnection', 'water shutoff warning', 'utility disconnection today'],
                     title: "Fake Utility Shutoff Threat",
                     desc: "A scammer is threatening to cut off your electricity, water, or power immediately unless you pay them right now.",
                     warn: "Utility companies do not demand immediate same-hour prepaid card payments over the phone.",
@@ -610,7 +605,7 @@
                     linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
                 },
                 {
-                    keys: ['hospital', 'trauma center', 'surgery', 'medical'],
+                    phrases: ['hospital emergency surgery', 'trauma center deposit', 'medical surgery deposit', 'family member surgery cost'],
                     title: "Fake Hospital Emergency Scam",
                     desc: "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.",
                     warn: "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits.",
@@ -618,7 +613,7 @@
                     linkUrl: "https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/"
                 },
                 {
-                    keys: ['home warranty', 'property lien', 'foreclosure', 'warranty'],
+                    phrases: ['home warranty expired', 'property lien notice', 'foreclosure notice', 'warranty expiration notice'],
                     title: "Fake Home Warranty / Property Notice",
                     desc: "A deceptive letter or text claims your home warranty expired or a lien is on your property to trick you into paying fees.",
                     warn: "This is a misleading solicitation designed to charge you for unnecessary property services.",
@@ -626,7 +621,7 @@
                     linkUrl: "https://elderaffairs.org/resources/file-a-complaint/"
                 },
                 {
-                    keys: ['disaster relief', 'hurricane', 'emergency shelter', 'charity'],
+                    phrases: ['disaster relief donation', 'hurricane donation fund', 'emergency shelter charity', 'storm relief fund'],
                     title: "Fake Disaster Relief Charity Scam",
                     desc: "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
                     warn: "Scammers frequently create fake disaster relief funds to exploit community generosity.",
@@ -636,10 +631,10 @@
             ];
 
             let matchedThreat = threats.find(t => {
-                return t.keys.some(k => {
-                    if (lowerText.includes(k)) {
-                        // Exception rule: ignore 'bail' match if it's part of the name Bailey
-                        if (k === 'bail' && lowerText.includes('bailey')) {
+                return t.phrases.some(phrase => {
+                    if (lowerText.includes(phrase)) {
+                        // Exception rule: ignore if phrase involves 'bail' but 'bailey' is present
+                        if (phrase.includes('bail') && lowerText.includes('bailey')) {
                             return false;
                         }
                         return true;
@@ -692,9 +687,8 @@
             } else {
                 resultBox.className = 'result-box safe';
                 
-                // Check if symbols/unusual characters are present while still passing as safe
                 const hasWeirdSymbols = /[^a-zA-Z0-9\s]/.test(text);
-                let safeMessage = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong>';
+                let safeMessage = '<strong>✅ This looks okay. No multi-word scam patterns or threat combinations found.</strong>';
                 
                 if (hasWeirdSymbols) {
                     safeMessage += '<br><span style="font-size: 14px; color: #166534; display: block; margin-top: 6px;">⚠️ <em>Caution:</em> This message contains unusual characters or symbols. We cannot definitively determine if it is fully legitimate. If you are not completely sure, seek guidance and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
