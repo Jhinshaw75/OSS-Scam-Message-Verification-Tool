@@ -475,6 +475,12 @@
 
             const threats = [
                 {
+                    keys: ['grandma', 'grandpa', 'grandchild', 'grandparent', 'bail'],
+                    title: "Fake Grandchild in Trouble Scam",
+                    desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
+                    warn: "They are exploiting your family care and love to force rushed cash transfers."
+                },
+                {
                     keys: ['irs', 'audit', 'tax'],
                     title: "Fake IRS Tax Threat",
                     desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
@@ -487,7 +493,7 @@
                     warn: "They are trying to trick you into handing over your sensitive personal numbers."
                 },
                 {
-                    keys: ['leon county', 'sheriff', 'police', 'warrant', 'arrest', 'bail', 'jury'],
+                    keys: ['leon county', 'sheriff', 'police', 'warrant', 'arrest', 'jury'],
                     title: "Fake Police or Jury Duty Scam",
                     desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
                     warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone."
@@ -571,12 +577,6 @@
                     warn: "Utility companies do not demand immediate same-hour prepaid card payments over the phone."
                 },
                 {
-                    keys: ['grandma', 'grandpa', 'grandchild', 'bail', 'accident while traveling', 'family'],
-                    title: "Fake Grandchild in Trouble Scam",
-                    desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
-                    warn: "They are exploiting your family care and love to force rushed cash transfers."
-                },
-                {
                     keys: ['hospital', 'trauma center', 'surgery', 'medical'],
                     title: "Fake Hospital Emergency Scam",
                     desc: "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.",
@@ -591,7 +591,7 @@
                 {
                     keys: ['disaster relief', 'hurricane', 'emergency shelter', 'charity'],
                     title: "Fake Disaster Relief Charity Scam",
-                    desc: "Ah, fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
+                    desc: "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
                     warn: "Scammers frequently create fake disaster relief funds to exploit community generosity."
                 }
             ];
@@ -638,7 +638,7 @@
             } else {
                 resultBox.className = 'result-box safe';
                 resultContent.innerHTML = '<strong>✅ This looks okay. No common scam words or threat patterns found.</strong><br>' +
-                    'Even so, always proceed with caution and utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
+                    'Even so, because you can never be too careful, utilize our verified <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a> if you ever feel uncertain.';
                 
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p><strong>Analysis Result:</strong> No common threat patterns found. Proceed with caution.</p>' +
@@ -662,7 +662,7 @@
         }
 
         if ('serviceWorker' in navigator) {
-            navigator.serviceWord.register('sw.js').catch(() => {});
+            navigator.serviceWorker.register('sw.js').catch(() => {});
         }
     </script>
 </body>
