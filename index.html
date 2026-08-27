@@ -546,6 +546,27 @@
 
             const threatCategories = [
                 {
+                    keywords: ['mfa', 'push notification', 'unauthorized login', 'enterprise account', 'validation link', 'access rights'],
+                    minMatches: 2,
+                    title: "Urgent MFA & Account Hijack Scam",
+                    desc: "A scammer is pretending to be corporate IT or security claiming unauthorized login attempts to trick you into approving a push notification.",
+                    warn: "They are attempting to bypass multi-factor authentication to take over your enterprise or personal account."
+                },
+                {
+                    keywords: ['seed phrase', 'recovery phrase', 'wallet node', 'synchronization', 'token locking', 'decentralized'],
+                    minMatches: 2,
+                    title: "Crypto Wallet & Seed Phrase Phishing",
+                    desc: "A fake blockchain notification is claiming synchronization errors to trick you into handing over your private recovery seed phrase.",
+                    warn: "Never share your secret 12-word wallet recovery phrase with anyone; doing so gives attackers full control of your funds."
+                },
+                {
+                    keywords: ['delivery exception', 'sorting facility', 'customs clearance', 'handling fees', 'package', 'usps'],
+                    minMatches: 2,
+                    title: "Deceptive Parcel Delivery & Customs Scam",
+                    desc: "A fake shipping alert is claiming a package is stuck at customs or sorting facilities requiring immediate fee payment.",
+                    warn: "Postal and shipping services never demand sudden digital fee payments via link clicks to release standard packages."
+                },
+                {
                     keywords: ['irs', 'tax', 'audit', 'back taxes'],
                     minMatches: 1,
                     title: "Fake IRS Tax Threat",
@@ -595,7 +616,7 @@
                     warn: "They are exploiting your family care and love to force rushed cash transfers."
                 },
                 {
-                    keywords: ['customs', 'border protection', 'package', 'contraband', 'seized'],
+                    keywords: ['customs', 'border protection', 'contraband', 'seized'],
                     minMatches: 2,
                     title: "Fake Customs Package Scam",
                     desc: "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.",
