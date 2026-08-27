@@ -43,7 +43,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
+        }
+        .header-logos img {
+            height: 42px;
+            width: auto;
         }
         h2 {
             color: #1e3a8a;
@@ -160,27 +164,46 @@
             border-top: 1px solid #e2e8f0;
             padding-top: 15px;
         }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-btn:hover {
+            color: #000;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <button class="how-to-use-btn">How to Use</button>
+    <button class="how-to-use-btn" onclick="openModal()">How to Use</button>
 
     <div class="header-logos">
-        <!-- Replaced broken image references with inline SVGs matching your exact logo proportions and colors -->
-        <svg height="40" viewBox="0 0 160 45" xmlns="http://www.w3.org/2000/svg">
-            <text x="0" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#1e3a8a">Elder</text>
-            <text x="0" y="38" font-family="Arial, sans-serif" font-weight="bold" font-size="18" fill="#1e3a8a">Affairs</text>
-            <text x="58" y="20" font-family="Arial, sans-serif" font-weight="bold" font-size="10" fill="#64748b">FLORIDA</text>
-            <circle cx="63" cy="30" r="4" fill="#fbbf24"/>
-            <path d="M63 22l1 4h-2z" fill="#fbbf24"/>
-        </svg>
-        <svg height="40" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22 2L5 8v14c0 11.5 7.5 21.5 17 24 9.5-2.5 17-12.5 17-24V8L22 2z" fill="#881337" stroke="#fbbf24" stroke-width="2"/>
-            <text x="22" y="22" font-family="Arial" font-size="8" font-weight="bold" fill="#fff" text-anchor="middle">SENIOR</text>
-            <text x="22" y="32" font-family="Arial" font-size="7" font-weight="bold" fill="#fbbf24" text-anchor="middle">SHIELD</text>
-        </svg>
+        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida">
+        <img src="senior-shield-logo.png" alt="Senior Shield">
     </div>
 
     <h2>Scam Detector</h2>
@@ -188,13 +211,13 @@
 
     <div class="banner">
         <span>Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</span>
-        <a href="#" class="sign-up-btn">Sign Up Now</a>
+        <a href="https://elderaffairs.org" target="_blank" class="sign-up-btn">Sign Up Now</a>
     </div>
 
     <div class="upload-box" onclick="document.getElementById('file-input').click()">
         <label class="upload-label">📁 Select Screenshot or Email File</label>
-        <input type="file" id="file-input">
-        <div class="upload-subtext">No file chosen (Supports Images, PDFs, Text files)</div>
+        <input type="file" id="file-input" onchange="handleFileSelect(event)">
+        <div id="file-name-display" class="upload-subtext">No file chosen (Supports Images, PDFs, Text files)</div>
     </div>
 
     <textarea id="message-input" placeholder="Paste message text here..."></textarea>
@@ -202,13 +225,24 @@
     <div class="btn-group">
         <button id="analyze-btn" onclick="runAnalysis()">Analyze Message</button>
         <button id="clear-btn" onclick="clearAll()">Clear</button>
-        <button id="print-btn" onclick="window.print()">Print Reference Guide</button>
+        <button id="print-btn" onclick="printReferenceGuide()">Print Reference Guide</button>
     </div>
 
     <div id="output" class="result-box"></div>
 
     <div class="footer-note">
         Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.
+    </div>
+</div>
+
+<!-- How to Use Modal -->
+<div id="howToUseModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3 style="color: #1e3a8a; margin-top: 0;">How to Use Scam Detector</h3>
+        <p>1. <strong>Paste or Upload:</strong> Paste suspicious text into the box or upload an email/screenshot file.</p>
+        <p>2. <strong>Analyze:</strong> Click "Analyze Message" to scan for known fraud patterns and fake threat triggers.</p>
+        <p>3. <strong>Verify:</strong> Review the risk breakdown and use the official Florida Department of Elder Affairs links provided to report or verify safely.</p>
     </div>
 </div>
 
@@ -283,9 +317,68 @@
 
     function clearAll() {
         document.getElementById('message-input').value = '';
+        document.getElementById('file-input').value = '';
+        document.getElementById('file-name-display').innerText = 'No file chosen (Supports Images, PDFs, Text files)';
         const outputBox = document.getElementById('output');
         outputBox.style.display = 'none';
         outputBox.innerHTML = '';
+    }
+
+    function handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (file) {
+            document.getElementById('file-name-display').innerText = 'Selected file: ' + file.name;
+        }
+    }
+
+    function openModal() {
+        document.getElementById('howToUseModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('howToUseModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('howToUseModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    function printReferenceGuide() {
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+            <html>
+            <head>
+                <title>Senior Digital Safeguard - Reference Guide</title>
+                <style>
+                    body { font-family: Arial, sans-serif; padding: 30px; color: #333; }
+                    h1 { color: #1e3a8a; }
+                    h3 { color: #b45309; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; }
+                    p { line-height: 1.5; }
+                </style>
+            </head>
+            <body>
+                <h1>Operation Senior Shield</h1>
+                <h2>Senior Digital Safeguard - Reference Guide</h2>
+                <p>Aligned with Florida Department of Elder Affairs (DOEA) Guidelines.</p>
+                <hr style="margin: 20px 0;">
+                <h3>Fake TV / Streaming Bill Scams</h3>
+                <p>Scammers send fake alerts claiming your Netflix, TV, or movie streaming payment failed to trick you into entering your credit card details.</p>
+                <h3>Fake Social Security Scams</h3>
+                <p>Fraudsters falsely claim your Social Security number or benefits are frozen or canceled to steal your personal identifiers.</p>
+                <h3>Key Rules to Remember</h3>
+                <p>1. Never click links or call numbers directly from unsolicited urgent texts or emails.</p>
+                <p>2. Always navigate independently to official state portals like <a href="https://elderaffairs.org">elderaffairs.org</a>.</p>
+            </body>
+            </html>
+        `);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => {
+            printWindow.print();
+        }, 500);
     }
 </script>
 
