@@ -139,9 +139,30 @@
             margin-bottom: 10px;
         }
 
-        .oss-promo-banner {
-            background-color: #eff6ff;
+        .permanent-info-box {
             border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #eff6ff;
+            margin-bottom: 20px;
+        }
+
+        .permanent-info-box h3 {
+            margin-top: 0;
+            color: #1e3a8a;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .permanent-info-box p {
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .oss-promo-banner {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 15px 20px;
             margin-bottom: 20px;
@@ -153,7 +174,7 @@
 
         .oss-promo-text {
             font-size: 14px;
-            color: #1e3a8a;
+            color: #334155;
             margin: 0;
         }
 
@@ -309,20 +330,10 @@
             background-color: #7f1d1d;
         }
 
-        .copy-summary-btn {
-            background-color: #e2e8f0;
-            color: #1e293b;
-            border: 1px solid var(--border-color);
-            padding: 10px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-
-        .copy-summary-btn:hover {
-            background-color: #cbd5e1;
+        .action-button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .warning-title {
@@ -366,7 +377,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
-            .header-top, .instructions-panel, .oss-promo-banner, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
+            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
             .printable-card { display: block !important; border: 2px dashed #1e3a8a; padding: 20px; border-radius: 8px; margin: 20px; }
             .printable-card h2 { color: #1e3a8a; margin-top: 0; }
         }
@@ -426,6 +437,15 @@
 
         <!-- Main Tool View -->
         <main id="toolView" style="display: none;">
+            <!-- Always Visible Scam Text Reporting Info Box -->
+            <div class="permanent-info-box">
+                <h3>📲 How to Report Scam Text Messages (7726)</h3>
+                <p>If you receive a suspicious text message, you can report it instantly to mobile carriers and security authorities without clicking any links:</p>
+                <p><strong>1. Copy or Screenshot:</strong> Do not tap any links inside the message.</p>
+                <p><strong>2. Forward to 7726:</strong> Open your text message app, press and hold the suspicious text message, select "Forward", and send it to the short code <strong>7726</strong> (spells "SPAM").</p>
+                <p><strong>3. Follow-up:</strong> Your carrier will reply asking for the sender's phone number. Reply with the number that sent the text to complete the block.</p>
+            </div>
+
             <div class="oss-promo-banner">
                 <p class="oss-promo-text">Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
                 <a href="https://opseniorshieldfl.com/operation-senior-shield-sign-up/" target="_blank" rel="noopener" class="oss-promo-btn">Sign Up Now</a>
@@ -499,13 +519,11 @@
             document.getElementById('fileInfo').textContent = input.files.length > 0 ? input.files[0].name : "No file chosen (Supports Images, PDFs, Text files)";
         }
 
-        function copyGuidanceSummary() {
-            const textContent = document.getElementById('resultContent').innerText;
-            navigator.clipboard.writeText(textContent).then(() => {
-                alert('Action plan copied to clipboard!');
-            }).catch(() => {
-                alert('Could not copy text automatically.');
-            });
+        function printActionPlan() {
+            const originalContent = document.body.innerHTML;
+            const printContent = document.getElementById('resultContent').innerHTML;
+            
+            window.print();
         }
 
         function analyzeContent() {
@@ -730,7 +748,9 @@
                     '<div class="warning-desc">' + desc + '</div>' +
                     '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Action Plan:</div>' +
                     '<ol class="action-list">' + steps + '</ol>' +
-                    '<button class="copy-summary-btn" onclick="copyGuidanceSummary()">📋 Copy Action Plan Summary</button>';
+                    '<div class="action-button-group">' +
+                    '<button class="secondary-btn" onclick="printActionPlan()">🖨️ Print Action Plan</button>' +
+                    '</div>';
                 
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
