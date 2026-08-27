@@ -508,32 +508,40 @@
                 return;
             }
 
-            const lowerText = text.toLowerCase();
+            // Bulletproof normalization: lowercase and map common number-to-letter substitutions (fuzzing resistance)
+            let lowerText = text.toLowerCase()
+                .replace(/0/g, 'o')
+                .replace(/1/g, 'i')
+                .replace(/3/g, 'e')
+                .replace(/4/g, 'a')
+                .replace(/5/g, 's')
+                .replace(/7/g, 't')
+                .replace(/8/g, 'b');
 
             // 20 distinct scam category checks mapped to plain, senior-friendly language and funneled guidance
-            const isIRS = lowerText.includes('irs') || lowerText.includes('audit');
-            const isSSN = lowerText.includes('social security') || lowerText.includes('ssn');
-            const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail');
-            const isCustoms = lowerText.includes('customs') || lowerText.includes('border protection') || lowerText.includes('contraband');
-            const isCourt = lowerText.includes('court') || lowerText.includes('process server') || lowerText.includes('subpoena') || lowerText.includes('indictment');
+            const isIRS = lowerText.includes('irs') || lowerText.includes('audit') || lowerText.includes('tax');
+            const isSSN = lowerText.includes('social security') || lowerText.includes('ssn') || lowerText.includes('social sec');
+            const isPolice = lowerText.includes('leon county') || lowerText.includes('sheriff') || lowerText.includes('police') || lowerText.includes('warrant') || lowerText.includes('arrest') || lowerText.includes('bail') || lowerText.includes('jury');
+            const isCustoms = lowerText.includes('customs') || lowerText.includes('border protection') || lowerText.includes('contraband') || lowerText.includes('package');
+            const isCourt = lowerText.includes('court') || lowerText.includes('process server') || lowerText.includes('subpoena') || lowerText.includes('indictment') || lowerText.includes('lawsuit');
             
-            const isBank = lowerText.includes('checking account') || lowerText.includes('debit card') || lowerText.includes('bank account') || lowerText.includes('frozen');
-            const isZelle = lowerText.includes('zelle') || lowerText.includes('unauthorized transfer');
-            const isCrypto = lowerText.includes('bitcoin') || lowerText.includes('crypto') || lowerText.includes('blockchain') || lowerText.includes('wallet');
-            const isSweepstakes = lowerText.includes('sweepstakes') || lowerText.includes('grand prize') || lowerText.includes('won the');
-            const isWire = lowerText.includes('wire transfer') || lowerText.includes('compliance officer') || lowerText.includes('international wire');
+            const isBank = lowerText.includes('checking account') || lowerText.includes('debit card') || lowerText.includes('bank account') || lowerText.includes('frozen') || lowerText.includes('bank');
+            const isZelle = lowerText.includes('zelle') || lowerText.includes('unauthorized transfer') || lowerText.includes('peer');
+            const isCrypto = lowerText.includes('bitcoin') || lowerText.includes('crypto') || lowerText.includes('blockchain') || lowerText.includes('wallet') || lowerText.includes('investment');
+            const isSweepstakes = lowerText.includes('sweepstakes') || lowerText.includes('grand prize') || lowerText.includes('won the') || lowerText.includes('prize');
+            const isWire = lowerText.includes('wire transfer') || lowerText.includes('compliance officer') || lowerText.includes('international wire') || lowerText.includes('wire');
 
-            const isTech = lowerText.includes('microsoft') || lowerText.includes('windows') || lowerText.includes('trojan') || lowerText.includes('virus') || lowerText.includes('infected') || lowerText.includes('support number on the screen');
+            const isTech = lowerText.includes('microsoft') || lowerText.includes('windows') || lowerText.includes('trojan') || lowerText.includes('virus') || lowerText.includes('infected') || lowerText.includes('support number on the screen') || lowerText.includes('computer');
             const isApple = lowerText.includes('apple') || lowerText.includes('icloud') || lowerText.includes('apple id');
-            const isRouter = lowerText.includes('router') || lowerText.includes('broadband') || lowerText.includes('botnet');
-            const isStreaming = lowerText.includes('streaming') || lowerText.includes('subscription') || lowerText.includes('membership payment');
-            const isEmailStorage = lowerText.includes('mailbox') || lowerText.includes('storage quota') || lowerText.includes('cloud storage capacity');
+            const isRouter = lowerText.includes('router') || lowerText.includes('broadband') || lowerText.includes('botnet') || lowerText.includes('internet');
+            const isStreaming = lowerText.includes('streaming') || lowerText.includes('subscription') || lowerText.includes('membership payment') || lowerText.includes('netflix');
+            const isEmailStorage = lowerText.includes('mailbox') || lowerText.includes('storage quota') || lowerText.includes('cloud storage capacity') || lowerText.includes('email');
 
-            const isUtility = lowerText.includes('shutoff') || lowerText.includes('disconnection') || lowerText.includes('electric') || lowerText.includes('power bill') || lowerText.includes('water');
-            const isGrandchild = lowerText.includes('grandma') || lowerText.includes('grandpa') || lowerText.includes('accident while traveling');
-            const isHospital = lowerText.includes('hospital') || lowerText.includes('trauma center') || lowerText.includes('surgery');
-            const isHomeWarranty = lowerText.includes('home warranty') || lowerText.includes('property lien') || lowerText.includes('foreclosure');
-            const isCharity = lowerText.includes('disaster relief') || lowerText.includes('hurricane') || lowerText.includes('emergency shelter');
+            const isUtility = lowerText.includes('shutoff') || lowerText.includes('disconnection') || lowerText.includes('electric') || lowerText.includes('power bill') || lowerText.includes('water') || lowerText.includes('utility');
+            const isGrandchild = lowerText.includes('grandma') || lowerText.includes('grandpa') || lowerText.includes('accident while traveling') || lowerText.includes('family');
+            const isHospital = lowerText.includes('hospital') || lowerText.includes('trauma center') || lowerText.includes('surgery') || lowerText.includes('medical');
+            const isHomeWarranty = lowerText.includes('home warranty') || lowerText.includes('property lien') || lowerText.includes('foreclosure') || lowerText.includes('warranty');
+            const isCharity = lowerText.includes('disaster relief') || lowerText.includes('hurricane') || lowerText.includes('emergency shelter') || lowerText.includes('charity');
 
             const isThreat = fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
 
