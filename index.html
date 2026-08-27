@@ -546,6 +546,27 @@
 
             const threatCategories = [
                 {
+                    keywords: ['expense report', 'reimbursement', 'receipt validation', 'employee self-service', 'forfeiture'],
+                    minMatches: 2,
+                    title: "Corporate Expense Reimbursement Phishing",
+                    desc: "A fake corporate finance alert is trying to trick you into logging into a fraudulent portal to steal your employee credentials.",
+                    warn: "Scammers use fake expense reimbursement notices to harvest corporate portal logins."
+                },
+                {
+                    keywords: ['privacy regulations', 'directory credentials', 'compliance validation', 'network access', 're-certify'],
+                    minMatches: 2,
+                    title: "Compliance & Data Privacy Phishing Trap",
+                    desc: "A deceptive security update claims your compliance credentials must be re-certified to avoid losing network access.",
+                    warn: "Attackers manufacture fake regulatory updates to capture internal directory credentials."
+                },
+                {
+                    keywords: ['vendor payment', 'routing details', 'clearinghouse', 'accounts payable', 'vendor disbursements'],
+                    minMatches: 2,
+                    title: "Vendor Invoice Routing Redirection Scam",
+                    desc: "A fraudulent vendor notice is attempting to redirect accounts payable funds into an unauthorized clearinghouse account.",
+                    warn: "Financial transfer scams impersonate suppliers to divert corporate payments to fraudulent bank accounts."
+                },
+                {
                     keywords: ['mfa', 'push notification', 'unauthorized login', 'enterprise account', 'validation link', 'access rights'],
                     minMatches: 2,
                     title: "Urgent MFA & Account Hijack Scam",
