@@ -202,8 +202,11 @@
     <button class="how-to-use-btn" onclick="openModal()">How to Use</button>
 
     <div class="header-logos">
-        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida">
-        <img src="senior-shield-logo.png" alt="Senior Shield">
+        <img src="elder-affairs-logo.png" alt="Elder Affairs Florida" onerror="this.style.display='none'; document.getElementById('fallback-logo-1').style.display='block';">
+        <span id="fallback-logo-1" style="display:none; font-weight:bold; color:#1e3a8a; font-size:18px;">Elder Affairs Florida</span>
+        
+        <img src="senior-shield-logo.png" alt="Senior Shield" onerror="this.style.display='none'; document.getElementById('fallback-logo-2').style.display='block';">
+        <span id="fallback-logo-2" style="display:none; font-weight:bold; color:#b45309; font-size:14px; background:#fef3c7; padding:2px 6px; border-radius:4px;">Senior Shield</span>
     </div>
 
     <h2>Scam Detector</h2>
@@ -347,38 +350,7 @@
     }
 
     function printReferenceGuide() {
-        const printWindow = window.open('', '_blank');
-        printWindow.document.write(`
-            <html>
-            <head>
-                <title>Senior Digital Safeguard - Reference Guide</title>
-                <style>
-                    body { font-family: Arial, sans-serif; padding: 30px; color: #333; }
-                    h1 { color: #1e3a8a; }
-                    h3 { color: #b45309; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; }
-                    p { line-height: 1.5; }
-                </style>
-            </head>
-            <body>
-                <h1>Operation Senior Shield</h1>
-                <h2>Senior Digital Safeguard - Reference Guide</h2>
-                <p>Aligned with Florida Department of Elder Affairs (DOEA) Guidelines.</p>
-                <hr style="margin: 20px 0;">
-                <h3>Fake TV / Streaming Bill Scams</h3>
-                <p>Scammers send fake alerts claiming your Netflix, TV, or movie streaming payment failed to trick you into entering your credit card details.</p>
-                <h3>Fake Social Security Scams</h3>
-                <p>Fraudsters falsely claim your Social Security number or benefits are frozen or canceled to steal your personal identifiers.</p>
-                <h3>Key Rules to Remember</h3>
-                <p>1. Never click links or call numbers directly from unsolicited urgent texts or emails.</p>
-                <p>2. Always navigate independently to official state portals like <a href="https://elderaffairs.org">elderaffairs.org</a>.</p>
-            </body>
-            </html>
-        `);
-        printWindow.document.close();
-        printWindow.focus();
-        setTimeout(() => {
-            printWindow.print();
-        }, 500);
+        window.print();
     }
 </script>
 
