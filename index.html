@@ -502,7 +502,7 @@
 
             // Force threat trigger if input is symbol/emoji only without text, or matches threat keywords/files
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
-            const isThreat = isSymbolOnlySpam || fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
+            const isThreat = isSymbolOnlySpim = isSymbolOnlySpam || fileInput.files.length > 0 || isTech || isApple || isRouter || isStreaming || isEmailStorage || isUtility || isGrandchild || isHospital || isHomeWarranty || isCharity || isBank || isZelle || isCrypto || isSweepstakes || isWire || isIRS || isSSN || isCustoms || isCourt || isPolice;
 
             if (isThreat) {
                 resultBox.className = 'result-box danger';
@@ -603,7 +603,7 @@
 
                 // Zero-gap, hand-holding 4-step walkthrough plan with unified trusted routing
                 steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
-                        'Take a deep breath and relax. Do NOT reply to Khomeini or any suspicious sender, do NOT call any phone numbers listed in the message, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
+                        'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are safe as long as you do not interact with them.</li>' +
                         
                         '<li><strong>Step 2: Understand the Trick</strong><br>' +
                         '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
@@ -631,6 +631,9 @@
             document.getElementById('imageUpload').value = '';
             document.getElementById('fileInfo').textContent = "No file chosen (Supports Images, PDFs, Text files)";
             document.getElementById('resultBox').style.display = 'none';
+            // Return back to the legal disclaimer view and hide the tool view
+            document.getElementById('toolView').style.display = 'none';
+            document.getElementById('disclaimerView').style.display = 'block';
         }
 
         function printGuide() {
