@@ -143,9 +143,9 @@
             border: 1px solid #bfdbfe;
             border-radius: 8px;
             padding: 20px;
+            background-color: #eff6ff;
             margin-top: 30px;
             margin-bottom: 20px;
-            background-color: #eff6ff;
         }
 
         .permanent-info-box h3 {
@@ -420,14 +420,14 @@
         </div>
 
         <!-- Legal & Educational Disclaimer View -->
-        <div id="disclaimerView" class="disclaimer-box">
+        <div id="disclaimerView" class="disclaimer-box" style="display: block;">
             <h3>Legal & Educational Disclaimer</h3>
             <p>Please review before accessing the Senior Digital Safeguard tool:</p>
             <p><strong>1. Educational Purpose:</strong> Provided free for awareness under Operation Senior Shield as a quick first check.<br>
             <strong>2. How It Works:</strong> Paste suspicious texts or upload screenshots to check for common scam indicators.<br>
             <strong>3. No Guarantee:</strong> Always proceed with caution, consult our trusted resources, and verify through official channels.<br>
             <strong>4. Liability:</strong> DOEA and Operation Senior Shield assume no legal liability for losses from tool usage.</p>
-            <button class="primary-btn" onclick="acceptDisclaimer()" style="width: 100%;">I Have Read and Agree — Enter Tool</button>
+            <button type="button" id="agreeBtn" class="primary-btn" style="width: 100%; position: relative; z-index: 9999; cursor: pointer; pointer-events: auto;">I Have Read and Agree — Enter Tool</button>
         </div>
 
         <!-- Main Tool View -->
@@ -448,9 +448,9 @@
             </div>
 
             <div class="button-group">
-                <button class="primary-btn" onclick="analyzeContent()">Analyze Message</button>
-                <button class="secondary-btn" onclick="clearForm()">Clear</button>
-                <button class="secondary-btn" onclick="printGuide()">Print Reference Guide</button>
+                <button type="button" class="primary-btn" onclick="analyzeContent()">Analyze Message</button>
+                <button type="button" class="secondary-btn" onclick="clearForm()">Clear</button>
+                <button type="button" class="secondary-btn" onclick="printGuide()">Print Reference Guide</button>
             </div>
 
             <div id="resultBox" class="result-box">
@@ -498,9 +498,22 @@
 
     <script>
         function acceptDisclaimer() {
-            document.getElementById('disclaimerView').style.display = 'none';
-            document.getElementById('toolView').style.display = 'block';
+            const disclaimerView = document.getElementById('disclaimerView');
+            const toolView = document.getElementById('toolView');
+            if (disclaimerView) disclaimerView.style.display = 'none';
+            if (toolView) toolView.style.display = 'block';
         }
+
+        // Bind via event listener to guarantee execution without relying solely on inline attributes
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('agreeBtn');
+            if (btn) {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    acceptDisclaimer();
+                });
+            }
+        });
 
         function toggleInstructions() {
             const panel = document.getElementById('instructionsPanel');
@@ -544,10 +557,91 @@
             const hasAlphanumeric = /[a-z0-9]/i.test(text);
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
-            // Exclude benign routine billing/statement notices from triggering threats
-            const isBenignRoutine = lowerText.includes('statement') || lowerText.includes('scheduled to process') || lowerText.includes('auto pay') || lowerText.includes('autopay') || lowerText.includes('ready to view');
-
             const threatCategories = [
+                {
+                    keywords: ['emergency hurricane relief', 'displaced families', 'shelter assistance', 'amazon gift card', 'zelle wire transfer'],
+                    minMatches: 2,
+                    title: "Fake Disaster Relief Charity Scam",
+                    desc: "A fraudulent charity scam is trying to collect donations or gift card codes over your phone after a disaster or hurricane.",
+                    warn: "Scammers frequently create fake disaster relief funds to exploit community generosity during emergencies."
+                },
+                {
+                    keywords: ['golden retriever puppy', 'air cargo delivery', 'airport quarantine', 'transport holding', 'veterinary health insurance fee'],
+                    minMatches: 2,
+                    title: "Fake Puppy / Pet Adoption Deposit Scam",
+                    desc: "A fraudulent pet adoption notice claims a purchased animal is stuck in transport quarantine requiring immediate fee payment.",
+                    warn: "Scammers use fake animal transport and quarantine fee demands to steal money from animal lovers."
+                },
+                {
+                    keywords: ['solar panel installation rebate', 'pending cancellation', 'banking direct deposit', 'verification portal', 'forfeiting your funds'],
+                    minMatches: 2,
+                    title: "Fake Rebate / Government Incentive Scam",
+                    desc: "A deceptive utility or energy incentive notice claims a rebate or grant is pending cancellation unless you verify banking details.",
+                    warn: "Fraudsters manufacture fake green energy or government tax credit claims to harvest personal banking information."
+                },
+                {
+                    keywords: ['international flight', 'luggage was stolen', 'wire $800', 'western union', 'emergency ticket to come home'],
+                    minMatches: 2,
+                    title: "Fake Romance / Emergency Travel Scam",
+                    desc: "An online acquaintance claims an abrupt overseas emergency or stolen luggage requires immediate cash wire transfers.",
+                    warn: "Romance and emergency travel impostors exploit personal affection to manipulate victims into wiring non-recoverable funds."
+                },
+                {
+                    keywords: ['mining rig', 'cryptocurrency mining', 'passive income', 'weekly return', 'transfer bitcoin', 'ethereum', 'node wallet'],
+                    minMatches: 2,
+                    title: "Fake Cryptocurrency Mining Investment Scam",
+                    desc: "A fraudulent investment scheme promises guaranteed high returns on crypto mining rigs to trick you into transferring digital currency.",
+                    warn: "Guaranteed high-return cryptocurrency schemes are high-risk financial traps designed to permanently drain your digital assets."
+                },
+                {
+                    keywords: ['bench warrant', 'missed jury duty', 'dismissal fine', 'sheriff compliance', 'arrest due to missing'],
+                    minMatches: 2,
+                    title: "Fake Police or Jury Duty Warrant Scam",
+                    desc: "A fake law enforcement officer or court worker is claiming a warrant has been issued against you requiring immediate payment.",
+                    warn: "Law enforcement and courts never call or text demanding immediate fine payments via gift cards or prepaid cards."
+                },
+                {
+                    keywords: ['delivery failure', 'incorrect street address', 'redelivery fee', 'tracking link', 'usps delivery'],
+                    minMatches: 2,
+                    title: "Deceptive Parcel Delivery & Customs Scam",
+                    desc: "A fake shipping alert claims your package encountered an address issue requiring an immediate fee payment.",
+                    warn: "Postal and shipping services never demand sudden digital fee payments via link clicks to release standard packages."
+                },
+                {
+                    keywords: ['government grant', 'stimulus grant', 'grant money', 'free grant'],
+                    minMatches: 2,
+                    title: "Fake Government Grant / Subsidy Scam",
+                    desc: "A fraudulent notice claims you have won or qualify for a government stimulus grant but requires upfront registration fees or taxes.",
+                    warn: "Government agencies never award grants via random selection or demand upfront prepaid card fees to release funds."
+                },
+                {
+                    keywords: ['home warranty', 'property lien', 'foreclosure', 'expiration', 'coverage', 'auto coverage plan', 'vehicle factory warranty'],
+                    minMatches: 2,
+                    title: "Fake Home Warranty / Auto Coverage Notice",
+                    desc: "A deceptive notice claims your home warranty or auto protection policy has expired to trick you into paying renewal fees.",
+                    warn: "This is a misleading solicitation designed to charge you for unnecessary protection policies."
+                },
+                {
+                    keywords: ['loan', 'pre-approved', 'guaranteed acceptance', 'processing fee', 'prepaid card', 'release your funds'],
+                    minMatches: 2,
+                    title: "Advance Fee Loan Scam",
+                    desc: "A fake loan offer claims you are approved but demands an upfront processing fee or prepaid card before releasing funds.",
+                    warn: "Legitimate lenders never require you to pay upfront fees with prepaid cards or gift cards to secure a loan."
+                },
+                {
+                    keywords: ['timeshare', 'vacation property', 'cash buyer', 'closing fees', 'transfer taxes', 'upfront escrow deposit'],
+                    minMatches: 2,
+                    title: "Timeshare Resale / Escrow Scam",
+                    desc: "A fake buyer notice claims someone wants to purchase your vacation property timeshare but demands upfront closing or escrow fees.",
+                    warn: "Legitimate real estate brokers never require upfront fees or deposits out of pocket to complete a sale."
+                },
+                {
+                    keywords: ['career services', 'research internship', '@gmail.com', 'paid research'],
+                    minMatches: 2,
+                    title: "Fake Academic Internship / Job Scam",
+                    desc: "A deceptive recruitment notice uses a prestigious university header but instructs you to apply using an unverified personal webmail address instead of an institutional domain.",
+                    warn: "Scammers spoof university departments and use personal webmail addresses (like @gmail.com) to harvest student personal information and identity details through fake employment offers."
+                },
                 {
                     keywords: ['library', 'admin', 'membership', 'institutional credentials', 'backup portal', 'account suspension'],
                     minMatches: 2,
@@ -591,11 +685,11 @@
                     warn: "They are attempting to bypass multi-factor authentication to take over your enterprise or personal account."
                 },
                 {
-                    keywords: ['seed phrase', 'recovery phrase', 'wallet node', 'synchronization', 'token locking', 'decentralized'],
+                    keywords: ['seed phrase', 'recovery phrase', 'wallet node', 'synchronization', 'token locking', 'decentralized', 'asset recovery', 'retainer fee'],
                     minMatches: 2,
-                    title: "Crypto Wallet & Seed Phrase Phishing",
-                    desc: "A fake blockchain notification is claiming synchronization errors to trick you into handing over your private recovery seed phrase.",
-                    warn: "Never share your secret 12-word wallet recovery phrase with anyone; doing so gives attackers full control of your funds."
+                    title: "Fake Digital Currency & Password Scam",
+                    desc: "A fake security or asset recovery alert is trying to trick you into handing over your secret account passwords, recovery codes, or upfront retainer fees.",
+                    warn: "Never share your secret digital recovery codes, passwords, or upfront retainer fees with anyone claiming they can recover lost funds; doing so gives scammers full access."
                 },
                 {
                     keywords: ['delivery exception', 'sorting facility', 'customs clearance', 'handling fees', 'package', 'usps'],
@@ -605,28 +699,21 @@
                     warn: "Postal and shipping services never demand sudden digital fee payments via link clicks to release standard packages."
                 },
                 {
-                    keywords: ['irs', 'tax', 'audit', 'back taxes'],
+                    keywords: ['irs', 'internal revenue service', 'back taxes owed', 'tax audit warning'],
                     minMatches: 1,
                     title: "Fake IRS Tax Threat",
                     desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
                     warn: "They are using fake government intimidation to steal your money."
                 },
                 {
-                    keywords: ['social security', 'ssn', 'benefits'],
+                    keywords: ['social security number', 'ssn suspended', 'benefits canceled', 'social security administration'],
                     minMatches: 1,
                     title: "Fake Social Security Scam",
                     desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
                     warn: "They are trying to trick you into handing over your sensitive personal numbers."
                 },
                 {
-                    keywords: ['jury duty', 'sheriff', 'police', 'bench warrant', 'court'],
-                    minMatches: 1,
-                    title: "Fake Police or Jury Duty Scam",
-                    desc: "A fake police officer, sheriff, or court worker is claiming you missed jury duty and owe money for bail or a fine.",
-                    warn: "Law enforcement will never call you demanding immediate cash or gift cards over the phone."
-                },
-                {
-                    keywords: ['compliance officer', 'crypto', 'blockchain', 'checking account', 'wire', 'bitcoin'],
+                    keywords: ['compliance officer', 'crypto', 'blockchain', 'checking account', 'wire', 'bitcoin', 'unauthorized zelle', 'fraud department', 'external payee'],
                     minMatches: 2,
                     title: "Fake Bank Wire / Crypto Compliance Scam",
                     desc: "A scammer is impersonating a bank compliance or security officer claiming your accounts or digital assets are frozen.",
@@ -717,7 +804,7 @@
                     warn: "This is a trick to install remote access malware onto your home network."
                 },
                 {
-                    keywords: ['netflix', 'hulu', 'streaming', 'subscription', 'payment failed', 'billing', 'suspended'],
+                    keywords: ['netflix', 'hulu', 'streaming', 'subscription', 'payment failed', 'billing', 'suspended', 'routing details'],
                     minMatches: 2,
                     title: "Fake TV / Streaming Bill Scam",
                     desc: "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.",
@@ -736,35 +823,19 @@
                     title: "Fake Hospital Emergency Scam",
                     desc: "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.",
                     warn: "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits."
-                },
-                {
-                    keywords: ['home warranty', 'property lien', 'foreclosure', 'expiration', 'coverage'],
-                    minMatches: 2,
-                    title: "Fake Home Warranty / Property Notice",
-                    desc: "A deceptive letter or text claims your home warranty expired or a lien is on your property to trick you into paying fees.",
-                    warn: "This is a misleading solicitation designed to charge you for unnecessary property services."
-                },
-                {
-                    keywords: ['disaster relief', 'hurricane', 'donation', 'emergency shelter', 'charity', 'storm relief'],
-                    minMatches: 2,
-                    title: "Fake Disaster Relief Charity Scam",
-                    desc: "A fake charity scam is trying to collect donations over your phone after a storm or hurricane.",
-                    warn: "Scammers frequently create fake disaster relief funds to exploit community generosity."
                 }
             ];
 
             let matchedThreat = null;
 
-            if (!isBenignRoutine) {
-                for (let cat of threatCategories) {
-                    let matchCount = cat.keywords.filter(kw => condensedText.includes(kw.replace(/\s+/g, '')) || lowerText.includes(kw)).length;
-                    if (matchCount >= cat.minMatches) {
-                        if ((cat.title.includes('Grandchild') || cat.title.includes('Jail') || cat.title.includes('Bail')) && lowerText.includes('bailey')) {
-                            continue;
-                        }
-                        matchedThreat = cat;
-                        break;
+            for (let cat of threatCategories) {
+                let matchCount = cat.keywords.filter(kw => condensedText.includes(kw.replace(/\s+/g, '')) || lowerText.includes(kw)).length;
+                if (matchCount >= cat.minMatches) {
+                    if ((cat.title.includes('Grandchild') || cat.title.includes('Jail') || cat.title.includes('Bail')) && lowerText.includes('bailey')) {
+                        continue;
                     }
+                    matchedThreat = cat;
+                    break;
                 }
             }
 
@@ -783,16 +854,16 @@
                 
                 const title = matchedThreat ? matchedThreat.title : "Stop! This is a Known Scam Trick";
                 const desc = matchedThreat ? matchedThreat.desc : "This message is trying to scare you into acting quickly before you have time to think.";
-                const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause panic and financial loss.";
+                const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause privacy and financial loss.";
                 
-                const step3Custom = "If you have received this suspicious message or if you have actually suffered a financial loss, report the incident to the appropriate authority: file with the <a href='https://reportfraud.ftc.gov' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Federal Trade Commission (FTC)</a>, contact your local law enforcement or the <a href='https://www.fdle.state.fl.us/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>FDLE</a> for criminal matters, file a deceptive trade complaint with the <a href='https://www.myfloridalegal.com' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Florida Attorney General</a>, or forward scam text messages to <strong>7726</strong>.";
+                const step3Custom = "Even if you did not lose money, report this attempted scam to help authorities track emerging threats: file a report with the <a href='https://reportfraud.ftc.gov' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Federal Trade Commission (FTC)</a>, contact your local law enforcement or the <a href='https://www.fdle.state.fl.us/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>FDLE</a> for criminal matters, file a deceptive trade complaint with the <a href='https://www.myfloridalegal.com' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Florida Attorney General</a>, or forward scam text messages to <strong>7726</strong>.";
                 const step4Custom = "To review general security guidelines, scam trends, and educational resources, explore the <a href='https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA Fraud Protection Programs</a> hub.";
 
-                const steps = '<li><strong>Step 1: Stop and Do Nothing Else Immediately</strong><br>' +
-                              'Take a deep breath and relax. Do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are completely safe as long as you do not interact with them.</li>' +
+                const steps = '<li><strong>Step 1: STOP Engaging and Do Nothing Else Immediately</strong><br>' +
+                              'Take a deep breath and relax. Stop interacting, do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are completely safe as long as you do not interact with them. If this is a text message, take a screenshot for your records and forward the text to <strong>7726</strong> (spells SPAM) to report it to your carrier.</li>' +
                               '<li><strong>Step 2: Understand the Specific Trick</strong><br>' +
-                              '<em>' + specificWarning + '</em> Remember: real organizations and authorities will never threaten you or demand immediate payment over a text, email, or pop-up.</li>' +
-                              '<li><strong>Step 3: Report the Attempt or Loss</strong><br>' +
+                              '<em>' + specificWarning + '</em></li>' +
+                              '<li><strong>Step 3: Report the Scam or Attempt</strong><br>' +
                               step3Custom + '</li>' +
                               '<li><strong>Step 4: Review External Resource Channels</strong><br>' +
                               step4Custom + '</li>';
@@ -806,16 +877,16 @@
                     emergencyBanner +
                     '<div class="warning-title">⚠️ ' + title + '</div>' +
                     '<div class="warning-desc">' + desc + '</div>' +
-                    '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">Your Action Plan:</div>' +
+                    '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">What you should do right now:</div>' +
                     '<ol class="action-list">' + steps + '</ol>' +
                     '<div style="margin-top: 20px;">' +
-                    '<button class="secondary-btn" onclick="printActionPlan()">🖨️ Print Action Plan</button>' +
+                    '<button type="button" class="secondary-btn" onclick="printActionPlan()">🖨️ Print Action Plan</button>' +
                     '</div>';
                 
                 document.getElementById('printDynamicContent').innerHTML = 
                     '<p style="color: #991b1b; font-weight: bold;">Detected Threat: ' + title + '</p>' +
                     '<p>' + desc + '</p>' +
-                    '<p><strong>Your Action Plan:</strong></p>' +
+                    '<p><strong>What you should do right now:</strong></p>' +
                     '<ol style="padding-left: 20px; font-size: 13px;">' + steps + '</ol>';
             } else {
                 resultBox.className = 'result-box safe';
