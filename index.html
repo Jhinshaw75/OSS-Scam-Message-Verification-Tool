@@ -1,11 +1,12 @@
- <!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scam Detector</title>
+    <title>Operation Senior Shield - Check-A-Scam</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#1e3a8a">
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -159,6 +160,34 @@
             color: #1e293b;
             font-size: 14px;
             margin-bottom: 8px;
+        }
+
+        .never-ever-box {
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 20px;
+            background-color: #fef2f2;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .never-ever-box h3 {
+            margin-top: 0;
+            color: #991b1b;
+            font-size: 18px;
+            margin-bottom: 12px;
+        }
+
+        .never-ever-box ul {
+            padding-left: 20px;
+            color: #7f1d1d;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .never-ever-box li {
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
         .oss-promo-banner {
@@ -372,7 +401,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
-            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
+            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .never-ever-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
             .printable-card { display: block !important; border: 2px dashed #1e3a8a; padding: 20px; border-radius: 8px; margin: 20px; }
             .printable-card h2 { color: #1e3a8a; margin-top: 0; }
         }
@@ -381,12 +410,10 @@
 <body>
 
     <div class="container">
-        <!-- Instructions Toggle Top Right -->
         <div class="header-top">
             <button class="instructions-toggle-btn" id="toggleInstructionsBtn" onclick="toggleInstructions()">How to Use</button>
         </div>
 
-        <!-- Collapsible Instructions Panel -->
         <div class="instructions-panel" id="instructionsPanel">
             <h3>Step-by-Step Instructions</h3>
             <ol>
@@ -395,18 +422,17 @@
                 <li>Choose how to check the suspicious message:
                     <ul>
                         <li><strong>Option A:</strong> Copy the text from the suspicious email, text message, or letter and paste it right into the box below.</li>
-                        <li><strong>Option B:</strong> Take a picture or screenshot of the message and upload the image file using the upload button.</li>
+                        <li><strong>Option B:</strong> Take a picture or screenshot of the message and upload the image file using the upload button. The tool will automatically read the text from your screenshot.</li>
                     </ul>
                 </li>
                 <li>Click the analyze button to check the message for multi-word threat patterns or scam indicators.</li>
-                <li>Review the result:
+                <li>Review what is found:
                     <ul>
-                        <li>If no multi-word scam patterns show up, the tool will let you know.</li>
-                        <li>If a scam is found, a guidance box will appear right away to walk you through what to do and connect you with external resource channels.</li>
+                        <li>If the message looks safe, the tool will let you know right away.</li>
+                        <li>If a scam is detected, a helpful message will appear immediately to guide you step-by-step on what to do and connect you with trusted helper phone numbers.</li>
                     </ul>
                 </li>
-                <li>Click the print reference guide button if you want a paper copy of the emergency numbers and trusted web links to keep by your phone.</li>
-                <li>Open your browser menu on a mobile device and select "Add to Home Screen" if you want to pin the tool to your phone like a regular app.</li>
+                <li>Click the print action plan button if you want a paper copy of the emergency numbers and steps to keep by your phone.</li>
             </ol>
         </div>
 
@@ -415,22 +441,20 @@
                 <a href="https://elderaffairs.org" target="_blank" rel="noopener"><img src="doea-logo.png" alt="Florida Department of Elder Affairs"></a>
                 <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener"><img src="oss-logo.png" alt="Operation Senior Shield"></a>
             </div>
-            <h1>Scam Detector</h1>
-            <p class="subtitle">Instant Scam & Fraud Protection Analyzer</p>
+            <h1>Check-A-Scam</h1>
+            <p class="subtitle">Operation Senior Shield Fraud Protection Analyzer</p>
         </div>
 
-        <!-- Legal & Educational Disclaimer View -->
         <div id="disclaimerView" class="disclaimer-box" style="display: block;">
             <h3>Legal & Educational Disclaimer</h3>
-            <p>Please review before accessing the Senior Digital Safeguard tool:</p>
+            <p>Please review before accessing the Check-A-Scam tool:</p>
             <p><strong>1. Educational Purpose:</strong> Provided free for awareness under Operation Senior Shield as a quick first check.<br>
             <strong>2. How It Works:</strong> Paste suspicious texts or upload screenshots to check for common scam indicators.<br>
             <strong>3. No Guarantee:</strong> Always proceed with caution, consult our trusted resources, and verify through official channels.<br>
             <strong>4. Liability:</strong> DOEA and Operation Senior Shield assume no legal liability for losses from tool usage.</p>
-            <button type="button" id="agreeBtn" class="primary-btn" style="width: 100%; position: relative; z-index: 9999; cursor: pointer; pointer-events: auto;">I Have Read and Agree — Enter Tool</button>
+            <button type="button" id="agreeBtn" class="primary-btn" style="width: 100%; position: relative; z-index: 9999; cursor: pointer; pointer-events: auto;" onclick="acceptDisclaimer()">I Have Read and Agree — Enter Tool</button>
         </div>
 
-        <!-- Main Tool View -->
         <main id="toolView" style="display: none;">
             <div class="oss-promo-banner">
                 <p class="oss-promo-text">Want to stay ahead of the latest scams? <strong>Sign up for OSS Updates</strong> to get safety alerts straight to your inbox.</p>
@@ -438,7 +462,7 @@
             </div>
 
             <div class="upload-dropzone">
-                <label for="imageUpload">📁 Select Screenshot or Email File</label>
+                <label for="imageUpload">Select Screenshot or Email File</label>
                 <input type="file" id="imageUpload" accept="image/*,.pdf,.txt" onchange="updateFileName()">
                 <p class="file-info" id="fileInfo">No file chosen (Supports Images, PDFs, Text files)</p>
             </div>
@@ -450,18 +474,23 @@
             <div class="button-group">
                 <button type="button" class="primary-btn" onclick="analyzeContent()">Analyze Message</button>
                 <button type="button" class="secondary-btn" onclick="clearForm()">Clear</button>
-                <button type="button" class="secondary-btn" onclick="printGuide()">Print Reference Guide</button>
             </div>
 
             <div id="resultBox" class="result-box">
-                <div id="resultContent">
-                    <!-- Dynamic targeted walkthrough injected here -->
-                </div>
+                <div id="resultContent"></div>
             </div>
 
-            <!-- Always Visible Scam Text Reporting Info Box -->
+            <div class="never-ever-box">
+                <h3>The Federal "Never Ever" Rules</h3>
+                <ul>
+                    <li>The government and legitimate banks will NEVER tell you to move your money to protect it.</li>
+                    <li>Official agencies will NEVER threaten to cut off benefits unless you pay immediately.</li>
+                    <li>Legitimate organizations will NEVER demand payment by gift card, wire transfer, cryptocurrency, or payment app.</li>
+                </ul>
+            </div>
+
             <div class="permanent-info-box">
-                <h3>📲 How to Report Scam Text Messages (7726)</h3>
+                <h3>How to Report Scam Text Messages (7726)</h3>
                 <p>If you receive a suspicious text message, you can report it instantly to mobile carriers and security authorities without clicking any links:</p>
                 <p><strong>1. Copy or Screenshot:</strong> Do not tap any links inside the message.</p>
                 <p><strong>2. Forward to 7726:</strong> Open your text message app, press and hold the suspicious text message, select "Forward", and send it to the short code <strong>7726</strong> (spells "SPAM").</p>
@@ -469,14 +498,19 @@
             </div>
         </main>
 
-        <!-- Printable Wallet Reference Card -->
         <div class="printable-card" id="printableCardContainer">
-            <h2>Scam Detector &mdash; Reference & Emergency Guide</h2>
+            <h2>Operation Senior Shield &mdash; Check-A-Scam Action Plan</h2>
             <div id="printDynamicContent">
+                <p><strong>The Federal "Never Ever" Fraud Rules:</strong></p>
+                <ul>
+                    <li>The government and legitimate banks will NEVER tell you to move your money to protect it.</li>
+                    <li>Official agencies will NEVER threaten to cut off benefits unless you pay immediately.</li>
+                    <li>Legitimate organizations will NEVER demand payment by gift card, wire transfer, cryptocurrency, or payment app.</li>
+                </ul>
                 <p><strong>Golden Rules to Remember:</strong></p>
                 <ul>
-                    <li>Never call phone numbers listed in suspicious text messages, emails, or pop-ups.</li>
-                    <li>Never click unfamiliar links or download attachments from unknown senders.</li>
+                    <li>Never call phone numbers listed in suspicious text messages, emails, or pop-up notices.</li>
+                    <li>Never click unfamiliar links, download attachments, or click "unsubscribe" links from unknown senders.</li>
                     <li>Always use our verified Operation Senior Shield resource links.</li>
                 </ul>
             </div>
@@ -504,7 +538,6 @@
             if (toolView) toolView.style.display = 'block';
         }
 
-        // Bind via event listener to guarantee execution without relying solely on inline attributes
         document.addEventListener('DOMContentLoaded', function() {
             const btn = document.getElementById('agreeBtn');
             if (btn) {
@@ -519,12 +552,66 @@
             const panel = document.getElementById('instructionsPanel');
             const btn = document.getElementById('toggleInstructionsBtn');
             panel.classList.toggle('active');
-            btn.textContent = panel.classList.contains('active' ) ? 'Hide Instructions' : 'How to Use';
+            btn.textContent = panel.classList.contains('active') ? 'Hide Instructions' : 'How to Use';
         }
 
         function updateFileName() {
             const input = document.getElementById('imageUpload');
-            document.getElementById('fileInfo').textContent = input.files.length > 0 ? input.files[0].name : "No file chosen (Supports Images, PDFs, Text files)";
+            const file = input.files[0];
+            const fileInfo = document.getElementById('fileInfo');
+            const textArea = document.getElementById('scamInput');
+            
+            if (file) {
+                fileInfo.textContent = file.name;
+                const reader = new FileReader();
+                if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+                    reader.onload = function(e) {
+                        textArea.value = e.target.result;
+                    };
+                    reader.readAsText(file);
+                } else if (file.type.startsWith('image/')) {
+                    fileInfo.textContent = file.name + " (Scanning image text...)";
+                    textArea.value = "Scanning image text, please wait...";
+                    
+                    Tesseract.recognize(
+                        file,
+                        'eng',
+                        { logger: m => {} }
+                    ).then(({ data: { text } }) => {
+                        textArea.value = text.trim();
+                        fileInfo.textContent = file.name + " (Text extracted successfully)";
+                    }).catch(err => {
+                        textArea.value = "";
+                        fileInfo.textContent = file.name + " (Error reading image text)";
+                    });
+                } else {
+                    reader.onload = function(e) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = img.width;
+                            canvas.height = img.height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0);
+                            Tesseract.recognize(
+                                canvas,
+                                'eng',
+                                { logger: m => {} }
+                            ).then(({ data: { text } }) => {
+                                textArea.value = text.trim();
+                                fileInfo.textContent = file.name + " (Text extracted successfully)";
+                            }).catch(err => {
+                                textArea.value = "";
+                                fileInfo.textContent = file.name + " (Error reading image text)";
+                            });
+                        };
+                        img.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            } else {
+                fileInfo.textContent = "No file chosen (Supports Images, PDFs, Text files)";
+            }
         }
 
         function printActionPlan() {
@@ -559,270 +646,1243 @@
 
             const threatCategories = [
                 {
-                    keywords: ['emergency hurricane relief', 'displaced families', 'shelter assistance', 'amazon gift card', 'zelle wire transfer'],
-                    minMatches: 2,
-                    title: "Fake Disaster Relief Charity Scam",
-                    desc: "A fraudulent charity scam is trying to collect donations or gift card codes over your phone after a disaster or hurricane.",
-                    warn: "Scammers frequently create fake disaster relief funds to exploit community generosity during emergencies."
-                },
-                {
-                    keywords: ['golden retriever puppy', 'air cargo delivery', 'airport quarantine', 'transport holding', 'veterinary health insurance fee'],
-                    minMatches: 2,
-                    title: "Fake Puppy / Pet Adoption Deposit Scam",
-                    desc: "A fraudulent pet adoption notice claims a purchased animal is stuck in transport quarantine requiring immediate fee payment.",
-                    warn: "Scammers use fake animal transport and quarantine fee demands to steal money from animal lovers."
-                },
-                {
-                    keywords: ['solar panel installation rebate', 'pending cancellation', 'banking direct deposit', 'verification portal', 'forfeiting your funds'],
-                    minMatches: 2,
-                    title: "Fake Rebate / Government Incentive Scam",
-                    desc: "A deceptive utility or energy incentive notice claims a rebate or grant is pending cancellation unless you verify banking details.",
-                    warn: "Fraudsters manufacture fake green energy or government tax credit claims to harvest personal banking information."
-                },
-                {
-                    keywords: ['international flight', 'luggage was stolen', 'wire $800', 'western union', 'emergency ticket to come home'],
-                    minMatches: 2,
-                    title: "Fake Romance / Emergency Travel Scam",
-                    desc: "An online acquaintance claims an abrupt overseas emergency or stolen luggage requires immediate cash wire transfers.",
-                    warn: "Romance and emergency travel impostors exploit personal affection to manipulate victims into wiring non-recoverable funds."
-                },
-                {
-                    keywords: ['mining rig', 'cryptocurrency mining', 'passive income', 'weekly return', 'transfer bitcoin', 'ethereum', 'node wallet'],
-                    minMatches: 2,
-                    title: "Fake Cryptocurrency Mining Investment Scam",
-                    desc: "A fraudulent investment scheme promises guaranteed high returns on crypto mining rigs to trick you into transferring digital currency.",
-                    warn: "Guaranteed high-return cryptocurrency schemes are high-risk financial traps designed to permanently drain your digital assets."
-                },
-                {
-                    keywords: ['bench warrant', 'missed jury duty', 'dismissal fine', 'sheriff compliance', 'arrest due to missing'],
-                    minMatches: 2,
-                    title: "Fake Police or Jury Duty Warrant Scam",
-                    desc: "A fake law enforcement officer or court worker is claiming a warrant has been issued against you requiring immediate payment.",
-                    warn: "Law enforcement and courts never call or text demanding immediate fine payments via gift cards or prepaid cards."
-                },
-                {
-                    keywords: ['delivery failure', 'incorrect street address', 'redelivery fee', 'tracking link', 'usps delivery'],
-                    minMatches: 2,
-                    title: "Deceptive Parcel Delivery & Customs Scam",
-                    desc: "A fake shipping alert claims your package encountered an address issue requiring an immediate fee payment.",
-                    warn: "Postal and shipping services never demand sudden digital fee payments via link clicks to release standard packages."
-                },
-                {
-                    keywords: ['government grant', 'stimulus grant', 'grant money', 'free grant'],
-                    minMatches: 2,
-                    title: "Fake Government Grant / Subsidy Scam",
-                    desc: "A fraudulent notice claims you have won or qualify for a government stimulus grant but requires upfront registration fees or taxes.",
-                    warn: "Government agencies never award grants via random selection or demand upfront prepaid card fees to release funds."
-                },
-                {
-                    keywords: ['home warranty', 'property lien', 'foreclosure', 'expiration', 'coverage', 'auto coverage plan', 'vehicle factory warranty'],
-                    minMatches: 2,
-                    title: "Fake Home Warranty / Auto Coverage Notice",
-                    desc: "A deceptive notice claims your home warranty or auto protection policy has expired to trick you into paying renewal fees.",
-                    warn: "This is a misleading solicitation designed to charge you for unnecessary protection policies."
-                },
-                {
-                    keywords: ['loan', 'pre-approved', 'guaranteed acceptance', 'processing fee', 'prepaid card', 'release your funds'],
-                    minMatches: 2,
-                    title: "Advance Fee Loan Scam",
-                    desc: "A fake loan offer claims you are approved but demands an upfront processing fee or prepaid card before releasing funds.",
-                    warn: "Legitimate lenders never require you to pay upfront fees with prepaid cards or gift cards to secure a loan."
-                },
-                {
-                    keywords: ['timeshare', 'vacation property', 'cash buyer', 'closing fees', 'transfer taxes', 'upfront escrow deposit'],
-                    minMatches: 2,
-                    title: "Timeshare Resale / Escrow Scam",
-                    desc: "A fake buyer notice claims someone wants to purchase your vacation property timeshare but demands upfront closing or escrow fees.",
-                    warn: "Legitimate real estate brokers never require upfront fees or deposits out of pocket to complete a sale."
-                },
-                {
-                    keywords: ['career services', 'research internship', '@gmail.com', 'paid research'],
-                    minMatches: 2,
-                    title: "Fake Academic Internship / Job Scam",
-                    desc: "A deceptive recruitment notice uses a prestigious university header but instructs you to apply using an unverified personal webmail address instead of an institutional domain.",
-                    warn: "Scammers spoof university departments and use personal webmail addresses (like @gmail.com) to harvest student personal information and identity details through fake employment offers."
-                },
-                {
-                    keywords: ['library', 'admin', 'membership', 'institutional credentials', 'backup portal', 'account suspension'],
-                    minMatches: 2,
-                    title: "Institutional Portal Phishing Trap",
-                    desc: "A deceptive library or university administrative notice is trying to trick you into re-authenticating your credentials on a fake backup portal.",
-                    warn: "Scammers use institutional credential harvesting to gain unauthorized access to internal systems and databases."
-                },
-                {
-                    keywords: ['ceo', 'emergency board', 'wire', 'escrow holding', 'liquid capital', 'confidentiality'],
-                    minMatches: 2,
-                    title: "Executive Wire / CEO Fraud Extortion",
-                    desc: "A fraudulent executive audio or message warning is demanding rushed wire transfers under strict internal secrecy.",
-                    warn: "Business email compromise and executive impersonation scams exploit artificial urgency to divert funds into fraudulent escrow accounts."
-                },
-                {
-                    keywords: ['expense report', 'reimbursement', 'receipt validation', 'employee self-service', 'forfeiture'],
-                    minMatches: 2,
-                    title: "Corporate Expense Reimbursement Phishing",
-                    desc: "A fake corporate finance alert is trying to trick you into logging into a fraudulent portal to steal your employee credentials.",
-                    warn: "Scammers use fake expense reimbursement notices to harvest corporate portal logins."
-                },
-                {
-                    keywords: ['privacy regulations', 'directory credentials', 'compliance validation', 'network access', 're-certify'],
-                    minMatches: 2,
-                    title: "Compliance & Data Privacy Phishing Trap",
-                    desc: "A deceptive security update claims your compliance credentials must be re-certified to avoid losing network access.",
-                    warn: "Attackers manufacture fake regulatory updates to capture internal directory credentials."
-                },
-                {
-                    keywords: ['vendor payment', 'routing details', 'clearinghouse', 'accounts payable', 'vendor disbursements'],
-                    minMatches: 2,
-                    title: "Vendor Invoice Routing Redirection Scam",
-                    desc: "A fraudulent vendor notice is attempting to redirect accounts payable funds into an unauthorized clearinghouse account.",
-                    warn: "Financial transfer scams impersonate suppliers to divert corporate payments to fraudulent bank accounts."
-                },
-                {
-                    keywords: ['mfa', 'push notification', 'unauthorized login', 'enterprise account', 'validation link', 'access rights'],
-                    minMatches: 2,
-                    title: "Urgent MFA & Account Hijack Scam",
-                    desc: "A scammer is pretending to be corporate IT or security claiming unauthorized login attempts to trick you into approving a push notification.",
-                    warn: "They are attempting to bypass multi-factor authentication to take over your enterprise or personal account."
-                },
-                {
-                    keywords: ['seed phrase', 'recovery phrase', 'wallet node', 'synchronization', 'token locking', 'decentralized', 'asset recovery', 'retainer fee'],
-                    minMatches: 2,
-                    title: "Fake Digital Currency & Password Scam",
-                    desc: "A fake security or asset recovery alert is trying to trick you into handing over your secret account passwords, recovery codes, or upfront retainer fees.",
-                    warn: "Never share your secret digital recovery codes, passwords, or upfront retainer fees with anyone claiming they can recover lost funds; doing so gives scammers full access."
-                },
-                {
-                    keywords: ['delivery exception', 'sorting facility', 'customs clearance', 'handling fees', 'package', 'usps'],
-                    minMatches: 2,
-                    title: "Deceptive Parcel Delivery & Customs Scam",
-                    desc: "A fake shipping alert is claiming a package is stuck at customs or sorting facilities requiring immediate fee payment.",
-                    warn: "Postal and shipping services never demand sudden digital fee payments via link clicks to release standard packages."
-                },
-                {
-                    keywords: ['irs', 'internal revenue service', 'back taxes owed', 'tax audit warning'],
+                    keywords: ['veteran charity fund', 'wounded service member donation', 'military family relief wire', 'active-duty support gift card', 'military charity wire'],
                     minMatches: 1,
-                    title: "Fake IRS Tax Threat",
-                    desc: "Someone pretending to be the IRS is trying to scare you into paying money by threatening you with arrest.",
-                    warn: "They are using fake government intimidation to steal your money."
+                    title: "Fake Military & Veteran Charity Scam",
+                    desc: "This message plays on your emotions to solicit donations for fake military or veteran charities using untraceable payment methods.",
+                    warn: "Legitimate charities never demand donations via gift cards, wire transfers, or cryptocurrency."
                 },
                 {
-                    keywords: ['social security number', 'ssn suspended', 'benefits canceled', 'social security administration'],
+                    keywords: ['unsubscribe to stop pending charge', 'click to cancel order and unsubscribe', 'unsubscribe to halt payment', 'opt-out of recurring billing'],
                     minMatches: 1,
-                    title: "Fake Social Security Scam",
-                    desc: "Someone is falsely claiming your Social Security number or benefits have been canceled or frozen.",
-                    warn: "They are trying to trick you into handing over your sensitive personal numbers."
+                    title: "Malicious Unsubscribe Billing Trap",
+                    desc: "This message uses a fake invoice and includes an 'unsubscribe' link designed to confirm your contact info or steal credentials when you try to cancel.",
+                    warn: "Never click 'unsubscribe' links in unexpected invoices or suspicious emails; simply mark them as spam or junk."
                 },
                 {
-                    keywords: ['compliance officer', 'crypto', 'blockchain', 'checking account', 'wire', 'bitcoin', 'unauthorized zelle', 'fraud department', 'external payee'],
-                    minMatches: 2,
-                    title: "Fake Bank Wire / Crypto Compliance Scam",
-                    desc: "A scammer is impersonating a bank compliance or security officer claiming your accounts or digital assets are frozen.",
-                    warn: "They are creating manufactured financial panic to trick you into wiring funds or moving crypto."
+                    keywords: ['municipal power & water', 'unresolved meter balance', 'reloadable card or green dot card'],
+                    minMatches: 1,
+                    title: "Utility Disconnection Extortion Scam",
+                    desc: "This message claims your utility service will be shut off immediately unless you pay via prepaid reloadable cards or gift cards.",
+                    warn: "Real utility companies never accept payment via prepaid reloadable cards or gift cards, nor do they threaten immediate service disconnection over the phone."
                 },
                 {
-                    keywords: ['disconnect', 'shutoff', 'power', 'water', 'municipal', 're-connection', 'utility'],
-                    minMatches: 2,
-                    title: "Fake Utility Disconnection Threat",
-                    desc: "A scammer is threatening to cut off your power, water, or utilities immediately unless you make a rushed payment.",
-                    warn: "Utility companies do not disconnect services on short notice demanding immediate prepaid card payments."
+                    keywords: ['grandpa, it\'s me', 'car accident', 'locked up at a county jail', 'cash bond'],
+                    minMatches: 1,
+                    title: "Grandparent Emergency Jail Smishing Scam",
+                    desc: "This urgent message pretends to be your grandchild claiming a severe car accident or arrest, demanding immediate cash bond payments.",
+                    warn: "Always hang up and call your family member directly at their known phone number to verify any emergency jail claims."
                 },
                 {
-                    keywords: ['payroll', 'direct deposit', 'routing', 'hr notice', 'tax withholding'],
-                    minMatches: 2,
-                    title: "Subtle Executive Payroll Phishing",
-                    desc: "A deceptive HR or payroll notification is trying to trick you into updating your direct deposit and banking routing details.",
-                    warn: "Scammers use fake internal notices to divert payroll funds into unauthorized accounts."
+                    keywords: ['global pet transport', 'shipping quarantine', 'veterinary permit fee', 'clear delivery'],
+                    minMatches: 1,
+                    title: "Pet Cargo Quarantine Scam",
+                    desc: "This message claims an adopted pet is stuck in shipping quarantine and demands unexpected veterinary or delivery fees before it can be delivered.",
+                    warn: "Pet adoption agencies never demand sudden emergency cash or wire payments for unexpected cargo quarantines."
                 },
                 {
-                    keywords: ['grandchild', 'grandma', 'grandpa', 'bail', 'accident', 'jail'],
-                    minMatches: 2,
-                    title: "Fake Grandchild in Trouble Scam",
-                    desc: "A scammer is pretending to be your grandchild or family member in a sudden emergency asking for emergency cash.",
-                    warn: "They are exploiting your family care and love to force rushed cash transfers."
+                    keywords: ['blockchain forensics recovery unit', 'mixing pool', 'forensic analysis retainer fee', 'recovered cryptocurrency'],
+                    minMatches: 1,
+                    title: "Cryptocurrency Recovery Retainer Scam",
+                    desc: "This message targets people who already lost money, falsely claiming a special recovery team can get your funds back if you pay an upfront fee.",
+                    warn: "No company can guarantee the recovery of lost scam funds or stolen cryptocurrency, and legitimate law enforcement never charges upfront retainers."
                 },
                 {
-                    keywords: ['customs', 'border protection', 'contraband', 'seized'],
-                    minMatches: 2,
-                    title: "Fake Customs Package Scam",
-                    desc: "Someone pretending to be a customs agent is claiming a package with illegal items was caught in your name.",
-                    warn: "This is a scare tactic to force you into paying bogus clearance fees."
+                    keywords: ['global vacation resales', 'eager corporate buyer', 'closing and escrow filing deposit', 'quick cash payout'],
+                    minMatches: 1,
+                    title: "Timeshare Resale Escrow Trap Scam",
+                    desc: "This message claims an eager buyer wants to purchase your vacation property right away, but requires you to pay upfront closing or escrow fees first.",
+                    warn: "Never pay upfront fees or escrow deposits to companies claiming they can immediately sell your timeshare property."
                 },
                 {
-                    keywords: ['legal notice', 'process server', 'subpoena', 'lawsuit'],
-                    minMatches: 2,
-                    title: "Fake Court Legal Notice",
-                    desc: "A fake legal notice is trying to scare you into thinking a lawsuit or court case has been filed against you.",
-                    warn: "Courts serve official papers in person or by mail, never through urgent threat texts."
+                    keywords: ['irs secure alert', 'tax refund deposit', 'invalid direct deposit routing match'],
+                    minMatches: 1,
+                    title: "IRS Refund Portal Phishing Scam",
+                    desc: "This message pretends to be the IRS claiming a pending tax refund is suspended due to a routing match error, harvesting banking profiles.",
+                    warn: "The IRS never communicates tax refund suspensions or direct deposit routing fixes via external text message links."
                 },
                 {
-                    keywords: ['debit card', 'frozen', 'blocked', 'locked', 'unauthorized'],
-                    minMatches: 2,
-                    title: "Fake Bank Account Lockout Scam",
-                    desc: "Scammers are sending a fake alert pretending your checking account or debit card is frozen to steal your login password.",
-                    warn: "They are trying to get you to click a fake link to capture your bank password."
+                    keywords: ['state department of motor vehicles', 'biometric facial re-verification', 'digital id scan'],
+                    minMatches: 1,
+                    title: "DMV Biometric Identity Verification Phishing Scam",
+                    desc: "This fake DMV notice claims your driver profile requires mandatory biometric facial scans under new security rules to steal your digital identity.",
+                    warn: "State Department of Motor Vehicles agencies never require remote biometric facial re-verification via third-party web links."
                 },
                 {
-                    keywords: ['zelle', 'payment alert', 'verification code'],
-                    minMatches: 2,
-                    title: "Fake Money App (Zelle) Scam",
-                    desc: "A fake warning claims unauthorized money was sent from your account to trick you into giving away your security pin.",
-                    warn: "Never read security pins or verification codes over the phone to anyone."
+                    keywords: ['zelle merchant support', 'incoming business transfers', 'upgrade your profile'],
+                    minMatches: 1,
+                    title: "Zelle Merchant Account Upgrade Extortion",
+                    desc: "This message falsely claims your Zelle account violates business terms and threatens asset freezes unless you upgrade your profile via a link.",
+                    warn: "Zelle financial support handles account profile updates natively inside official banking apps, never via external text links."
                 },
                 {
-                    keywords: ['investment', 'savings', 'high return', 'guaranteed'],
-                    minMatches: 2,
-                    title: "Fake Digital Money / Investment Trap",
-                    desc: "A fake online investment or digital savings trap is trying to trick you into handing over your hard-earned money.",
-                    warn: "This is a fraudulent financial scheme designed to drain your savings."
+                    keywords: ['adt security dispatch', 'motion sensor alert', 'rear perimeter', 'master disarm code'],
+                    minMatches: 1,
+                    title: "Home Security Perimeter Breach Extortion Scam",
+                    desc: "This fake security alert claims an alarm was triggered at your residence and tricks you into entering your master disarm code on a fake site.",
+                    warn: "Home security monitoring providers verify alarms through direct phone calls or official app notifications, never asking for master disarm codes over unverified web prompts."
                 },
                 {
-                    keywords: ['grand prize', 'sweepstakes', 'winner', 'claim', 'million dollar', 'processing fee'],
-                    minMatches: 2,
-                    title: "Fake Contest / Sweepstakes Scam",
-                    desc: "A fake contest win is claiming you won a huge cash prize, but you have to pay taxes or buy gift cards first.",
-                    warn: "Legitimate contests never require upfront payment or gift cards to claim a prize."
+                    keywords: ['usps notice', 'regional processing facility', 'insufficient package postage', 'schedule final delivery'],
+                    minMatches: 1,
+                    title: "USPS Postage Due Redelivery Scam",
+                    desc: "This message claims a domestic shipment is detained due to insufficient package postage, harvesting payment card data.",
+                    warn: "Postal carriers like USPS do not send text alerts demanding micro-fee postage payments to schedule final package deliveries."
                 },
                 {
-                    keywords: ['microsoft', 'windows', 'computer', 'infected', 'trojan', 'malware', 'support number'],
-                    minMatches: 2,
-                    title: "Scary Computer Pop-Up Virus Scam",
-                    desc: "A scary pop-up message appeared on your screen claiming your computer has a virus to trick you into paying for fake help.",
-                    warn: "This is a browser trap designed to freeze your screen and force you to call fake technicians."
+                    keywords: ['web3 security', 'staked assets', 'migrate', 'connect your wallet'],
+                    minMatches: 1,
+                    title: "Crypto Drainer & Web3 Phishing Scam",
+                    desc: "This message claims your cryptocurrency or staked assets require migration, aiming to trick you into connecting your wallet to a drainer site.",
+                    warn: "Never connect your cryptocurrency wallet or enter private keys into unverified web links promising network upgrades or migrations."
                 },
                 {
-                    keywords: ['apple id', 'icloud', 'security breach', 'hacked', 'locked', 'recovery page'],
-                    minMatches: 2,
-                    title: "Fake Apple / iCloud Hacking Scam",
-                    desc: "A fake message claims your Apple or iCloud account has been hacked to trick you into entering your password on a fake page.",
-                    warn: "They are harvesting your device account credentials through a fake login page."
+                    keywords: ['toll service alert', 'express lane toll', 'late fine', 'unpaid express'],
+                    minMatches: 1,
+                    title: "Express Lane & Toll Road Smishing Scam",
+                    desc: "This message falsely claims your vehicle incurred an unpaid toll fee and threatens late fines via external payment links.",
+                    warn: "Toll road authorities process tolls through official accounts or state transponders, never via unverified express payment text links."
                 },
                 {
-                    keywords: ['router', 'broadband', 'botnet', 'internet', 'compromised', 'network repair'],
-                    minMatches: 2,
-                    title: "Fake Home Internet Router Warning",
-                    desc: "A fake warning claims your home internet router has security problems to trick you into downloading harmful software.",
-                    warn: "This is a trick to install remote access malware onto your home network."
+                    keywords: ['meta support', 'instagram page', 'copyright infringement', 'verify your identity within 24 hours'],
+                    minMatches: 1,
+                    title: "Social Media Impersonation & Account Takeover Scam",
+                    desc: "This fake support alert claims your social media page received copyright reports and requires verification to prevent deletion.",
+                    warn: "Social media platforms handle copyright compliance and account verification natively inside their official apps, never via external appeal links."
                 },
                 {
-                    keywords: ['netflix', 'hulu', 'streaming', 'subscription', 'payment failed', 'billing', 'suspended', 'routing details'],
-                    minMatches: 2,
-                    title: "Fake TV / Streaming Bill Scam",
-                    desc: "A fake bill notice claims your Netflix, TV, or movie streaming payment failed to steal your credit card number.",
-                    warn: "They are using popular subscription names to steal updated credit card details."
+                    keywords: ['dhl express', 'sorting hub', 'incorrect street address', 'confirm your delivery'],
+                    minMatches: 1,
+                    title: "Courier & Parcel Delivery Address Scam",
+                    desc: "This courier notice claims a package is on hold due to address issues, harvesting credentials through fake tracking portals.",
+                    warn: "Major courier services use official tracking applications and never request address updates through generic external links."
                 },
                 {
-                    keywords: ['mailbox', 'storage quota', 'cloud storage', 'email', 'capacity', 'deleted'],
-                    minMatches: 2,
-                    title: "Fake Email Full Warning Scam",
-                    desc: "A fake email warning claims your email storage is completely full and will be deleted unless you click a link.",
-                    warn: "This is a credential-stealing trick to take over your personal email account."
+                    keywords: ['legal collections bureau', 'active lawsuit', 'unpaid medical debt', 'wage garnishment'],
+                    minMatches: 1,
+                    title: "Fake Legal Debt Collection Extortion Scam",
+                    desc: "This fake collection notice threatens active lawsuits or wage garnishment to panic you into calling an unauthorized settlement line.",
+                    warn: "Legitimate debt collectors must provide written validation notices by mail under federal law and cannot threaten immediate arrest or unlawful wage garnishment over random phone lines."
                 },
                 {
-                    keywords: ['hospital', 'trauma center', 'emergency room', 'surgery', 'deposit', 'medical'],
-                    minMatches: 2,
-                    title: "Fake Hospital Emergency Scam",
-                    desc: "A fake caller claims a member of your family is hurt in a hospital and demands money upfront for surgery.",
-                    warn: "Fraudsters use manufactured medical emergencies to pressure you into paying fake deposits."
+                    keywords: ['sunpass', 'transponder', 'highway fee', 'open highway fee'],
+                    minMatches: 1,
+                    title: "SunPass & Highway Toll Smishing Trap",
+                    desc: "This text message impersonates toll road authorities claiming an unpaid highway fee, threatening severe financial penalties via phishing links.",
+                    warn: "Toll agencies manage toll accounts natively through official portals and never threaten instant penalties over unsolicited text links."
+                },
+                {
+                    keywords: ['drop off your parcel', 'dropping info', 'returning to sender', 'street number is missing'],
+                    minMatches: 1,
+                    title: "Alternative Postal Drop-Off Phishing Trap",
+                    desc: "This message uses alternate delivery language ('drop off your parcel', 'dropping info') to trick you into submitting personal information on a fake portal.",
+                    warn: "Major delivery carriers never ask you to update mailing details or address info through external text links."
+                },
+                {
+                    keywords: ['whatsapp', 'windows desktop is requesting to sync', 'sms pin'],
+                    minMatches: 1,
+                    title: "WhatsApp Session-Sync & Device Hijacking Scam",
+                    desc: "This message attempts to lure you into surrendering an incoming SMS verification pin to link your messaging account to an attacker's device.",
+                    warn: "Never share verification codes, SMS pins, or authentication tokens with anyone claiming to reset or sync your messaging apps."
+                },
+                {
+                    keywords: ['broken wrist', 'er right now', 'hospital won\'t treat', 'venmo this number'],
+                    minMatches: 1,
+                    title: "Emergency Medical Copay Extortion Scam",
+                    desc: "This variation of a family emergency scam targets parents or family members with urgent claims of a hospital visit or medical copay requiring immediate peer-to-peer payment.",
+                    warn: "Always verify medical emergencies independently by calling your family member or local hospital directly on known numbers."
+                },
+                {
+                    keywords: ['attempt an $850', 'reply y if yes', 'or n if no', 'our fraud team will call'],
+                    minMatches: 1,
+                    title: "Interactive SMS Banking Ping Phishing Scam",
+                    desc: "This text mimics a standard automated bank fraud alert asking you to reply 'Y' or 'N' to open a dialogue or trigger a malicious callback.",
+                    warn: "Real bank fraud alerts use secure in-app verification or automatic short codes, and never prompt you to engage with unknown numbers for security calls."
+                },
+                {
+                    keywords: ['federal subsidy bureau', 'non-repayable', 'federal cash grant', 'document processing fee'],
+                    minMatches: 1,
+                    title: "Government Grant Impersonation Scam",
+                    desc: "This call or message claims you were awarded thousands of dollars in free government grants, requiring a processing fee to release it.",
+                    warn: "Government agencies never award grants to individuals who did not apply for them, nor do they charge fees to release grant funds."
+                },
+                {
+                    keywords: ['airbnb trust', 'hosting account', 'guest payouts', 'verification mismatch'],
+                    minMatches: 1,
+                    title: "Airbnb Hosting Account Suspension Scam",
+                    desc: "This fake safety alert targets short-term rental hosts, claiming accounts are frozen or suspended to steal banking credentials.",
+                    warn: "Airbnb manages host accounts and payouts securely inside your official signed-in host dashboard, never via text links."
+                },
+                {
+                    keywords: ['norton security billing', 'cybershield', 'antivirus protection has automatically renewed', 'customer support helpline right now'],
+                    minMatches: 1,
+                    title: "Antivirus / Software Auto-Renewal Trap",
+                    desc: "This phishing notice claims an expensive software subscription renewed automatically, trapping you into calling a fake support number.",
+                    warn: "Legitimate software providers manage subscription billing entirely inside your secure online account profile."
+                },
+                {
+                    keywords: ['ai voice', 'voice cloning', 'audio deepfake', 'family password'],
+                    minMatches: 1,
+                    title: "AI Voice Clone & Family Emergency Scam",
+                    desc: "Scammers use short audio clips or AI voice generation to simulate a relative in sudden distress, demanding immediate money transfers.",
+                    warn: "Always verify emergency claims by calling your family member directly on a trusted phone number and using a pre-established family password."
+                },
+                {
+                    keywords: ['dad, it\'s me', 'mom, it\'s me', 'car accident', 'bail', 'held at a police station'],
+                    minMatches: 1,
+                    title: "AI Voice Clone & Parent Emergency Scam",
+                    desc: "Scammers use AI voice cloning or audio deepfakes to impersonate your son, daughter, or child claiming a sudden emergency and demanding immediate wire transfers or bail money.",
+                    warn: "Always hang up and call your child or family member directly on their known phone number, and use a pre-established family password to verify emergencies."
+                },
+                {
+                    keywords: ['move your money', 'secure government account', 'safe wallet', 'asset protection'],
+                    minMatches: 1,
+                    title: "Protective Transfer Bank Impersonation Scam",
+                    desc: "Fraudsters impersonate bank security or government agents, claiming accounts are compromised and instructing you to move funds to a 'safe' account or crypto ATM.",
+                    warn: "Real banks and government agencies never instruct you to transfer money to separate accounts or bitcoin ATMs for protection."
+                },
+                {
+                    keywords: ['search ad', 'bill pay ad', 'payment portal ad', 'search engine bill'],
+                    minMatches: 1,
+                    title: "Bill-Pay Search Ad Impersonation Scam",
+                    desc: "Dishonest actors buy top search engine ads mimicking utility, mortgage, or credit card payment portals to intercept bill-pay funds.",
+                    warn: "Never click on sponsored search ads to pay bills; always type the company's verified web address directly into your browser."
+                },
+                {
+                    keywords: ['verification code', 'two-factor', 'authentication code', 'share code'],
+                    minMatches: 1,
+                    title: "Synthetic Identity & Account Takeover Trap",
+                    desc: "Attackers trick victims into disclosing text-message verification codes or multi-factor authentication pins to hijack control of primary online portals.",
+                    warn: "Never share multi-factor authentication (2FA) codes or SMS verification pins with anyone over phone or text."
+                },
+                {
+                    keywords: ['netflix', 'streaming', 'membership', 'subscription'],
+                    minMatches: 1,
+                    title: "Fake Netflix Account Deactivation",
+                    desc: "This phishing alert threatens streaming account closure due to billing card errors to steal your updated payment card credentials.",
+                    warn: "Netflix handles payment updates exclusively within secure signed-in profile pages, never via external text links."
+                },
+                {
+                    keywords: ['fedex', 'customs', 'tariff', 'redelivery', 'sorting facility'],
+                    minMatches: 1,
+                    title: "Fake FedEx Package Delivery Customs Hold",
+                    desc: "This fraudulent courier text demands a tiny customs fee to release an international package, harvesting your credit card data.",
+                    warn: "Major delivery carriers like FedEx never hold packages for random online tariff fee payments via external text links."
+                },
+                {
+                    keywords: ['icloud', 'backup', 'storage plan', 'apple id'],
+                    minMatches: 1,
+                    title: "Fake Apple iCloud Storage Expiration Notice",
+                    desc: "This scam threatens the permanent deletion of personal photos and backups to force you into entering your Apple ID billing data on a fake site.",
+                    warn: "Apple security and storage alerts appear natively on your trusted Apple devices and never demand billing updates through text links."
+                },
+                {
+                    keywords: ['amazon', 'prime', 'unusual login', 'membership locked'],
+                    minMatches: 1,
+                    title: "Fake Amazon Account Suspension Phishing",
+                    desc: "This message claims your Amazon account or Prime membership is locked due to suspicious activity, demanding immediate verification.",
+                    warn: "Amazon customer service will never suspend your account via text or ask you to verify your full password over a link."
+                },
+                {
+                    keywords: ['zelle', 'unauthorized transfer', 'checking account', 'passcode'],
+                    minMatches: 1,
+                    title: "Fake Zelle / Peer-to-Peer Banking Fraud Scam",
+                    desc: "This text claims someone sent money from your Zelle account and asks you to reply with your banking passcode to cancel it.",
+                    warn: "Banks and peer payment apps will never ask for your PIN, password, or security verification code via text message."
+                },
+                {
+                    keywords: ['geek squad', 'antivirus', 'renewed', 'refund'],
+                    minMatches: 1,
+                    title: "Fake Geek Squad Subscription Renewal Scam",
+                    desc: "This message claims a hefty antivirus subscription automatically renewed, trapping you into calling a fake support line to steal your financial details.",
+                    warn: "Geek Squad never automatically charges hundreds of dollars over text notifications or asks you to call random phone numbers for refunds."
+                },
+                {
+                    keywords: ['paypal invoice', 'invoice for', 'cryptocurrency', 'dispute link'],
+                    minMatches: 1,
+                    title: "Fake PayPal Invoice Payment Trap",
+                    desc: "This fake invoice notification uses high-dollar amounts for crypto hardware to panic you into clicking a malicious dispute link.",
+                    warn: "Always check transactions directly inside your official PayPal app rather than clicking links in unexpected invoice emails."
+                },
+                {
+                    keywords: ['metamask', 'node validation', 'staking pool', 'secret phrase'],
+                    minMatches: 1,
+                    title: "Web3 Hardware Wallet Synchronization Scam",
+                    desc: "This fake crypto alert claims your decentralized wallet needs node validation, capturing your secret recovery phrase.",
+                    warn: "Decentralized wallets never require online seed phrase entry or external node synchronization."
+                },
+                {
+                    keywords: ['microsoft security', 'unusual login', 'security token', 'inbox suspension'],
+                    minMatches: 1,
+                    title: "Fake Microsoft Outlook Security Token Phishing",
+                    desc: "This email claims your corporate or personal Outlook login token expired, aiming to hijack your email inbox.",
+                    warn: "Microsoft handles authentication security natively through secure login prompts without external link requirements."
+                },
+                {
+                    keywords: ['google workspace', 'cloud drive storage', 'purge', 'storage tier'],
+                    minMatches: 1,
+                    title: "Google Workspace Storage Purge Phishing",
+                    desc: "This fake Google alert threatens total account file deletion unless you enter credit card details for storage upgrades.",
+                    warn: "Google sends storage warnings directly inside your native application banner, not via external billing links."
+                },
+                {
+                    keywords: ['county property tax', 'tax lien', 'foreclosure', 'tax arrears'],
+                    minMatches: 1,
+                    title: "Municipal Property Tax Lien Extortion Scam",
+                    desc: "This letter or text threatens immediate tax foreclosure on your home unless you wire funds to an unauthorized account.",
+                    warn: "County tax collectors issue notices via formal mailed tax certificates, never demanding instant peer wire transfers."
+                },
+                {
+                    keywords: ['jury duty', 'bench warrant', 'failure to appear', 'cash bond'],
+                    minMatches: 1,
+                    title: "Fake Jury Duty Bench Warrant Extortion",
+                    desc: "This call or text claims you missed court and must pay an immediate cash bond over the phone to avoid arrest.",
+                    warn: "Courts never issue bench warrants over phone calls or text messages, nor do they accept bond payments via gift cards or apps."
+                },
+                {
+                    keywords: ['cardmember services', 'credit limit increase', 'claim your new credit tier'],
+                    minMatches: 1,
+                    title: "Fake Credit Card Limit Increase Phishing",
+                    desc: "This notice offers unrequested credit limit increases to harvest personal identification and social security data.",
+                    warn: "Legitimate credit card issuers manage credit limit increases directly within your secure account dashboard."
+                },
+                {
+                    keywords: ['microchip recovery database', 'microchip registration', 'gps tracking', 'annual membership renewal fee'],
+                    minMatches: 1,
+                    title: "Fake Pet Microchip Renewal Scam",
+                    desc: "This message claims your pet's microchip registration is expiring and demands a renewal fee to maintain tracking services.",
+                    warn: "Pet microchip registries are typically lifetime databases and do not require urgent annual renewal fees to keep your contact information valid."
+                },
+                {
+                    keywords: ['protection bureau dispatch', 'perimeter breach', 'unacknowledged motion alarm', 'municipal false alarm fine'],
+                    minMatches: 1,
+                    title: "Fake Home Security Alarm Extortion Scam",
+                    desc: "This message claims an alarm went off at your home and threatens a steep municipal fine unless you verify your security account password.",
+                    warn: "Home security monitoring companies will call you directly or use verified app channels; they never threaten immediate fines or demand passwords over text."
+                },
+                {
+                    keywords: ['class action', 'settlement administrator', 'antitrust settlement', 'cash payout'],
+                    minMatches: 1,
+                    title: "Fake Class Action Settlement Phishing Scam",
+                    desc: "This message claims you are eligible for a cash payout from a class action lawsuit, asking you to click a link to verify your bank deposit details.",
+                    warn: "Official settlement administrators send notices by mail or secure official portals, and they never ask you to click unverified links to deposit cash payouts."
+                },
+                {
+                    keywords: ['trauma medical center', 'emergency overnight trauma', 'intensive care admission', 'medical lien'],
+                    minMatches: 1,
+                    title: "Fake Emergency Hospital Bill Scam",
+                    desc: "This message pretends to be a hospital billing department claiming a family member had an emergency surgery, demanding money to clear a fake medical lien.",
+                    warn: "Hospitals never demand immediate payment over the phone or threaten debt collections for emergency family surgeries without official written billing statements."
+                },
+                {
+                    keywords: ['vip box office', 'ticket verification', 'mobile ticket reservation', 'barcode invalidation'],
+                    minMatches: 1,
+                    title: "Fake Concert & Event Ticket Scam",
+                    desc: "This message claims your concert or event ticket has a billing discrepancy and threatens order cancellation unless you reply with your credit card details.",
+                    warn: "Official box offices and ticket vendors never ask you to reply with credit card statement details via text message to fix billing issues."
+                },
+                {
+                    keywords: ['genetic cancer screening', 'dna swab kit', 'medicare part b', 'medicare card number'],
+                    minMatches: 1,
+                    title: "Fake Medicare DNA & Genetic Testing Scam",
+                    desc: "This message claims Medicare has approved a free genetic test or DNA kit for you, but asks for your private Medicare card number to steal your medical identity.",
+                    warn: "Medicare never calls or texts offering unsolicited DNA swab kits or genetic cancer screenings, and you should never give your Medicare number to strangers."
+                },
+                {
+                    keywords: ['extended warranty', 'motor vehicle', 'service contract', 'rate increases', 'engine failures'],
+                    minMatches: 1,
+                    title: "Fake Auto Extended Warranty Scam",
+                    desc: "This message claims your car warranty is expiring to scare you into buying expensive, worthless vehicle protection plans over the phone.",
+                    warn: "Car manufacturers and legitimate insurance companies do not send automated calls or texts warning that factory warranties are about to expire."
+                },
+                {
+                    keywords: ['power shutoff', 'disconnect', 'billing meter balance', 'green dot', 'reloadable card'],
+                    minMatches: 1,
+                    title: "Fake Utility Disconnection Scam",
+                    desc: "This urgent call or message claims your electricity or water will be cut off within minutes unless you pay immediately using a prepaid store gift card or green dot card.",
+                    warn: "Real utility companies never threaten immediate power shutoffs over the phone, and they never accept payment via prepaid reloadable cards or gift cards."
+                },
+                {
+                    keywords: ['asset-freeze', 'felony money-laundering', 'senior investigator'],
+                    minMatches: 1,
+                    title: "Fake Social Security Arrest Scam",
+                    desc: "This message falsely claims your Social Security Number is linked to crimes and threatens immediate asset seizure or arrest unless you call them.",
+                    warn: "The Social Security Administration will never threaten you with arrest, demand immediate payment, or freeze your bank accounts."
+                },
+                {
+                    keywords: ['customs and border protection', 'interdiction notice', 'illicit narcotics', 'counterfeit currency', 'federal forfeiture'],
+                    minMatches: 1,
+                    title: "Fake Customs & Parcel Seizure Scam",
+                    desc: "This message claims an illegal package was intercepted in your name and threatens federal arrest unless you click a link to verify your identity.",
+                    warn: "Customs and border agencies never contact citizens via text or links to threaten asset forfeiture over intercepted packages."
+                },
+                {
+                    keywords: ['fraud operations center', 'foreign ip address', 'remote assistance utility', 'security specialist'],
+                    minMatches: 1,
+                    title: "Fake Bank Fraud & Remote Access Scam",
+                    desc: "This message pretends your bank account has been hacked and tricks you into downloading remote software or letting a stranger take control of your computer.",
+                    warn: "Banks will never call you to ask for remote computer access or tell you to download programs to fix fraudulent wire transfers."
+                },
+                {
+                    keywords: ['community relief fund', 'displaced families', 'severe weather and flooding', 'disaster-relief'],
+                    minMatches: 1,
+                    title: "Fake Charity & Disaster Relief Scam",
+                    desc: "This message uses fake emergencies or natural disasters to trick you into donating money through gift cards or cryptocurrency to a fake charity.",
+                    warn: "Always verify charitable organizations through official channels before donating, and never give money via gift cards or crypto."
+                },
+                {
+                    keywords: ['cyber intelligence recovery unit', 'blockchain forensics', 'mixing pool', 'forensic analysis retainer'],
+                    minMatches: 1,
+                    title: "Fake Crypto Recovery Scam",
+                    desc: "This message targets people who already lost money, falsely claiming a special recovery team can get your funds back if you pay an upfront fee.",
+                    warn: "No company can guarantee the recovery of lost scam funds or stolen cryptocurrency, and legitimate law enforcement never charges upfront retainers."
+                },
+                {
+                    keywords: ['sweepstakes grand prize', 'processing tax', 'gift card payment', 'lottery winnings', 'claim your prize'],
+                    minMatches: 1,
+                    title: "Sweepstakes Grand Prize Scam",
+                    desc: "This message claims you won a massive prize or lottery, but tells you that you must pay taxes or buy store gift cards first to claim your winnings.",
+                    warn: "Legitimate sweepstakes and lotteries never require winners to pay upfront taxes or purchase store gift cards to claim prizes."
+                },
+                {
+                    keywords: ['liquidity node', 'blockchain mining node', 'profit distribution', 'wallet synchronization'],
+                    minMatches: 1,
+                    title: "Fake Crypto Investment Scam",
+                    desc: "This message promises huge financial returns on a crypto investment, but requires you to send more money or pay a fee to withdraw your earnings.",
+                    warn: "Guaranteed high-return investments that demand upfront cryptocurrency deposits or fees are always fraudulent."
+                },
+                {
+                    keywords: ['military deployment', 'overseas emergency', 'stolen wallet', 'leave fees', 'un peacekeeping'],
+                    minMatches: 1,
+                    title: "Romance & Online Friendship Scam",
+                    desc: "Someone you met online claims an emergency overseas or military problem has left them stranded and asking you to send money or gift cards.",
+                    warn: "Never send money, gift cards, or wire transfers to online romantic partners you have never met in person."
+                },
+                {
+                    keywords: ['puppy adoption', 'cargo quarantine', 'vet fee', 'pet transport', 'crate insurance'],
+                    minMatches: 1,
+                    title: "Puppy & Pet Delivery Scam",
+                    desc: "This message claims an adopted pet is stuck in shipping quarantine and demands unexpected veterinary or delivery fees before it can be delivered.",
+                    warn: "Pet adoption agencies never demand sudden emergency cash or wire payments for unexpected cargo quarantines."
+                },
+                {
+                    keywords: ['timeshare resale', 'closing fee', 'buyer escrow', 'attorney filing deposit', 'sell your timeshare'],
+                    minMatches: 1,
+                    title: "Timeshare Resale Scam",
+                    desc: "This message claims an eager buyer wants to purchase your vacation property right away, but requires you to pay upfront closing or escrow fees first.",
+                    warn: "Never pay upfront fees or escrow deposits to companies claiming they can immediately sell your timeshare property."
+                },
+                {
+                    keywords: ['microsoft security alert', 'trojan spyware', 'browser registry', 'certified help desk', 'lock your firewall'],
+                    minMatches: 1,
+                    title: "Fake Computer Virus Pop-Up Scam",
+                    desc: "This pop-up warning claims your computer is infected with a dangerous virus and tells you to call a phone number immediately for tech support.",
+                    warn: "Microsoft and legitimate tech companies never send pop-up warnings or demand that you call phone numbers to fix computer viruses."
+                },
+                {
+                    keywords: ['grandparent', 'car accident', 'pregnant woman', 'county jail', 'public defender', 'cash bond'],
+                    minMatches: 1,
+                    title: "Grandparent Emergency Jail Scam",
+                    desc: "This urgent message pretends to be your grandchild or a lawyer claiming a family member is in jail and needs immediate cash bail sent right away.",
+                    warn: "Always hang up and call your family member directly at their known phone number to verify any emergency jail claims."
+                },
+                {
+                    keywords: ['fbi internet crime', 'ic3', 'release fee', 'recovered cryptocurrency', 'intercepted your previous scam'],
+                    minMatches: 1,
+                    title: "Fake Law Enforcement Asset Recovery Scam",
+                    desc: "This message pretends to be federal law enforcement claiming they recovered your lost money, but requires you to pay an administrative fee to release it.",
+                    warn: "Law enforcement agencies never demand upfront fees or taxes to return recovered scam funds."
+                },
+                {
+                    keywords: ['chief executive officer', 'cross-border acquisition', 'escrow clearing partner'],
+                    minMatches: 1,
+                    title: "Fake Boss / Executive Wire Scam",
+                    desc: "This message mimics a company boss or executive demanding an urgent wire transfer or financial payment that bypasses normal company rules.",
+                    warn: "Always verify urgent financial requests from supervisors or executives through a separate phone call before taking action."
+                },
+                {
+                    keywords: ['state health benefits', 'ppo health plan', 'exchange', 'subscriber profile'],
+                    minMatches: 1,
+                    title: "Fake Health Insurance Scam",
+                    desc: "This message pretends to be from your health insurance or marketplace, claiming your plan will be canceled unless you click a link.",
+                    warn: "Health insurance providers never threaten abrupt policy cancellation or demand re-certification through unsolicited text message links."
+                },
+                {
+                    keywords: ['medicare compliance bureau', 'part d overpayment', 'medicare id'],
+                    minMatches: 1,
+                    title: "Fake Medicare Scam",
+                    desc: "This message claims you received an accidental medical overpayment and asks you to verify your Medicare ID and private banking details.",
+                    warn: "Medicare administrators never threaten benefit cancellation or ask for private banking credentials over text or phone calls."
+                },
+                {
+                    keywords: ['bitcoin atm', 'qr code', 'safe storage account', 'government marshals', 'active warrant'],
+                    minMatches: 1,
+                    title: "Government Crypto ATM Scam",
+                    desc: "This message instructs you to withdraw your savings and deposit cash into a cryptocurrency ATM or scan a QR code to protect your money.",
+                    warn: "Government agencies, courts, and banks will never instruct you to put cash into cryptocurrency ATMs or scan QR codes."
+                },
+                {
+                    keywords: ['mechanic lien', 'home lien foreclosure', 'solar panel lien notice'],
+                    minMatches: 1,
+                    title: "Fake Home Contractor Lien Scam",
+                    desc: "This fake legal letter claims an unpaid balance or lien has been placed on your home for solar panels or repairs to scare you into wiring money.",
+                    warn: "Always verify contractor claims with your county clerk of court before responding to unverified lien notices."
+                },
+                {
+                    keywords: ['bill pay', 'utility payment', 'payment portal'],
+                    minMatches: 1,
+                    title: "Fake Utility Bill Pay Scam",
+                    desc: "This message mimics an online utility bill payment service or search ad, tricking you into paying through a fake website that steals card details.",
+                    warn: "Always navigate directly to your utility company's official website rather than clicking search ads to pay your bills."
+                },
+                {
+                    keywords: ['veterans', 'va pension', 'cash advance advisory'],
+                    minMatches: 1,
+                    title: "Veterans Benefit Advisory Scam",
+                    desc: "This postcard or message targets veterans offering fee-based advisory for VA pension benefits that are actually provided free by the government.",
+                    warn: "Never pay upfront fees for veterans pension assistance; official VA accredited programs provide help free of charge."
+                },
+                {
+                    keywords: ['flight itinerary', 'airline', 'reservation recovery'],
+                    minMatches: 1,
+                    title: "Fake Travel Booking Scam",
+                    desc: "This deceptive travel promotion or search ad impersonates airlines or hotels to steal payment information and fake reservation deposits.",
+                    warn: "Verify airline and hotel web addresses carefully before entering payment details on unfamiliar websites."
+                },
+                {
+                    keywords: ['tax refund', 'irs notice', 'annual tax return'],
+                    minMatches: 1,
+                    title: "Fake IRS Tax Refund Scam",
+                    desc: "This message pretends to be a tax refund notification from the IRS, designed to steal your banking information through a fake link.",
+                    warn: "The IRS never sends text messages or emails demanding immediate bank account confirmations to release tax refunds."
+                },
+                {
+                    keywords: ['marriott', 'hotel reservation', 'reservation pending cancellation', 'room forfeiture'],
+                    minMatches: 1,
+                    title: "Fake Hotel Booking Cancellation Scam",
+                    desc: "This message pretends to be a hotel reservation warning, tricking you into updating your credit card on a fake website.",
+                    warn: "Hotels and booking platforms never threaten immediate room cancellations or forfeiture via unverified text links."
+                },
+                {
+                    keywords: ['smart meter upgrade', 'city electric', 'technician deposit', 'power interruption'],
+                    minMatches: 1,
+                    title: "Fake Utility Smart Meter Scam",
+                    desc: "This message pretends to be a utility notice regarding smart meter upgrades, demanding an immediate deposit to avoid power shutoffs.",
+                    warn: "Utility companies never require upfront online technician deposits or threaten immediate power shutoffs via text links."
+                },
+                {
+                    keywords: ['e-pass notification', 'automatic toll replenishment', 'bridge tolls', 'state violation fee'],
+                    minMatches: 1,
+                    title: "Fake Toll Road Violation Scam",
+                    desc: "This message pretends to be an unpaid toll or pass replenishment warning, threatening massive fines to scare you into clicking a payment link.",
+                    warn: "Toll agencies never send urgent text alerts threatening massive violation fees over unpaid toll balances via external links."
+                },
+                {
+                    keywords: ['pamela byard', 'leon county', 'claim against you', 'order against your assets'],
+                    minMatches: 1,
+                    title: "Fake Legal Asset Seizure Scam",
+                    desc: "This message or voice mail threatens a lawsuit or asset seizure out of Leon County to scare you into calling an unauthorized number.",
+                    warn: "Real courts and legal offices never issue final lawsuit or asset seizure warnings through automated text messages or voice mail transcripts."
+                },
+                {
+                    keywords: ['career services', 'research internship', 'jameslanday', 'stanford'],
+                    minMatches: 1,
+                    title: "Fake University Job Internship Scam",
+                    desc: "This message pretends to be from a university professor or department offering a remote job to harvest your personal information.",
+                    warn: "Legitimate university departments never recruit students for remote positions through personal email addresses or ask for sensitive data via unverified links."
+                },
+                {
+                    keywords: ['streaming service billing', 'netflix renewal failed', 'update payment method card'],
+                    minMatches: 1,
+                    title: "Fake Streaming Service Subscription Phishing",
+                    desc: "This message pretends your monthly subscription payment failed and asks you to update your credit card details through a phishing link.",
+                    warn: "Streaming services manage billing directly inside your logged-in account portal and never send links asking you to re-enter credit cards."
+                },
+                {
+                    keywords: ['package delivery failed', 'usps tracking update', 'redelivery custom fee', 'address correction required'],
+                    minMatches: 1,
+                    title: "Fake USPS / Courier Delivery Fee Phishing",
+                    desc: "This message claims a mail package couldn't be delivered and demands a small customs or redelivery fee via an external link.",
+                    warn: "Postal carriers like USPS do not charge small redelivery fees or request personal address updates via text messages."
+                },
+                {
+                    keywords: ['zelle fraud alert', 'unauthorized peer transfer', 'verify your passcode to cancel'],
+                    minMatches: 1,
+                    title: "Fake Zelle / Peer-to-Peer Banking Fraud Scam",
+                    desc: "This text claims someone sent money from your Zelle account and asks you to reply with your banking passcode to cancel it.",
+                    warn: "Banks and peer payment apps will never ask for your PIN, password, or security verification code via text message."
+                },
+                {
+                    keywords: ['paypal secure notification', 'unauthorized foreign purchase', 'dispute transaction link'],
+                    minMatches: 1,
+                    title: "Fake PayPal Account Lock Phishing Scam",
+                    desc: "This email or text claims a large unauthorized purchase was made on your account, directing you to click a fake link to log in.",
+                    warn: "Always check your financial accounts by opening the official app or typing the web address directly instead of clicking links in alerts."
+                },
+                {
+                    keywords: ['amazon account suspended', 'unusual login activity', 'prime membership forfeiture'],
+                    minMatches: 1,
+                    title: "Fake Amazon Account Suspension Phishing",
+                    desc: "This message claims your Amazon account or Prime membership is locked due to suspicious activity, demanding immediate verification.",
+                    warn: "Amazon customer service will never suspend your account via text or ask you to verify your full password over a link."
+                },
+                {
+                    keywords: ['apple id locked', 'icloud security alert', 'device compromised recovery'],
+                    minMatches: 1,
+                    title: "Fake Apple ID / iCloud Phishing Trap",
+                    desc: "This alert claims your Apple ID has been locked for security reasons and asks you to sign in on a fake website to unlock it.",
+                    warn: "Apple security alerts appear natively on your trusted Apple devices and never require clicking external web links to sign in."
+                },
+                {
+                    keywords: ['microsoft office license expired', 'outlook subscription renewal', 'billing error notice'],
+                    minMatches: 1,
+                    title: "Fake Microsoft 365 License Expiration Scam",
+                    desc: "This email claims your Microsoft Office or Outlook subscription has expired and requires immediate credit card renewal.",
+                    warn: "Software providers send renewal notices inside official software accounts and do not threaten instant deletion via unverified emails."
+                },
+                {
+                    keywords: ['bank of america security notice', 'chase fraud prevention', 'wells fargo debit card frozen'],
+                    minMatches: 1,
+                    title: "Bank Impersonation Phishing Scam",
+                    desc: "This text message pretends to be from a major national bank warning you about frozen debit cards or suspicious withdrawals.",
+                    warn: "Major banks use secure in-app notifications for fraud alerts and never ask you to click external links to unfreeze accounts."
+                },
+                {
+                    keywords: ['cryptocurrency wallet migration', 'metamask security update', 'seed phrase verification'],
+                    minMatches: 1,
+                    title: "Crypto Wallet Seed Phrase Phishing Scam",
+                    desc: "This fake crypto alert claims you must enter your secret seed phrase into a web portal to migrate your wallet or prevent loss.",
+                    warn: "Never share your cryptocurrency wallet seed phrase or private keys with anyone under any circumstances."
+                },
+                {
+                    keywords: ['token airdrop claim', 'free web3 tokens', 'connect wallet to claim distribution'],
+                    minMatches: 1,
+                    title: "Malicious Crypto Airdrop Drainer Scam",
+                    desc: "This announcement claims you qualify for a free token airdrop, but connecting your crypto wallet to their site steals your digital assets.",
+                    warn: "Unsolicited crypto airdrops promising free funds are designed to drain your wallet the moment you connect."
+                },
+                {
+                    keywords: ['nft marketplace auction', 'high bidder offer', 'claim your ETH payout'],
+                    minMatches: 1,
+                    title: "Fake NFT Marketplace Bid Phishing Scam",
+                    desc: "This message claims someone placed a high bid on your non-existent NFT, directing you to a malicious site to collect your funds.",
+                    warn: "Legitimate NFT marketplaces do not direct you to external third-party sites via unsolicited messages to claim bids."
+                },
+                {
+                    keywords: ['domain name expiration notice', 'registrar renewal failure', 'website suspension warning'],
+                    minMatches: 1,
+                    title: "Domain Registrar Expiration Scam",
+                    desc: "This email pretends to be from a website domain registrar warning that your domain name is about to expire and be deleted.",
+                    warn: "Check your actual domain registrar account dashboard directly rather than clicking links inside domain expiration notices."
+                },
+                {
+                    keywords: ['web hosting suspension', 'cPanel security breach', 'server billing failure'],
+                    minMatches: 1,
+                    title: "Web Hosting Billing Impersonation Scam",
+                    desc: "This fake hosting notice claims your server billing failed and your website will be taken offline unless you update payment info.",
+                    warn: "Web hosting companies send billing warnings through official secure client portals, not via generic external payment links."
+                },
+                {
+                    keywords: ['facebook security checkpoint', 'meta copyright violation', 'page deactivation warning'],
+                    minMatches: 1,
+                    title: "Meta / Facebook Copyright Impersonation Scam",
+                    desc: "This message claims your social media page violated copyright rules and will be permanently deleted unless you appeal via a link.",
+                    warn: "Social media platforms handle copyright notices and account safety checkpoints exclusively inside their official mobile apps."
+                },
+                {
+                    keywords: ['instagram blue badge verification', 'verified creator status', 'pay to keep badge'],
+                    minMatches: 1,
+                    title: "Instagram Verification Fee Phishing Scam",
+                    desc: "This message claims your account is eligible for a verified blue badge or that you must pay a fee to keep existing verification.",
+                    warn: "Social media verification subscriptions are managed strictly through official in-app settings menus."
+                },
+                {
+                    keywords: ['linkedin recruiter message', 'remote data entry job', 'telegram hiring manager'],
+                    minMatches: 1,
+                    title: "Fake Remote Job & Task Scam",
+                    desc: "This recruiter message offers high pay for simple remote tasks (like reviewing movies or data entry), but requires upfront deposits.",
+                    warn: "Legitimate employers never require job applicants to pay money upfront for training supplies or task activation."
+                },
+                {
+                    keywords: ['telegram investment mentor', 'forex trading signals', 'guaranteed weekly crypto profit'],
+                    minMatches: 1,
+                    title: "Telegram Forex & Crypto Mentor Scam",
+                    desc: "This social media connection promises guaranteed daily trading profits if you send money to their managed investment account.",
+                    warn: "Guaranteed trading profits promoted by strangers on messaging apps like Telegram are always fraudulent schemes."
+                },
+                {
+                    keywords: ['sugar daddy allowance', 'weekly cash payout', 'zelle deposit check clearing'],
+                    minMatches: 1,
+                    title: "Sugar Daddy / Allowance Check Fraud Scam",
+                    desc: "This online arrangement promises a weekly cash allowance, but first asks you to deposit a check and send a portion back via Zelle.",
+                    warn: "Unsolicited online allowance offers that involve depositing checks and sending money back are fake check fraud."
+                },
+                {
+                    keywords: ['student loan forgiveness grant', 'department of education relief', 'cancel your federal debt'],
+                    minMatches: 1,
+                    title: "Student Loan Forgiveness Fee Scam",
+                    desc: "This message claims you qualify for immediate federal student loan cancellation if you pay an upfront document filing fee.",
+                    warn: "Official federal student loan forgiveness programs never require upfront processing fees or third-party retainers."
+                },
+                {
+                    keywords: ['solar panel tax credit', 'government green energy grant', 'free solar installation rebate'],
+                    minMatches: 1,
+                    title: "Solar Panel Government Grant Scam",
+                    desc: "This ad or message promises fully government-funded solar panel installations, but locks homeowners into high-interest predatory loans.",
+                    warn: "Verify green energy tax credits directly through official federal government energy websites before signing contractor agreements."
+                },
+                {
+                    keywords: ['home equity line of credit', 'property cash-out offer', 'low interest mortgage refinancing'],
+                    minMatches: 1,
+                    title: "Predatory Mortgage Refinancing Scam",
+                    desc: "This unsolicited offer pushes high-pressure home equity refinancing with hidden fees and balloon payments.",
+                    warn: "Never sign mortgage refinancing documents or share property deeds with unsolicited lenders without independent legal counsel."
+                },
+                {
+                    keywords: ['auto insurance discount program', 'state vehicular rebate', 'mandatory policy update'],
+                    minMatches: 1,
+                    title: "Auto Insurance Phishing Scam",
+                    desc: "This text claims you qualify for a special state auto insurance discount or must update your policy details immediately.",
+                    warn: "Contact your licensed auto insurance agent directly using their verified phone number to discuss policy adjustments."
+                },
+                {
+                    keywords: ['home warranty plan renewal', 'homeowner protection policy', 'unpaid warranty coverage'],
+                    minMatches: 1,
+                    title: "Home Warranty Direct Mail Scam",
+                    desc: "This official-looking letter warns that your home warranty is expiring and urges you to call immediately to maintain coverage.",
+                    warn: "Home warranty solicitations are marketing mailers designed to look like official notices from your mortgage company."
+                },
+                {
+                    keywords: ['water quality test notice', 'municipal water contamination', 'free water filtration system'],
+                    minMatches: 1,
+                    title: "Water Filtration In-Home Sales Scam",
+                    desc: "This postcard or call claims local tap water is unsafe and offers a free in-home test that ends in high-pressure sales pitches.",
+                    warn: "Municipal water authorities publish official water quality reports publicly and do not partner with door-to-door filter salespeople."
+                },
+                {
+                    keywords: ['air duct cleaning special', 'dryer vent hazard warning', 'neighborhood HVAC discount'],
+                    minMatches: 1,
+                    title: "HVAC Duct Cleaning Scam",
+                    desc: "This telemarketing call warns of severe fire hazards in your air ducts to pressure you into booking overpriced cleaning services.",
+                    warn: "Always verify HVAC maintenance companies with local consumer protection agencies before hiring uninvited contractors."
+                },
+                {
+                    keywords: ['roofing inspection claim', 'hail damage storm report', 'insurance claim approval'],
+                    minMatches: 1,
+                    title: "Storm Chaser Roofing Scam",
+                    desc: "This door-to-door contractor claims storm damage inspection qualifies you for a free roof paid by insurance, but leaves you with legal liabilities.",
+                    warn: "Never sign assignment of benefits agreements with door-to-door roofing contractors without consulting your insurance provider."
+                },
+                {
+                    keywords: ['senior medical alert bracelet', 'free emergency panic button', 'medicare funded necklace'],
+                    minMatches: 1,
+                    title: "Senior Medical Alert Device Scam",
+                    desc: "This telemarketing call claims you qualify for a free emergency alert device funded by Medicare, but locks you into a costly recurring contract.",
+                    warn: "Medicare does not sponsor free medical alert necklaces or panic buttons through unsolicited telemarketing calls."
+                },
+                {
+                    keywords: ['prescription discount card', 'pharmacy benefit savings', 'medication copay waiver'],
+                    minMatches: 1,
+                    title: "Prescription Drug Discount Scam",
+                    desc: "This mailing offers fake pharmacy discount cards that charge hidden monthly membership fees at checkout.",
+                    warn: "Use official Medicare Part D or trusted pharmacy benefit manager programs for legitimate prescription savings."
+                },
+                {
+                    keywords: ['pension lump sum payout', 'retirement fund rollover', 'annuity transfer advisory'],
+                    minMatches: 1,
+                    title: "Predatory Retirement Annuity Scam",
+                    desc: "This financial advisor pitch pressures you to roll over stable pension funds into high-fee, risky private annuities.",
+                    warn: "Consult a fiduciary financial planner before making major changes to retirement pensions or annuity structures."
+                },
+                {
+                    keywords: ['debt consolidation program', 'credit card interest elimination', 'legal debt settlement'],
+                    minMatches: 1,
+                    title: "Predatory Debt Relief Scam",
+                    desc: "This service promises to eliminate unsecured credit card debt, but collects large upfront fees without paying your creditors.",
+                    warn: "Legitimate debt management plans are non-profit and transparent; avoid companies charging steep upfront enrollment fees."
+                },
+                {
+                    keywords: ['credit score boost service', 'remove negative public records', 'erase bankruptcy file'],
+                    minMatches: 1,
+                    title: "Credit Repair Fraud Scam",
+                    desc: "This company guarantees they can legally erase legitimate bankruptcies or negative marks from your credit report for a fee.",
+                    warn: "No credit repair organization can legally remove accurate and timely negative information from your credit report."
+                },
+                {
+                    keywords: ['tax debt relief resolution', 'irs fresh start program', 'settle taxes for pennies'],
+                    minMatches: 1,
+                    title: "IRS Tax Settlement Mill Scam",
+                    desc: "This advertisement promises to settle your back taxes with the IRS for pennies on the dollar, charging high retainers with poor results.",
+                    warn: "You can apply for IRS Fresh Start programs directly through the official IRS website without paying expensive third-party fees."
+                },
+                {
+                    keywords: ['private lender business loan', 'unsecured commercial funding', 'startup capital advance'],
+                    minMatches: 1,
+                    title: "Commercial Loan Advance Fee Scam",
+                    desc: "This business loan offer promises fast unsecured capital but requires an upfront application insurance fee before disbursing funds.",
+                    warn: "Legitimate commercial lenders deduct application fees from the final loan disbursement rather than demanding upfront wire transfers."
+                },
+                {
+                    keywords: ['equipment leasing investment', 'atm machine syndication', 'passive income lease'],
+                    minMatches: 1,
+                    title: "Passive Income Equipment Leasing Scam",
+                    desc: "This investment pitch promises high passive returns by leasing ATMs or vending machines that do not actually exist.",
+                    warn: "Thoroughly vet passive income business opportunities and verify physical asset locations before investing capital."
+                },
+                {
+                    keywords: ['foreign lottery winner', 'international sweepstakes bureau', 'overseas cash bequest'],
+                    minMatches: 1,
+                    title: "Foreign Lottery & Sweepstakes Scam",
+                    desc: "This letter or email claims you won a foreign lottery you never entered, requiring customs clearance fees to ship the money.",
+                    warn: "You cannot win a lottery or sweepstakes for a contest you never purchased a ticket or entered."
+                },
+                {
+                    keywords: ['heir to unclaimed estate', 'international probate lawyer', 'bank account inheritance'],
+                    minMatches: 1,
+                    title: "Unclaimed Inheritance Probate Scam",
+                    desc: "This message claims you are the sole heir to a deceased foreign millionaire with the same last name, requiring legal fees to claim it.",
+                    warn: "Estate attorneys and probate courts do not search for international heirs through unsolicited spam emails or messages."
+                },
+                {
+                    keywords: ['green card lottery winner', 'visa sponsorship approval', 'immigration fee deposit'],
+                    minMatches: 1,
+                    title: "Immigration & Visa Lottery Scam",
+                    desc: "This fake immigration notice claims you won a visa lottery or residency status, demanding payment to process government paperwork.",
+                    warn: "Official U.S. immigration processing is handled exclusively through verified government portals ending in .gov."
+                },
+                {
+                    keywords: ['emergency embassy repatriation', 'consular office wire transfer', 'stranded tourist bail'],
+                    minMatches: 1,
+                    title: "Embassy Repatriation Impersonation Scam",
+                    desc: "This message pretends to be a U.S. embassy official claiming a relative is detained abroad and needs bail money wired immediately.",
+                    warn: "U.S. embassies provide consular assistance to citizens abroad but never demand wire transfers or cryptocurrency to release individuals."
+                },
+                {
+                    keywords: ['puppy rescue transport fee', 'animal shelter donation wire', 'rescue dog adoption crate'],
+                    minMatches: 1,
+                    title: "Fake Animal Rescue Donation Scam",
+                    desc: "This social media post uses pictures of stray dogs to solicit emergency donations via peer payment apps for fake medical rescues.",
+                    warn: "Verify animal rescues through established local shelters or registered 501(c)(3) databases before sending donations."
+                },
+                {
+                    keywords: ['disaster relief volunteer training', 'humanitarian mission fee', 'ngo travel authorization'],
+                    minMatches: 1,
+                    title: "Fake NGO / Humanitarian Mission Scam",
+                    desc: "This organization recruits volunteers for overseas disaster relief missions but requires upfront payment for training and flights.",
+                    warn: "Legitimate non-governmental organizations do not charge volunteers application fees or training costs to join relief missions."
+                },
+                {
+                    keywords: ['mystery shopper employment', 'secret shopper evaluation check', 'store cash evaluation'],
+                    minMatches: 1,
+                    title: "Mystery Shopper Check Cashing Scam",
+                    desc: "This job offer sends you a large check to evaluate local stores or wire transfer services, asking you to keep a portion as pay.",
+                    warn: "Mystery shopper scams use counterfeit checks that clear temporarily before bouncing, leaving you responsible for the withdrawn funds."
+                },
+                {
+                    keywords: ['grant funding foundation', 'free government cash grant', 'unclaimed federal subsidy'],
+                    minMatches: 1,
+                    title: "Government Grant Impersonation Scam",
+                    desc: "This call or message claims you were awarded thousands of dollars in free government grants, requiring a processing fee to release it.",
+                    warn: "Government agencies never award grants to individuals who did not apply for them, nor do they charge fees to release grant funds."
+                },
+                {
+                    keywords: ['police charity fund', 'trooper benevolent association', 'firefighter support donation'],
+                    minMatches: 1,
+                    title: "Law Enforcement Telemarketing Charity Scam",
+                    desc: "This telemarketer claims to represent police or firefighter benevolent funds, pressuring you to donate over the phone.",
+                    warn: "Many telemarketing firms keep a large percentage of donations made to public safety charities; donate directly to local departments."
+                },
+                {
+                    keywords: ['magazine subscription renewal', 'publication clearinghouse', 'past due reading invoice'],
+                    minMatches: 1,
+                    title: "Magazine Subscription Renewal Invoice Scam",
+                    desc: "This deceptive mailing looks like an overdue invoice for magazine subscriptions you never ordered to trick you into paying.",
+                    warn: "Review your credit card statements carefully to check for unauthorized recurring magazine billing charges."
+                },
+                {
+                    keywords: ['energy audit', 'utility rebate inspector', 'free home insulation assessment'],
+                    minMatches: 1,
+                    title: "Fake Energy Audit Home Inspection Scam",
+                    desc: "This message claims your home qualifies for a free energy assessment or utility rebate inspection to trick you into high-pressure sales.",
+                    warn: "Legitimate utility rebate programs are administered directly through your official electric provider, not unsolicited text alerts."
+                },
+                {
+                    keywords: ['air duct cleaning', 'dryer vent fire hazard', 'hvac system sanitization'],
+                    minMatches: 1,
+                    title: "Fake Air Duct Cleaning Telemarketing Scam",
+                    desc: "This telemarketing call warns of severe dryer vent fire hazards to pressure you into booking overpriced cleaning services.",
+                    warn: "Always verify HVAC maintenance companies with local consumer protection agencies before hiring uninvited contractors."
+                },
+                {
+                    keywords: ['toxic black mold', 'air spore test', 'emergency mold remediation'],
+                    minMatches: 1,
+                    title: "Fake Mold Inspection & Remediation Scam",
+                    desc: "This message claims neighborhood air tests detected toxic black mold in your home to upsell expensive, unnecessary remediation.",
+                    warn: "Independent licensed home inspectors should always verify indoor air quality claims before authorizing remediation."
+                },
+                {
+                    keywords: ['dead oak tree', 'code enforcement fine', 'municipal arborist removal notice'],
+                    minMatches: 1,
+                    title: "Fake Tree Removal Municipal Citation Scam",
+                    desc: "This fake municipal notice claims a tree on your property violates city codes, threatening fines unless you hire their crew.",
+                    warn: "City code enforcement notices are delivered via official mail or physical door postings, never through unverified text links."
+                },
+                {
+                    keywords: ['chimney flue crack', 'creosote buildup hazard', 'fire safety inspection'],
+                    minMatches: 1,
+                    title: "Fake Chimney Sweep Inspection Scam",
+                    desc: "This notice warns of dangerous chimney flue cracks or creosote hazards to rush you into paying for urgent repairs.",
+                    warn: "Get second opinions from reputable local contractors before approving major chimney or structural repairs."
+                },
+                {
+                    keywords: ['swimming pool resurfacing', 'tile crack repair', 'contractor material deposit'],
+                    minMatches: 1,
+                    title: "Fake Pool Resurfacing Deposit Scam",
+                    desc: "This contractor scam demands large upfront material deposits for pool resurfacing or tile repairs and then disappears.",
+                    warn: "Never pay large cash or wire deposits upfront to unverified contractors before work officially begins."
+                },
+                {
+                    keywords: ['foundation settlement', 'concrete pier lifting', 'structural engineer warning'],
+                    minMatches: 1,
+                    title: "Fake Foundation Repair Structural Lien Scam",
+                    desc: "This message claims your home slab is suffering severe foundation settlement, scaring you into costly pier lifting.",
+                    warn: "Always hire an independent structural engineer who does not perform repair work to evaluate your home foundation."
+                },
+                {
+                    keywords: ['subterranean termite swarm', 'wood rot damage', 'pest control renewal'],
+                    minMatches: 1,
+                    title: "Fake Termite Control Annual Contract Scam",
+                    desc: "This pest control solicitation uses fake swarm warnings to lock homeowners into expensive, recurring annual contracts.",
+                    warn: "Check your own property for pest activity or hire a trusted local exterminator rather than reacting to panic mailers."
+                },
+                {
+                    keywords: ['septic tank backup', 'drain field failure', 'emergency pumping service'],
+                    minMatches: 1,
+                    title: "Fake Septic Tank Pumping Emergency Scam",
+                    desc: "This urgent notice claims your septic system is failing and demands immediate payment for emergency pumping services.",
+                    warn: "Contact your regular local septic service provider directly to confirm maintenance schedules rather than clicking text alerts."
+                },
+                {
+                    keywords: ['garage door torsion spring', 'cable snap danger', 'emergency repair technician'],
+                    minMatches: 1,
+                    title: "Fake Garage Door Spring Replacement Scam",
+                    desc: "This automated warning claims your garage door spring is about to snap, pushing you into immediate costly service calls.",
+                    warn: "Inspect your mechanical garage hardware yourself or call your trusted local garage professional."
+                },
+                {
+                    keywords: ['emergency locksmith', 'drill cylinder lock', 'stranded outside residence'],
+                    minMatches: 1,
+                    title: "Fake Locksmith Emergency Lockout Scam",
+                    desc: "This online locksmith listing quotes a low price online but charges exorbitant fees once locked out on-site.",
+                    warn: "Keep a reliable local locksmith's verified phone number handy before emergencies happen to avoid predatory online scams."
+                },
+                {
+                    keywords: ['mobile auto detailing', 'ceramic coating coupon', 'prepaid booking deposit'],
+                    minMatches: 1,
+                    title: "Fake Mobile Car Detailing Phishing Scam",
+                    desc: "This promotion offers heavily discounted mobile auto detailing or ceramic coating but requires a prepaid booking deposit.",
+                    warn: "Verify local mobile service businesses through official reviews and secure payment methods before sending deposits."
+                },
+                {
+                    keywords: ['windshield crack chip', 'insurance glass waiver', 'mobile repair dispatch'],
+                    minMatches: 1,
+                    title: "Fake Mobile Windshield Repair Scam",
+                    desc: "This service claims your insurance covers free mobile repair dispatch, harvesting your policy details.",
+                    warn: "Contact your auto insurance provider directly to verify glass claim benefits and approved repair networks."
+                },
+                {
+                    keywords: ['mobile pet salon', 'dog grooming appointment deposit', 'pet spa cancellation fee'],
+                    minMatches: 1,
+                    title: "Fake Pet Grooming Mobile Van Scam",
+                    desc: "This pet grooming scam demands booking deposits or cancellation fees through unverified online payment links.",
+                    warn: "Book pet grooming services directly through established local salons or verified mobile groomers."
+                },
+                {
+                    keywords: ['lawn fertilization service', 'weed control prepayment', 'seasonal turf package'],
+                    minMatches: 1,
+                    title: "Fake Lawn Care Seasonal Pre-Pay Scam",
+                    desc: "This lawn care offer pressures you into full seasonal prepayment for weed control and fertilization services upfront.",
+                    warn: "Pay for landscaping services incrementally as services are successfully rendered."
+                },
+                {
+                    keywords: ['mosquito barrier treatment', 'vector control spray', 'tick prevention discount'],
+                    minMatches: 1,
+                    title: "Fake Pest Control Mosquito Spray Scam",
+                    desc: "This message impersonates municipal vector control or pest services offering discounted mosquito barrier treatments.",
+                    warn: "Check county or city public health websites to verify authorized mosquito control programs in your area."
+                },
+                {
+                    keywords: ['interior wall painting', 'painter color consultation', 'material supply deposit'],
+                    minMatches: 1,
+                    title: "Fake Interior Painting Estimate Deposit Scam",
+                    desc: "This painting contractor ad offers free color consultations but requires large upfront material deposits before work starts.",
+                    warn: "Never pay large cash deposits for painting supplies prior to signing a formal, verified local contract."
+                },
+                {
+                    keywords: ['double-pane window upgrade', 'energy tax credit rebate', 'window installation estimate'],
+                    minMatches: 1,
+                    title: "Fake Window Replacement Tax Credit Scam",
+                    desc: "This ad lures homeowners with window upgrades tied to fake government energy tax credit rebates.",
+                    warn: "Verify home energy tax credits on official federal websites like Energy.gov before signing window contracts."
+                },
+                {
+                    keywords: ['seamless gutter guard', 'leaf filter protection', 'clogged downspout warranty'],
+                    minMatches: 1,
+                    title: "Fake Gutter Guard Installation Scam",
+                    desc: "This offer promotes leaf filter protection systems using aggressive door-to-door or online high-pressure sales tactics.",
+                    warn: "Compare multiple local gutter contractors and get written warranties before committing to home improvements."
+                },
+                {
+                    keywords: ['asphalt driveway sealing', 'crack fill service', 'leftover paving material discount'],
+                    minMatches: 1,
+                    title: "Fake Driveway Paving Scam",
+                    desc: "This traveling contractor scam claims leftover asphalt material allows them to offer cheap driveway sealing services.",
+                    warn: "Never hire door-to-door paving contractors offering leftover materials; verify physical business addresses and licensing."
+                },
+                {
+                    keywords: ['ez-pass replenishment notice', 'toll account balance negative', 'express toll violation fee'],
+                    minMatches: 1,
+                    title: "Fake Toll EZ-Pass Replenishment Phishing",
+                    desc: "This message claims your toll account balance is negative and demands an immediate payment link to avoid violation fees.",
+                    warn: "Check your state's official toll management app directly rather than clicking links in text alerts."
+                },
+                {
+                    keywords: ['municipal parking citation', 'unpaid parking meter fine', 'vehicle boot warning notice'],
+                    minMatches: 1,
+                    title: "Fake Parking Ticket Citation Scam",
+                    desc: "This fake alert claims you have an unpaid parking meter fine and threatens a vehicle boot unless you pay online.",
+                    warn: "Verify parking citations directly through your city or municipality's official government web portal."
+                },
+                {
+                    keywords: ['speed camera violation photo', 'red light traffic fine', 'dmv penalty assessment'],
+                    minMatches: 1,
+                    title: "Fake Traffic Camera Speed Violation Scam",
+                    desc: "This notice claims a red light camera or speed trap recorded a violation, directing you to pay an external fine link.",
+                    warn: "Official traffic camera citations are delivered through mail by local law enforcement or authorized municipal courts."
+                },
+                {
+                    keywords: ['fasttrak toll invoice', 'unpaid lane toll balance', 'expresspass violation alert'],
+                    minMatches: 1,
+                    title: "Fake FastTrak Toll Violation Phishing",
+                    desc: "This message claims an outstanding toll lane balance requires urgent settlement to prevent account suspension.",
+                    warn: "Log into your official FastTrak or toll account portal manually to verify if any legitimate charges exist."
+                },
+                {
+                    keywords: ['airport parking fee overdue', 'terminal garage storage balance', 'long-term parking lien'],
+                    minMatches: 1,
+                    title: "Fake Airport Parking Fee Expiration Scam",
+                    desc: "This text claims your vehicle left in an airport garage has an overdue fee and is facing a storage lien.",
+                    warn: "Airport authorities do not demand storage payments or threaten vehicle liens via text message links."
+                },
+                {
+                    keywords: ['dmv vehicle registration expired', 'state license plate renewal notice', 'tag sticker suspension warning'],
+                    minMatches: 1,
+                    title: "Fake Vehicle Registration Renewal Phishing",
+                    desc: "This text warns that your vehicle registration or license plate tag is expired, prompting you to pay a renewal fee via a link.",
+                    warn: "Always renew vehicle registrations through official state government portals ending in .gov."
+                },
+                {
+                    keywords: ['driver license suspended notice', 'dmv administrative revocation', 'driving privilege restriction'],
+                    minMatches: 1,
+                    title: "Fake Driver License Suspension Alert",
+                    desc: "This message claims your driver license has been administratively suspended and requires immediate verification online.",
+                    warn: "State motor vehicle departments notify drivers of license suspensions by official mail, not text message links."
+                },
+                {
+                    keywords: ['auto insurance policy lapsed', 'liability coverage termination notice', 'unpaid premium cancellation'],
+                    minMatches: 1,
+                    title: "Fake Auto Insurance Cancellation Warning",
+                    desc: "This warning claims your auto liability policy has lapsed due to unpaid premiums and demands immediate card updates.",
+                    warn: "Call your insurance provider using the verified number on your insurance card to check policy status."
+                },
+                {
+                    keywords: ['roadside assistance expired', 'tow truck membership renewal', 'automotive club billing failure'],
+                    minMatches: 1,
+                    title: "Fake Roadside Assistance Membership Renewal",
+                    desc: "This notice claims your roadside assistance or towing club membership failed billing and requires immediate renewal.",
+                    warn: "Log into your auto club account directly rather than clicking links in membership expiration emails."
+                },
+                {
+                    keywords: ['dmv electronic title transfer', 'vehicle ownership assignment fee', 'pink slip registration hold'],
+                    minMatches: 1,
+                    title: "Fake DMV Electronic Title Transfer Scam",
+                    desc: "This scam claims an electronic title transfer or pink slip assignment requires an unexpected fee release.",
+                    warn: "Title transfers and vehicle ownership transactions must be completed physically at official DMV office locations."
+                },
+                {
+                    keywords: ['federal student loan default', 'navient loan repayment alert', 'mohela account delinquency'],
+                    minMatches: 1,
+                    title: "Fake Student Loan Servicer Payment Default",
+                    desc: "This alert claims your federal student loan is in default status, requiring immediate payment to collection links.",
+                    warn: "Manage federal student loans exclusively through official Department of Education portals like StudentAid.gov."
+                },
+                {
+                    keywords: ['university tuition payment portal', 'semester bursar balance due', 'student account hold notice'],
+                    minMatches: 1,
+                    title: "Fake Tuition Payment Gateway Phishing",
+                    desc: "This email claims your university tuition payment failed or a bursar balance hold requires immediate settlement.",
+                    warn: "Access your student account securely through your official university portal dashboard."
+                },
+                {
+                    keywords: ['campus parking ticket unpaid', 'university police citation fine', 'student vehicle immobilization'],
+                    minMatches: 1,
+                    title: "Fake Campus Parking Citation Scam",
+                    desc: "This message claims a campus parking ticket is unpaid and threatens vehicle booting or towing via an external link.",
+                    warn: "Verify campus parking fines directly with your university's parking and transportation services office."
+                },
+                {
+                    keywords: ['library book overdue fee', 'municipal library fine notice', 'borrower card suspension'],
+                    minMatches: 1,
+                    title: "Fake Library Book Overdue Fine Extortion",
+                    desc: "This notice claims you owe municipal library overdue fees and threatens borrower card suspension.",
+                    warn: "Public libraries do not use external text links or aggressive collection threats for overdue book fees."
+                },
+                {
+                    keywords: ['public school fee balance', 'student activity fund payment', 'district registration portal'],
+                    minMatches: 1,
+                    title: "Fake School District Fee Phishing",
+                    desc: "This message requests payment for public school activity funds or district registration fees through a suspicious portal.",
+                    warn: "Contact your local school district or child's school office directly to verify any required fee payments."
+                },
+                {
+                    keywords: ['child support enforcement warrant', 'family court contempt citation', 'arrears wage garnishment order'],
+                    minMatches: 1,
+                    title: "Fake Child Support Enforcement Arrest Threat",
+                    desc: "This urgent notice claims an active arrest warrant has been issued for child support arrears, demanding phone payment.",
+                    warn: "Courts and child support enforcement agencies never demand immediate payment over the phone or threaten instant arrest."
+                },
+                {
+                    keywords: ['alimony payment discrepancy', 'domestic relations court order', 'spousal support disbursement hold'],
+                    minMatches: 1,
+                    title: "Fake Alimony Payment Processing Scam",
+                    desc: "This message claims an alimony disbursement is on hold due to court order discrepancies requiring a release fee.",
+                    warn: "Consult your family law attorney or court clerk directly regarding any official spousal support matters."
+                },
+                {
+                    keywords: ['adoption placement fee deposit', 'child welfare legal retainer', 'home study clearance cost'],
+                    minMatches: 1,
+                    title: "Fake Adoption Agency Placement Fee Scam",
+                    desc: "This scam adopts adoption processes by demanding unexpected legal retainers or placement fee deposits via wire.",
+                    warn: "Work exclusively with licensed adoption agencies and verify all fee structures through formal legal contracts."
+                },
+                {
+                    keywords: ['foster care stipend deposit', 'state family services payment', 'child placement subsidy hold'],
+                    minMatches: 1,
+                    title: "Fake Foster Care Stipend Phishing",
+                    desc: "This message claims a foster care stipend or family services payment is on hold, asking for bank login details.",
+                    warn: "State family services agencies manage subsidies through established secure state payment systems, not text links."
+                },
+                {
+                    keywords: ['probate court inheritance release', 'deceased estate administrative fee', 'surrogate court probate tax'],
+                    minMatches: 1,
+                    title: "Probate Court Inheritance Release Fee",
+                    desc: "This message claims an inheritance is waiting in probate court but requires an administrative tax fee before release.",
+                    warn: "Probate courts deduct fees directly from estate funds during formal proceedings, never requesting upfront wire fees."
+                },
+                {
+                    keywords: ['last will testament registry', 'estate planning document storage', 'legal document renewal fee'],
+                    minMatches: 1,
+                    title: "Fake Will & Testament Registry Renewal",
+                    desc: "This notice claims your last will and testament document registry storage is expiring unless you pay a renewal fee.",
+                    warn: "Keep estate planning documents with your attorney or in secure personal safe storage, ignoring registry renewal mailers."
+                },
+                {
+                    keywords: ['power of attorney revocation', 'legal representation termination', 'attorney-in-fact cancellation'],
+                    minMatches: 1,
+                    title: "Fake Power of Attorney Revocation Notice",
+                    desc: "This message claims a power of attorney agreement has been revoked and requires immediate legal filing fees.",
+                    warn: "Power of attorney documents are executed and revoked through formal legal channels and licensed attorneys."
+                },
+                {
+                    keywords: ['living trust amendment filing', 'estate asset transfer file', 'trustee administration charge'],
+                    minMatches: 1,
+                    title: "Fake Living Trust Amendment Fee Scam",
+                    desc: "This scam targets estate trusts, claiming an amendment filing file is overdue to prevent trust asset freezing.",
+                    warn: "Direct all inquiries regarding living trusts to the estate planning attorney who drafted the original agreement."
+                },
+                {
+                    keywords: ['property deed recording fee', 'county clerk conveyance tax', 'land records filing notice'],
+                    minMatches: 1,
+                    title: "Fake Deed Recording Fee Extortion",
+                    desc: "This official-looking letter claims a property deed recording fee or conveyance tax is due immediately to avoid liens.",
+                    warn: "Check with your county clerk of court directly before responding to any unverified property deed notices."
+                },
+                {
+                    keywords: ['real estate escrow wire instruction', 'title company bank change notice', 'closing funds routing update'],
+                    minMatches: 1,
+                    title: "Fake Real Estate Escrow Wire Fraud Alert",
+                    desc: "This email claims your title company or escrow agent changed their bank routing instructions for closing funds.",
+                    warn: "Never change wire transfer instructions based on an email; always call your title agent directly using a verified phone number."
+                },
+                {
+                    keywords: ['emergency special assessment', 'property parcel roof repairs', 'avoid lien filing'],
+                    minMatches: 1,
+                    title: "Fake Homeowners Association Special Assessment Scam",
+                    desc: "This notice claims an emergency HOA assessment fee has been levied against your property for roof repairs to force wire transfers.",
+                    warn: "Verify HOA assessments directly with your property management company or association board president."
+                },
+                {
+                    keywords: ['residential solar panel tax credit', 'approved federal cash refund', 'secure portal link to deposit'],
+                    minMatches: 1,
+                    title: "Fake Solar Panel Tax Credit Rebate Phishing",
+                    desc: "This message claims your solar panel tax credit rebate has been approved and prompts you to log into a fake portal.",
+                    warn: "Tax credit rebates are claimed directly through official federal tax returns with the IRS, never via external text portals."
+                },
+                {
+                    keywords: ['cellular security communicator', 'obsolete panel hardware', 'alarm monitoring will be disconnected'],
+                    minMatches: 1,
+                    title: "Fake Home Security System Upgrade Extortion",
+                    desc: "This message claims your home alarm communicator is obsolete and threatens disconnection unless you upgrade immediately.",
+                    warn: "Security monitoring providers notify customers through official billing statements and verified customer service lines."
+                },
+                {
+                    keywords: ['tankless water heater annual', 'anode rod inspection', 'voids your manufacturer warranty'],
+                    minMatches: 1,
+                    title: "Fake Water Heater Maintenance Warranty Scam",
+                    desc: "This notice claims your water heater warranty is void unless you pay for an immediate unauthorized inspection.",
+                    warn: "Read your specific manufacturer warranty booklet regarding maintenance requirements rather than trusting unsolicited service texts."
+                },
+                {
+                    keywords: ['termite bond re-certification', 'structural damage guarantee', 'pay the renewal invoice'],
+                    minMatches: 1,
+                    title: "Fake Termite Bond Annual Re-Certification",
+                    desc: "This scam notice claims your termite bond inspection has lapsed and threatens to drop your structural damage guarantee.",
+                    warn: "Verify pest control contract renewal dates directly with your licensed local exterminator company."
+                },
+                {
+                    keywords: ['pest control vector', 'mosquito barrier spray', 'municipal vector control'],
+                    minMatches: 1,
+                    title: "Fake Municipal Vector Control Spray Scam",
+                    desc: "This message impersonates local vector control offering mandatory paid mosquito or pest barrier treatments.",
+                    warn: "Municipal vector control spray programs are provided free by county public health departments without direct residential billing."
+                },
+                {
+                    keywords: ['lawn care fertilization', 'weed control prepayment', 'seasonal turf package'],
+                    minMatches: 1,
+                    title: "Fake Lawn Care Prepayment Scam",
+                    desc: "This scam locks homeowners into full seasonal prepayments for lawn care services that are never fully delivered.",
+                    warn: "Pay for landscaping services incrementally after work is completed rather than paying full seasons upfront to unverified vendors."
+                },
+                {
+                    keywords: ['residential window replacement', 'double-pane window upgrade', 'energy tax credit rebate'],
+                    minMatches: 1,
+                    title: "Fake Window Replacement Scam",
+                    desc: "This high-pressure sales pitch uses fake energy tax credits to push overpriced residential window replacements.",
+                    warn: "Obtain multiple quotes from established local contractors before committing to major home window replacement projects."
+                },
+                {
+                    keywords: ['seamless gutter guard', 'leaf filter protection', 'clogged downspout warranty'],
+                    minMatches: 1,
+                    title: "Fake Gutter Guard Installation Scam",
+                    desc: "This aggressive marketing pitch claims your gutters require immediate leaf filter installations to prevent structural rot.",
+                    warn: "Clean and inspect your gutters manually or hire a trusted local handyman rather than responding to aggressive ads."
+                },
+                {
+                    keywords: ['asphalt driveway sealing', 'crack fill service', 'leftover paving material discount'],
+                    minMatches: 1,
+                    title: "Fake Driveway Paving Scam",
+                    desc: "This traveling contractor scam claims leftover asphalt material allows them to offer cheap driveway sealing services.",
+                    warn: "Never hire door-to-door paving contractors offering leftover materials; verify physical business addresses and licensing."
                 }
             ];
 
@@ -831,9 +1891,6 @@
             for (let cat of threatCategories) {
                 let matchCount = cat.keywords.filter(kw => condensedText.includes(kw.replace(/\s+/g, '')) || lowerText.includes(kw)).length;
                 if (matchCount >= cat.minMatches) {
-                    if ((cat.title.includes('Grandchild') || cat.title.includes('Jail') || cat.title.includes('Bail')) && lowerText.includes('bailey')) {
-                        continue;
-                    }
                     matchedThreat = cat;
                     break;
                 }
@@ -847,22 +1904,29 @@
                 };
             }
 
-            const isThreat = isSymbolOnlySpam || fileInput.files.length > 0 || matchedThreat;
+            const isThreat = isSymbolOnlySpam || matchedThreat;
 
             if (isThreat) {
                 resultBox.className = 'result-box danger';
                 
-                const title = matchedThreat ? matchedThreat.title : "Stop! This is a Known Scam Trick";
-                const desc = matchedThreat ? matchedThreat.desc : "This message is trying to scare you into acting quickly before you have time to think.";
-                const specificWarning = matchedThreat ? matchedThreat.warn : "This matches fraudulent patterns designed to cause privacy and financial loss.";
+                const title = matchedThreat ? matchedThreat.title : "Suspicious Scam Message Alert";
+                const desc = matchedThreat ? matchedThreat.desc : "This message is trying to rush you or scare you into clicking a link, sharing personal information, or sending money before you can check if it is real.";
+                const specificWarning = matchedThreat ? matchedThreat.warn : "This matches trick patterns used by scammers to steal personal information or money.";
                 
                 const step3Custom = "Even if you did not lose money, report this attempted scam to help authorities track emerging threats: file a report with the <a href='https://reportfraud.ftc.gov' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Federal Trade Commission (FTC)</a>, contact your local law enforcement or the <a href='https://www.fdle.state.fl.us/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>FDLE</a> for criminal matters, file a deceptive trade complaint with the <a href='https://www.myfloridalegal.com' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>Florida Attorney General</a>, or forward scam text messages to <strong>7726</strong>.";
                 const step4Custom = "To review general security guidelines, scam trends, and educational resources, explore the <a href='https://elderaffairs.org/programs-and-services/elder-protection-programs-fraud-trends/' target='_blank' rel='noopener' style='color: #991b1b; font-weight: bold; text-decoration: underline;'>DOEA Fraud Protection Programs</a> hub.";
+
+                const isEmailContent = text.includes('@') || text.toLowerCase().includes('email') || text.toLowerCase().includes('unsubscribe') || text.toLowerCase().includes('inbox') || text.toLowerCase().includes('mail');
+                let emailHygieneStep = '';
+                if (isEmailContent) {
+                    emailHygieneStep = '<li><strong>Safe Email Hygiene:</strong> Never click "unsubscribe" links within suspicious emails, as scammers use these links to verify active addresses or trigger malicious downloads. Simply mark them as spam.</li>';
+                }
 
                 const steps = '<li><strong>Step 1: STOP Engaging and Do Nothing Else Immediately</strong><br>' +
                               'Take a deep breath and relax. Stop interacting, do NOT reply to the message, do NOT call any phone numbers listed in it, and do NOT click any links or pop-ups. You are completely safe as long as you do not interact with them. If this is a text message, take a screenshot for your records and forward the text to <strong>7726</strong> (spells SPAM) to report it to your carrier.</li>' +
                               '<li><strong>Step 2: Understand the Specific Trick</strong><br>' +
                               '<em>' + specificWarning + '</em></li>' +
+                              emailHygieneStep +
                               '<li><strong>Step 3: Report the Scam or Attempt</strong><br>' +
                               step3Custom + '</li>' +
                               '<li><strong>Step 4: Review External Resource Channels</strong><br>' +
@@ -875,12 +1939,12 @@
 
                 resultContent.innerHTML = 
                     emergencyBanner +
-                    '<div class="warning-title">⚠️ ' + title + '</div>' +
+                    '<div class="warning-title">' + title + '</div>' +
                     '<div class="warning-desc">' + desc + '</div>' +
                     '<div class="warning-title" style="margin-top: 15px; border-top: 1px solid #f87171; padding-top: 15px;">What you should do right now:</div>' +
                     '<ol class="action-list">' + steps + '</ol>' +
                     '<div style="margin-top: 20px;">' +
-                    '<button type="button" class="secondary-btn" onclick="printActionPlan()">🖨️ Print Action Plan</button>' +
+                    '<button type="button" class="secondary-btn" onclick="printActionPlan()">Print Action Plan</button>' +
                     '</div>';
                 
                 document.getElementById('printDynamicContent').innerHTML = 
@@ -892,10 +1956,10 @@
                 resultBox.className = 'result-box safe';
                 
                 const hasWeirdSymbols = /[^a-zA-Z0-9\s]/.test(text);
-                let safeMessage = '<strong>✅ This looks okay. No common scam patterns or threat combinations found.</strong>';
+                let safeMessage = '<strong>This looks okay. No common scam patterns or threat combinations found.</strong>';
                 
                 if (hasWeirdSymbols) {
-                    safeMessage += '<br><span style="font-size: 14px; color: #166534; display: block; margin-top: 6px;">⚠️ <em>Caution:</em> This message contains unusual characters or symbols. If you have questions or want to review general awareness materials, please explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
+                    safeMessage += '<br><span style="font-size: 14px; color: #166534; display: block; margin-top: 6px;"><em>Caution:</em> This message contains unusual characters or symbols. If you have questions or want to review general awareness materials, please explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
                 } else {
                     safeMessage += '<br>Even so, if you ever want to check educational guides, you can explore the <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">Operation Senior Shield Resource Hub</a>.';
                 }
@@ -917,10 +1981,6 @@
             document.getElementById('fileInfo').textContent = "No file chosen (Supports Images, PDFs, Text files)";
             document.getElementById('resultBox').style.display = 'none';
             document.getElementById('resultContent').innerHTML = '';
-        }
-
-        function printGuide() {
-            window.print();
         }
 
         if ('serviceWorker' in navigator) {
