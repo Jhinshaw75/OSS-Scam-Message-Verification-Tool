@@ -633,6 +633,20 @@
 
             const threatCategories = [
                 {
+                    keywords: ['social security administration', 'office of the inspector general', 'asset seizure', 'asset-freeze'],
+                    minMatches: 1,
+                    title: "Fake Social Security Arrest Scam",
+                    desc: "This message falsely claims your Social Security Number is linked to crimes and threatens immediate asset seizure or arrest unless you call them.",
+                    warn: "The Social Security Administration will never threaten you with arrest, demand immediate payment, or freeze your bank accounts."
+                },
+                {
+                    keywords: ['fraud operations center', 'foreign ip address', 'remote assistance utility', 'security specialist'],
+                    minMatches: 1,
+                    title: "Fake Bank Fraud & Remote Access Scam",
+                    desc: "This message pretends your bank account has been hacked and tricks you into downloading remote software or letting a stranger take control of your computer.",
+                    warn: "Banks will never call you to ask for remote computer access or tell you to download programs to fix fraudulent wire transfers."
+                },
+                {
                     keywords: ['bench warrant', 'jury duty', 'failure to appear'],
                     minMatches: 1,
                     title: "Fake Jury Duty Bench Warrant Extortion",
@@ -906,7 +920,7 @@
                     warn: "Amazon customer service will never suspend your account via text or ask you to verify your full password over a link."
                 },
                 {
-                    keywords: ['zelle', 'unauthorized transfer', 'checking account', 'passcode'],
+                    keywords: ['zelle fraud alert', 'unauthorized peer transfer', 'verify your passcode to cancel'],
                     minMatches: 1,
                     title: "Fake Zelle / Peer-to-Peer Banking Fraud Scam",
                     desc: "This text claims someone sent money from your Zelle account and asks you to reply with your banking passcode to cancel it.",
@@ -1009,20 +1023,6 @@
                     title: "Fake Utility Disconnection Scam",
                     desc: "This urgent call or message claims your electricity or water will be cut off within minutes unless you pay immediately using a prepaid store gift card or green dot card.",
                     warn: "Real utility companies never threaten immediate power shutoffs over the phone, and they never accept payment via prepaid reloadable cards or gift cards."
-                },
-                {
-                    keywords: ['asset-freeze', 'felony money-laundering', 'senior investigator'],
-                    minMatches: 1,
-                    title: "Fake Social Security Arrest Scam",
-                    desc: "This message falsely claims your Social Security Number is linked to crimes and threatens immediate asset seizure or arrest unless you call them.",
-                    warn: "The Social Security Administration will never threaten you with arrest, demand immediate payment, or freeze your bank accounts."
-                },
-                {
-                    keywords: ['fraud operations center', 'foreign ip address', 'remote assistance utility', 'security specialist'],
-                    minMatches: 1,
-                    title: "Fake Bank Fraud & Remote Access Scam",
-                    desc: "This message pretends your bank account has been hacked and tricks you into downloading remote software or letting a stranger take control of your computer.",
-                    warn: "Banks will never call you to ask for remote computer access or tell you to download programs to fix fraudulent wire transfers."
                 },
                 {
                     keywords: ['community relief fund', 'displaced families', 'severe weather and flooding', 'disaster-relief'],
@@ -1198,69 +1198,6 @@
                     title: "Fake USPS / Courier Delivery Fee Phishing",
                     desc: "This message claims a mail package couldn't be delivered and demands a small customs or redelivery fee via an external link.",
                     warn: "Postal carriers like USPS do not charge small redelivery fees or request personal address updates via text messages."
-                },
-                {
-                    keywords: ['zelle fraud alert', 'unauthorized peer transfer', 'verify your passcode to cancel'],
-                    minMatches: 1,
-                    title: "Fake Zelle / Peer-to-Peer Banking Fraud Scam",
-                    desc: "This text claims someone sent money from your Zelle account and asks you to reply with your banking passcode to cancel it.",
-                    warn: "Banks and peer payment apps will never ask for your PIN, password, or security verification code via text message."
-                },
-                {
-                    keywords: ['paypal secure notification', 'unauthorized foreign purchase', 'dispute transaction link'],
-                    minMatches: 1,
-                    title: "Fake PayPal Account Lock Phishing Scam",
-                    desc: "This email or text claims a large unauthorized purchase was made on your account, directing you to click a fake link to log in.",
-                    warn: "Always check your financial accounts by opening the official app or typing the web address directly instead of clicking links in alerts."
-                },
-                {
-                    keywords: ['amazon account suspended', 'unusual login activity', 'prime membership forfeiture'],
-                    minMatches: 1,
-                    title: "Fake Amazon Account Suspension Phishing",
-                    desc: "This message claims your Amazon account or Prime membership is locked due to suspicious activity, demanding immediate verification.",
-                    warn: "Amazon customer service will never suspend your account via text or ask you to verify your full password over a link."
-                },
-                {
-                    keywords: ['apple id locked', 'icloud security alert', 'device compromised recovery'],
-                    minMatches: 1,
-                    title: "Fake Apple ID / iCloud Phishing Trap",
-                    desc: "This alert claims your Apple ID has been locked for security reasons and asks you to sign in on a fake website to unlock it.",
-                    warn: "Apple security alerts appear natively on your trusted Apple devices and never require clicking external web links to sign in."
-                },
-                {
-                    keywords: ['microsoft office license expired', 'outlook subscription renewal', 'billing error notice'],
-                    minMatches: 1,
-                    title: "Fake Microsoft 365 License Expiration Scam",
-                    desc: "This email claims your Microsoft Office or Outlook subscription has expired and requires immediate credit card renewal.",
-                    warn: "Software providers send renewal notices inside official software accounts and do not threaten instant deletion via unverified emails."
-                },
-                {
-                    keywords: ['bank of america security notice', 'chase fraud prevention', 'wells fargo debit card frozen'],
-                    minMatches: 1,
-                    title: "Bank Impersonation Phishing Scam",
-                    desc: "This text message pretends to be from a major national bank warning you about frozen debit cards or suspicious withdrawals.",
-                    warn: "Major banks use secure in-app notifications for fraud alerts and never ask you to click external links to unfreeze accounts."
-                },
-                {
-                    keywords: ['cryptocurrency wallet migration', 'metamask security update', 'seed phrase verification'],
-                    minMatches: 1,
-                    title: "Crypto Wallet Seed Phrase Phishing Scam",
-                    desc: "This fake crypto alert claims you must enter your secret seed phrase into a web portal to migrate your wallet or prevent loss.",
-                    warn: "Never share your cryptocurrency wallet seed phrase or private keys with anyone under any circumstances."
-                },
-                {
-                    keywords: ['token airdrop claim', 'free web3 tokens', 'connect wallet to claim distribution'],
-                    minMatches: 1,
-                    title: "Malicious Crypto Airdrop Drainer Scam",
-                    desc: "This announcement claims you qualify for a free token airdrop, but connecting your crypto wallet to their site steals your digital assets.",
-                    warn: "Unsolicited crypto airdrops promising free funds are designed to drain your wallet the moment you connect."
-                },
-                {
-                    keywords: ['nft marketplace auction', 'high bidder offer', 'claim your ETH payout'],
-                    minMatches: 1,
-                    title: "Fake NFT Marketplace Bid Phishing Scam",
-                    desc: "This message claims someone placed a high bid on your non-existent NFT, directing you to a malicious site to collect your funds.",
-                    warn: "Legitimate NFT marketplaces do not direct you to external third-party sites via unsolicited messages to claim bids."
                 },
                 {
                     keywords: ['domain name expiration notice', 'registrar renewal failure', 'website suspension warning'],
