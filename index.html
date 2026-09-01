@@ -385,15 +385,6 @@
             line-height: 1.6;
         }
 
-        .footer-note {
-            margin-top: 35px;
-            text-align: center;
-            font-size: 12px;
-            color: #64748b;
-            border-top: 1px solid var(--border-color);
-            padding-top: 15px;
-        }
-
         .printable-card {
             display: none;
         }
@@ -401,7 +392,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
-            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .never-ever-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
+            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .never-ever-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .result-box { display: none !important; }
             .printable-card { display: block !important; border: 2px dashed #1e3a8a; padding: 20px; border-radius: 8px; margin: 20px; }
             .printable-card h2 { color: #1e3a8a; margin-top: 0; }
         }
@@ -448,10 +439,10 @@
         <div id="disclaimerView" class="disclaimer-box" style="display: block;">
             <h3>Legal & Educational Disclaimer</h3>
             <p>Please review before accessing the Check-A-Scam tool:</p>
-            <p><strong>1. Educational Purpose:</strong> Provided free for awareness under Operation Senior Shield as a quick first check.<br>
+            <p><strong>1. Educational Purpose:</strong> Provided strictly for public awareness and educational guidance under Operation Senior Shield as a quick first check. Regardless of any tool response, always consult a trusted family member, friend, or official authority before making financial or personal decisions.<br>
             <strong>2. How It Works:</strong> Paste suspicious texts or upload screenshots to check for common scam indicators.<br>
-            <strong>3. No Guarantee:</strong> Always proceed with caution, consult our trusted resources, and verify through official channels.<br>
-            <strong>4. Liability:</strong> DOEA and Operation Senior Shield assume no legal liability for losses from tool usage.</p>
+            <strong>3. No Guarantee:</strong> This is a quick response tool intended to help you make your own informed decision; the tool provides guidance and resources for you to evaluate situations safely. Always proceed with caution and verify through official channels.<br>
+            <strong>4. Liability & Protection:</strong> DOEA and Operation Senior Shield provide this educational utility strictly "as-is" without warranty, assuming no legal liability or responsibility for financial losses or outcomes resulting from tool usage.</p>
             <button type="button" id="agreeBtn" class="primary-btn" style="width: 100%; position: relative; z-index: 9999; cursor: pointer; pointer-events: auto;" onclick="acceptDisclaimer()">I Have Read and Agree — Enter Tool</button>
         </div>
 
@@ -523,10 +514,6 @@
                 <li><strong>Operation Senior Shield:</strong> <a href="https://opseniorshieldfl.com/" target="_blank" rel="noopener">opseniorshieldfl.com</a></li>
             </ul>
             <p style="font-size: 11px; margin-top: 30px; text-align: center;">Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.</p>
-        </div>
-
-        <div class="footer-note">
-            Aligned with Florida Department of Elder Affairs (DOEA) & Operation Senior Shield (OSS) Guidelines.
         </div>
     </div>
 
@@ -1666,7 +1653,7 @@
                 };
             }
 
-            const isThreat = isSymbolOnlySpauSpam = isSymbolOnlySpam || matchedThreat;
+            const isThreat = isSymbolOnlySpam || matchedThreat;
 
             if (isThreat) {
                 resultBox.className = 'result-box danger';
@@ -1751,4 +1738,3 @@
     </script>
 </body>
 </html>
-```[cite: 1, 2]
