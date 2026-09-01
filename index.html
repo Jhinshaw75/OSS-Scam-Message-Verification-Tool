@@ -392,7 +392,7 @@
         @media print {
             body { background: white; padding: 0; }
             .container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
-            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .never-ever-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .result-box { display: none !important; }
+            .header-top, .instructions-panel, .oss-promo-banner, .permanent-info-box, .never-ever-box, .upload-dropzone, .form-group, .button-group, .disclaimer-box, .footer-note, .result-box { display: none !important; }
             .printable-card { display: block !important; border: 2px dashed #1e3a8a; padding: 20px; border-radius: 8px; margin: 20px; }
             .printable-card h2 { color: #1e3a8a; margin-top: 0; }
         }
@@ -632,6 +632,13 @@
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
             const threatCategories = [
+                {
+                    keywords: ['mychart', 'medicare kit reward', 'verify patient profile', 'schedule home delivery'],
+                    minMatches: 1,
+                    title: "Patient Portal & Medical Rewards Phishing Scam",
+                    desc: "This message pretends to be a medical patient portal offering complimentary rewards or kits to harvest personal health information and login credentials.",
+                    warn: "Healthcare providers and medical portals never distribute unsolicited reward kits or require external link verification via random text alerts."
+                },
                 {
                     keywords: ['delivery department', 'sealed document', 'in-person agents', 'file review manager', 'failure to comply'],
                     minMatches: 1,
