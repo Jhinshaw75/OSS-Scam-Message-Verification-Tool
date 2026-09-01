@@ -633,6 +633,20 @@
 
             const threatCategories = [
                 {
+                    keywords: ['emergency embassy repatriation', 'consular office', 'detained abroad'],
+                    minMatches: 1,
+                    title: "Embassy Repatriation Impersonation Scam",
+                    desc: "This message pretends to be a U.S. embassy official claiming a relative is detained abroad and needs bail money wired immediately.",
+                    warn: "U.S. embassies provide consular assistance to citizens abroad but never demand wire transfers or cryptocurrency to release individuals."
+                },
+                {
+                    keywords: ['green card lottery winner', 'visa sponsorship approval', 'immigration fee deposit'],
+                    minMatches: 1,
+                    title: "Immigration & Visa Lottery Scam",
+                    desc: "This fake immigration notice claims you won a visa lottery or residency status, demanding payment to process government paperwork.",
+                    warn: "Official U.S. immigration processing is handled exclusively through verified government portals ending in .gov."
+                },
+                {
                     keywords: ['county property tax', 'tax lien', 'foreclosure', 'tax arrears'],
                     minMatches: 1,
                     title: "Municipal Property Tax Lien Extortion Scam",
@@ -857,11 +871,11 @@
                     warn: "Airbnb manages host accounts and payouts securely inside your official signed-in host dashboard, never via text links."
                 },
                 {
-                    keywords: ['norton security billing', 'cybershield', 'antivirus protection has automatically renewed', 'customer support helpline right now'],
+                    keywords: ['geek squad support', 'antivirus subscription has automatically renewed', 'customer support helpline right now for an immediate refund'],
                     minMatches: 1,
-                    title: "Antivirus / Software Auto-Renewal Trap",
-                    desc: "This phishing notice claims an expensive software subscription renewed automatically, trapping you into calling a fake support number.",
-                    warn: "Legitimate software providers manage subscription billing entirely inside your secure online account profile."
+                    title: "Fake Geek Squad Subscription Renewal Scam",
+                    desc: "This message claims a hefty antivirus subscription automatically renewed, trapping you into calling a fake support line to steal your financial details.",
+                    warn: "Geek Squad never automatically charges hundreds of dollars over text notifications or asks you to call random phone numbers for refunds."
                 },
                 {
                     keywords: ['ai voice', 'voice cloning', 'audio deepfake', 'family password'],
@@ -934,7 +948,7 @@
                     warn: "Banks and peer payment apps will never ask for your PIN, password, or security verification code via text message."
                 },
                 {
-                    keywords: ['geek squad support', 'antivirus subscription has automatically renewed', 'customer support helpline right now for an immediate refund'],
+                    keywords: ['geek squad', 'antivirus', 'renewed', 'refund'],
                     minMatches: 1,
                     title: "Fake Geek Squad Subscription Renewal Scam",
                     desc: "This message claims a hefty antivirus subscription automatically renewed, trapping you into calling a fake support line to steal your financial details.",
@@ -1382,13 +1396,6 @@
                     warn: "Official U.S. immigration processing is handled exclusively through verified government portals ending in .gov."
                 },
                 {
-                    keywords: ['emergency embassy repatriation', 'consular office wire transfer', 'stranded tourist bail'],
-                    minMatches: 1,
-                    title: "Embassy Repatriation Impersonation Scam",
-                    desc: "This message pretends to be a U.S. embassy official claiming a relative is detained abroad and needs bail money wired immediately.",
-                    warn: "U.S. embassies provide consular assistance to citizens abroad but never demand wire transfers or cryptocurrency to release individuals."
-                },
-                {
                     keywords: ['puppy rescue transport fee', 'animal shelter donation wire', 'rescue dog adoption crate'],
                     minMatches: 1,
                     title: "Fake Animal Rescue Donation Scam",
@@ -1513,6 +1520,13 @@
                     title: "Fake Mobile Car Detailing Phishing Scam",
                     desc: "This promotion offers heavily discounted mobile auto detailing or ceramic coating but requires a prepaid booking deposit.",
                     warn: "Verify local mobile service businesses through official reviews and secure payment methods before sending deposits."
+                },
+                {
+                    keywords: ['windshield crack chip', 'insurance glass waiver', 'mobile repair dispatch'],
+                    minMatches: 1,
+                    title: "Fake Mobile Windshield Repair Scam",
+                    desc: "This service claims your insurance covers free mobile repair dispatch, harvesting your policy details.",
+                    warn: "Contact your auto insurance provider directly to verify glass claim benefits and approved repair networks."
                 },
                 {
                     keywords: ['mobile pet salon', 'dog grooming appointment deposit', 'pet spa cancellation fee'],
