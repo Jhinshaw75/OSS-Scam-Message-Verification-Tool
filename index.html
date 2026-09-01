@@ -633,6 +633,13 @@
 
             const threatCategories = [
                 {
+                    keywords: ['bench warrant', 'jury duty', 'failure to appear'],
+                    minMatches: 1,
+                    title: "Fake Jury Duty Bench Warrant Extortion",
+                    desc: "This call or text claims you missed court and must pay an immediate cash bond over the phone to avoid arrest.",
+                    warn: "Courts never issue bench warrants over phone calls or text messages, nor do they accept bond payments via gift cards or apps."
+                },
+                {
                     keywords: ['customs and border protection', 'interdiction notice', 'federal forfeiture'],
                     minMatches: 1,
                     title: "Fake Customs & Parcel Seizure Scam",
@@ -946,13 +953,6 @@
                     title: "Municipal Property Tax Lien Extortion Scam",
                     desc: "This letter or text threatens immediate tax foreclosure on your home unless you wire funds to an unauthorized account.",
                     warn: "County tax collectors issue notices via formal mailed tax certificates, never demanding instant peer wire transfers."
-                },
-                {
-                    keywords: ['jury duty', 'bench warrant', 'failure to appear', 'cash bond'],
-                    minMatches: 1,
-                    title: "Fake Jury Duty Bench Warrant Extortion",
-                    desc: "This call or text claims you missed court and must pay an immediate cash bond over the phone to avoid arrest.",
-                    warn: "Courts never issue bench warrants over phone calls or text messages, nor do they accept bond payments via gift cards or apps."
                 },
                 {
                     keywords: ['cardmember services', 'credit limit increase', 'claim your new credit tier'],
