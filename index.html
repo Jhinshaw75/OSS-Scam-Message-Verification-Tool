@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -645,6 +645,13 @@
             const isSymbolOnlySpam = text.length > 0 && !hasAlphanumeric;
 
             const threatCategories = [
+                {
+                    keywords: ['delivery department', 'sealed document', 'in-person agents', 'file review manager', 'failure to comply'],
+                    minMatches: 1,
+                    title: "In-Person Sealed Document Intimidation Scam",
+                    desc: "This voicemail or transcript pretends to be a legal delivery service claiming an in-person agent is delivering a sealed document or file, threatening failure-to-comply penalties.",
+                    warn: "Process servers and legal officers never issue threats of immediate failure-to-comply or demand urgent callback transfers through automated voicemail transcripts."
+                },
                 {
                     keywords: ['veteran charity fund', 'wounded service member donation', 'military family relief wire', 'active-duty support gift card', 'military charity wire'],
                     minMatches: 1,
@@ -1967,7 +1974,7 @@
                 resultContent.innerHTML = safeMessage;
                 
                 document.getElementById('printDynamicContent').innerHTML = 
-                    '<p><strong>Analysis Result:</strong> No common threat patterns found. Proceed with caution.</p>' +
+                    '<p><strong>Analysis Result:</strong> No common threat patterns found. Proceed with caution.</p>'+
                     '<p><strong>Golden Rules to Remember:</strong></p>' +
                     '<ul><li>Never call phone numbers listed in suspicious messages.</li><li>Always use verified Operation Senior Shield resource links.</li></ul>';
             }
