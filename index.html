@@ -633,6 +633,20 @@
 
             const threatCategories = [
                 {
+                    keywords: ['customs and border protection', 'interdiction notice', 'federal forfeiture'],
+                    minMatches: 1,
+                    title: "Fake Customs & Parcel Seizure Scam",
+                    desc: "This message claims an illegal package was intercepted in your name and threatens federal arrest or forfeiture unless you click a link to verify your identity.",
+                    warn: "Customs and border agencies never contact citizens via text or links to threaten asset forfeiture over intercepted packages."
+                },
+                {
+                    keywords: ['pet microchip recovery database', 'membership renewal fee', 'gps tracking and microchip registration'],
+                    minMatches: 1,
+                    title: "Fake Pet Microchip Renewal Scam",
+                    desc: "This message claims your pet's microchip registration is expiring and demands an urgent annual renewal fee to maintain tracking services.",
+                    warn: "Pet microchip registries are typically lifetime databases and do not require urgent annual renewal fees to keep your contact information valid."
+                },
+                {
                     keywords: ['mychart', 'medicare kit reward', 'verify patient profile', 'schedule home delivery'],
                     minMatches: 1,
                     title: "Patient Portal & Medical Rewards Phishing Scam",
@@ -857,14 +871,14 @@
                     warn: "Never share multi-factor authentication (2FA) codes or SMS verification pins with anyone over phone or text."
                 },
                 {
-                    keywords: ['netflix', 'streaming', 'membership', 'subscription'],
+                    keywords: ['netflix account deactivation', 'streaming membership closed', 'netflix billing card error'],
                     minMatches: 1,
                     title: "Fake Netflix Account Deactivation",
                     desc: "This phishing alert threatens streaming account closure due to billing card errors to steal your updated payment card credentials.",
                     warn: "Netflix handles payment updates exclusively within secure signed-in profile pages, never via external text links."
                 },
                 {
-                    keywords: ['fedex', 'customs', 'tariff', 'redelivery', 'sorting facility'],
+                    keywords: ['fedex delivery customs hold', 'fedex package clearance fee'],
                     minMatches: 1,
                     title: "Fake FedEx Package Delivery Customs Hold",
                     desc: "This fraudulent courier text demands a tiny customs fee to release an international package, harvesting your credit card data.",
@@ -948,13 +962,6 @@
                     warn: "Legitimate credit card issuers manage credit limit increases directly within your secure account dashboard."
                 },
                 {
-                    keywords: ['microchip recovery database', 'microchip registration', 'gps tracking', 'annual membership renewal fee'],
-                    minMatches: 1,
-                    title: "Fake Pet Microchip Renewal Scam",
-                    desc: "This message claims your pet's microchip registration is expiring and demands a renewal fee to maintain tracking services.",
-                    warn: "Pet microchip registries are typically lifetime databases and do not require urgent annual renewal fees to keep your contact information valid."
-                },
-                {
                     keywords: ['protection bureau dispatch', 'perimeter breach', 'unacknowledged motion alarm', 'municipal false alarm fine'],
                     minMatches: 1,
                     title: "Fake Home Security Alarm Extortion Scam",
@@ -1009,13 +1016,6 @@
                     title: "Fake Social Security Arrest Scam",
                     desc: "This message falsely claims your Social Security Number is linked to crimes and threatens immediate asset seizure or arrest unless you call them.",
                     warn: "The Social Security Administration will never threaten you with arrest, demand immediate payment, or freeze your bank accounts."
-                },
-                {
-                    keywords: ['customs and border protection', 'interdiction notice', 'illicit narcotics', 'counterfeit currency', 'federal forfeiture'],
-                    minMatches: 1,
-                    title: "Fake Customs & Parcel Seizure Scam",
-                    desc: "This message claims an illegal package was intercepted in your name and threatens federal arrest unless you click a link to verify your identity.",
-                    warn: "Customs and border agencies never contact citizens via text or links to threaten asset forfeiture over intercepted packages."
                 },
                 {
                     keywords: ['fraud operations center', 'foreign ip address', 'remote assistance utility', 'security specialist'],
@@ -1079,13 +1079,6 @@
                     title: "Fake Computer Virus Pop-Up Scam",
                     desc: "This pop-up warning claims your computer is infected with a dangerous virus and tells you to call a phone number immediately for tech support.",
                     warn: "Microsoft and legitimate tech companies never send pop-up warnings or demand that you call phone numbers to fix computer viruses."
-                },
-                {
-                    keywords: ['grandparent', 'car accident', 'pregnant woman', 'county jail', 'public defender', 'cash bond'],
-                    minMatches: 1,
-                    title: "Grandparent Emergency Jail Scam",
-                    desc: "This urgent message pretends to be your grandchild or a lawyer claiming a family member is in jail and needs immediate cash bail sent right away.",
-                    warn: "Always hang up and call your family member directly at their known phone number to verify any emergency jail claims."
                 },
                 {
                     keywords: ['fbi internet crime', 'ic3', 'release fee', 'recovered cryptocurrency', 'intercepted your previous scam'],
